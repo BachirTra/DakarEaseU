@@ -51,5 +51,8 @@
     "react-test-renderer": "18.2.0",
     "eslint": "^8.57.0",
     "eslint-config-expo": "^7.1.2"
+  },
+  "jest": {
+    "preset": "jest-expo"
   }
 }

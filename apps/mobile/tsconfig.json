@@ -9,5 +9,5 @@
       "@dakareaseu/types": ["../../packages/types/src/index.ts"]
     }
   },
-  "include": ["src/**/*.ts", "src/**/*.tsx", "nativewind-env.d.ts", "global.css"]
+  "include": ["src/**/*.ts", "src/**/*.tsx", "nativewind-env.d.ts"]
 }
