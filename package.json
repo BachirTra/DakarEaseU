@@ -1,0 +1,8 @@
+{
+  "name": "DakarEaseU",
+  "version": "1.0.0",
+  "description": "gestion etudiant à dakar",
+  "dependencies": {
+    "@supabase/supabase-js": "^2.107.0"
+  }
+}
