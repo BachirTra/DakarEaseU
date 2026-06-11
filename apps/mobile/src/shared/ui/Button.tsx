@@ -1,4 +1,5 @@
 ﻿import { ActivityIndicator, Pressable, Text } from "react-native";
+import { COLORS } from "@/constants/colors";
 
 export type ButtonVariant = "primary" | "secondary" | "outline" | "ghost";
 
@@ -44,7 +45,7 @@ export function Button({
       } items-center justify-center rounded-xl px-5 py-3.5`}
     >
       {loading ? (
-        <ActivityIndicator color={variant === "outline" || variant === "ghost" ? "#1E3A8A" : "#FFFFFF"} />
+        <ActivityIndicator color={variant === "outline" || variant === "ghost" ? COLORS.primary : "#FFFFFF"} />
       ) : (
         <Text className={`text-base font-semibold ${VARIANT_TEXT_CLASSES[variant]}`}>{label}</Text>
       )}

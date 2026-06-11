@@ -13,14 +13,22 @@ export const CATEGORIES: Category[] = [
   { id: "transport", labelKey: "categories.transport", icon: "🚖" },
 ];
 
-export const TRANSPORT_CATEGORIES = [
+export type TransportCategoryId = "taxi" | "moto" | "repas" | "colis" | "demenagement" | "location";
+
+export interface TransportCategory {
+  id: TransportCategoryId;
+  labelKey: string;
+  icon: string;
+}
+
+export const TRANSPORT_CATEGORIES: TransportCategory[] = [
   { id: "taxi", labelKey: "transport.cat.taxi", icon: "🚖" },
   { id: "moto", labelKey: "transport.cat.moto", icon: "🏍️" },
   { id: "repas", labelKey: "transport.cat.repas", icon: "🍱" },
   { id: "colis", labelKey: "transport.cat.colis", icon: "📦" },
   { id: "demenagement", labelKey: "transport.cat.demenagement", icon: "🚚" },
   { id: "location", labelKey: "transport.cat.location", icon: "🚗" },
-] as const;
+];
 
 export const DISTRICTS = [
   "Plateau",
