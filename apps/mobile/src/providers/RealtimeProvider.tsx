@@ -15,7 +15,7 @@ export function RealtimeProvider({ children }: { children: ReactNode }) {
       .channel(`realtime:user:${userId}`)
       .on(
         "postgres_changes",
-        { event: "UPDATE", schema: "public", table: "bookings", filter: `student_id=eq.${userId}` },
+        { event: "UPDATE", schema: "public", table: "bookings", filter: `user_id=eq.${userId}` },
         (payload) => {
           const updated = payload.new as Booking;
           queryClient.invalidateQueries({ queryKey: ["bookings", "list", userId] });
@@ -24,7 +24,7 @@ export function RealtimeProvider({ children }: { children: ReactNode }) {
       )
       .on(
         "postgres_changes",
-        { event: "UPDATE", schema: "public", table: "event_rsvps", filter: `student_id=eq.${userId}` },
+        { event: "UPDATE", schema: "public", table: "event_rsvps", filter: `user_id=eq.${userId}` },
         (payload) => {
           const updated = payload.new as EventRsvp;
           if (updated.status === "confirmed") {
