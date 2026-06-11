@@ -46,6 +46,8 @@
     "@babel/core": "^7.24.0",
     "@testing-library/jest-native": "^5.4.3",
     "@testing-library/react-native": "^12.5.0",
+    "@types/jest": "^30.0.0",
+    "@types/node": "^18.19.130",
     "@types/react": "~18.2.79",
     "eslint": "^8.57.0",
     "eslint-config-expo": "^7.1.2",
