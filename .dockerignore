@@ -1,0 +1,29 @@
+# Dépendances et builds — réinstallés/reconstruits dans l'image
+node_modules
+**/node_modules
+.next
+**/.next
+dist
+**/dist
+.expo
+**/.expo
+coverage
+
+# Environnement et secrets — ne jamais copier dans une image
+.env
+.env.*
+!.env.example
+
+# Outils de dev / VCS / docs (inutiles à l'exécution du serveur)
+.git
+.github
+.vscode
+.idea
+docs
+design
+*.md
+.claude
+
+# Supabase CLI (état local, jamais nécessaire dans l'image admin)
+supabase/.branches
+supabase/.temp
