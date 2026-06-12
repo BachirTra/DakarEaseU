@@ -6,8 +6,8 @@ export function toMatchListingsArgs(input: GuidedSearchInput): MatchListingsArgs
   return {
     p_type: input.type,
     p_budget: input.budget,
-    p_school_id: input.schoolId,
-    p_district: input.district,
+    p_school_id: input.schoolId ?? undefined,
+    p_district: input.district ?? undefined,
     p_furnished: input.furnished,
     p_coloc: input.coloc,
     p_months: input.months,

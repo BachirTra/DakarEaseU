@@ -1,7 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import * as favoritesService from "@/features/favorites/services/favorites.service";
 import { useSessionStore } from "@/features/auth/store/sessionStore";
-import type { FavoriteEntityType } from "@dakareaseu/types";
+import type { Favorite, FavoriteEntityType } from "@dakareaseu/types";
 
 export function useFavorites() {
   const userId = useSessionStore((s) => s.user?.id);
@@ -20,7 +20,7 @@ export function useToggleFavorite() {
   return useMutation({
     mutationFn: async (params: { entityType: FavoriteEntityType; entityId: string }) => {
       if (!userId) throw new Error("Utilisateur non authentifié");
-      const exists = favorites?.some((f) => f.entity_type === params.entityType && f.entity_id === params.entityId);
+      const exists = favorites?.some((f: Favorite) => f.entity_type === params.entityType && f.entity_id === params.entityId);
       if (exists) {
         await favoritesService.removeFavorite({ userId, ...params });
       } else {
@@ -35,7 +35,7 @@ export function useToggleFavorite() {
 
 export function useFavoriteListings() {
   const { data: favorites } = useFavorites();
-  const listingIds = (favorites ?? []).filter((f) => f.entity_type === "listing").map((f) => f.entity_id);
+  const listingIds = (favorites ?? []).filter((f: Favorite) => f.entity_type === "listing").map((f: Favorite) => f.entity_id);
 
   return useQuery({
     queryKey: ["favorites", "listings", listingIds],

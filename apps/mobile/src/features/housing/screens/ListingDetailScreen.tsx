@@ -6,6 +6,7 @@ import { Button } from "@/shared/ui/Button";
 import { EmptyState } from "@/shared/ui/EmptyState";
 import { useTranslation } from "@/hooks/useTranslation";
 import { useListingDetail } from "@/features/housing/hooks/useListingDetail";
+import type { ListingColivingRoom } from "@dakareaseu/types";
 import { MediaGallery } from "@/features/housing/components/MediaGallery";
 import { ChipList } from "@/features/housing/components/ChipList";
 
@@ -68,7 +69,7 @@ export function ListingDetailScreen() {
           <View className="mt-5">
             <Text className="mb-2 text-sm font-semibold text-text">{t("listing.colocation")}</Text>
             <Text className="mb-3 text-xs text-textLight">{t("listing.colocationPlaces", { count: rooms.length })}</Text>
-            {rooms.map((room) => (
+            {rooms.map((room: Pick<ListingColivingRoom, "id" | "label" | "price" | "surface_m2" | "is_available">) => (
               <View
                 key={room.id}
                 className="mb-2 flex-row items-center justify-between rounded-xl border border-border bg-card p-3"

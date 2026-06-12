@@ -46,7 +46,7 @@ export function TransportScreen() {
         <EmptyState icon="🚖" title={t("search.noResults")} />
       ) : (
         <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 32 }}>
-          {providers.map((p) => (
+          {providers.map((p: NonNullable<typeof providers>[number]) => (
             <View key={p.id} className="mb-3 rounded-2xl border border-border bg-card p-3">
               <Text className="text-sm font-semibold text-text">{p.name}</Text>
               <Text className="mt-0.5 text-xs text-textLight">{p.description}</Text>

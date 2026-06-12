@@ -31,6 +31,10 @@ export type ListingType = Enums<'listing_type'>;
 export type BookingStatus = Enums<'booking_status'>;
 export type PaymentMethod = Enums<'payment_method'>;
 export type PaymentStatus = Enums<'payment_status'>;
+export type ReviewTargetType = Enums<'review_target_type'>;
+export type EventCategory = Enums<'event_category'>;
+export type RsvpStatus = Enums<'rsvp_status'>;
+export type FavoriteEntityType = Enums<'favorite_entity_type'>;
 
 export type MatchListingsArgs = Database['public']['Functions']['match_listings']['Args'];
 export type MatchResult = Database['public']['Functions']['match_listings']['Returns'][number];

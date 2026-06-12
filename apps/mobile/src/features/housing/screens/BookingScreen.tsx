@@ -7,7 +7,7 @@ import { Badge } from "@/shared/ui/Badge";
 import { useTranslation } from "@/hooks/useTranslation";
 import { useListingDetail } from "@/features/housing/hooks/useListingDetail";
 import { useCreateBooking } from "@/features/housing/hooks/useCreateBooking";
-import type { PaymentMethod } from "@dakareaseu/types";
+import type { ListingColivingRoom, PaymentMethod } from "@dakareaseu/types";
 
 const PAYMENT_METHODS: { id: PaymentMethod; labelKey: string }[] = [
   { id: "wave", labelKey: "booking.payWithWave" },
@@ -29,7 +29,7 @@ export function BookingScreen() {
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod | null>(null);
 
   const room = useMemo(
-    () => listing?.listing_coliving_rooms?.find((r) => r.id === roomId) ?? null,
+    () => listing?.listing_coliving_rooms?.find((r: Pick<ListingColivingRoom, "id" | "label" | "price" | "surface_m2" | "is_available">) => r.id === roomId) ?? null,
     [listing, roomId]
   );
   const unitPrice = room ? room.price : listing?.price ?? 0;
@@ -65,9 +65,9 @@ export function BookingScreen() {
             <View className="flex-row items-center justify-between rounded-xl border border-border bg-card p-4">
               <Text className="text-sm text-text">{t("booking.duration")}</Text>
               <View className="flex-row items-center gap-4">
-                <Text className="text-lg font-bold text-primary" onPress={() => setDurationMonths((d) => Math.max(minDuration, d - 1))}>−</Text>
+                <Text className="text-lg font-bold text-primary" onPress={() => setDurationMonths((d: number) => Math.max(minDuration, d - 1))}>−</Text>
                 <Text className="text-base font-semibold text-text">{durationMonths}</Text>
-                <Text className="text-lg font-bold text-primary" onPress={() => setDurationMonths((d) => d + 1)}>+</Text>
+                <Text className="text-lg font-bold text-primary" onPress={() => setDurationMonths((d: number) => d + 1)}>+</Text>
               </View>
             </View>
             <View className="mt-6">

@@ -50,7 +50,7 @@ export function ListingCard({ listing, isFavorite, onToggleFavorite, onPress }: 
             {listing.price.toLocaleString("fr-FR")} {listing.currency}
             <Text className="text-xs font-normal text-textLight"> {t("common.perMonth")}</Text>
           </Text>
-          <Text className="text-xs text-textLight">★ {listing.rating.toFixed(1)}</Text>
+          <Text className="text-xs text-textLight">★ {(listing.rating ?? 0).toFixed(1)}</Text>
         </View>
         {listing.colocation_available ? (
           <View className="mt-2">

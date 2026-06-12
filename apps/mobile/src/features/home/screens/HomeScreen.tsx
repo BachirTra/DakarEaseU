@@ -10,6 +10,7 @@ import { SectionHeader } from "@/features/home/components/SectionHeader";
 import { useTopListings, usePartnerSchools, useUpcomingEvents, useNearbyRestaurants } from "@/features/home/hooks/useHomeData";
 import { ListingCard } from "@/features/housing/components/ListingCard";
 import { useFavorites, useToggleFavorite } from "@/features/favorites/hooks/useFavorites";
+import type { Favorite } from "@dakareaseu/types";
 import type { ListingSummary } from "@/features/housing/types/housing.types";
 
 function toListingSummary(row: NonNullable<ReturnType<typeof useTopListings>["data"]>[number]): ListingSummary {
@@ -31,14 +32,14 @@ export function HomeScreen() {
   const { data: favorites } = useFavorites();
   const toggleFavorite = useToggleFavorite();
 
-  const isListingFavorite = (id: string) => Boolean(favorites?.some((f) => f.entity_type === "listing" && f.entity_id === id));
+  const isListingFavorite = (id: string) => Boolean(favorites?.some((f: Favorite) => f.entity_type === "listing" && f.entity_id === id));
 
   const sectionsById: Record<string, React.ReactElement> = {
     logements: (
       <View key="logements">
         <SectionHeader title={t("home.topListings")} actionLabel={t("common.seeAll")} onAction={() => router.push("/(tabs)/search")} />
         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-          {(listings ?? []).map((row) => {
+          {(listings ?? []).map((row: NonNullable<typeof listings>[number]) => {
             const summary = toListingSummary(row);
             return (
               <ListingCard
@@ -57,7 +58,7 @@ export function HomeScreen() {
       <View key="ecoles">
         <SectionHeader title={t("home.topSchools")} actionLabel={t("common.seeAll")} onAction={() => router.push("/(tabs)/search/schools")} />
         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-          {(schools ?? []).map((school) => (
+          {(schools ?? []).map((school: NonNullable<typeof schools>[number]) => (
             <Pressable
               key={school.id}
               onPress={() => router.push({ pathname: "/(tabs)/search/schools/[id]", params: { id: school.id } })}
@@ -79,7 +80,7 @@ export function HomeScreen() {
       <View key="restaurants">
         <SectionHeader title={t("home.restaurantsNearby")} actionLabel={t("common.seeAll")} onAction={() => router.push("/(tabs)/search/restaurants")} />
         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-          {(restaurants ?? []).map((r) => (
+          {(restaurants ?? []).map((r: NonNullable<typeof restaurants>[number]) => (
             <Pressable
               key={r.id}
               onPress={() => router.push({ pathname: "/(tabs)/search/restaurants/[id]", params: { id: r.id } })}
@@ -145,7 +146,7 @@ export function HomeScreen() {
         <View key="news">
           <SectionHeader title={t("home.upcomingEvents")} actionLabel={t("common.seeAll")} onAction={() => router.push("/(tabs)/news")} />
           <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-            {(events ?? []).map((event) => (
+            {(events ?? []).map((event: NonNullable<typeof events>[number]) => (
               <Pressable
                 key={event.id}
                 onPress={() => router.push({ pathname: "/(tabs)/news/event/[id]", params: { id: event.id } })}

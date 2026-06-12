@@ -8,6 +8,7 @@ import { useListings } from "@/features/housing/hooks/useListings";
 import { useFavorites, useToggleFavorite } from "@/features/favorites/hooks/useFavorites";
 import { ListingCard } from "@/features/housing/components/ListingCard";
 import { FilterBar } from "@/features/housing/components/FilterBar";
+import type { Favorite } from "@dakareaseu/types";
 import type { ListingFilters, ListingSummary } from "@/features/housing/types/housing.types";
 
 export function SearchScreen() {
@@ -20,14 +21,14 @@ export function SearchScreen() {
   const { data: favorites } = useFavorites();
   const toggleFavorite = useToggleFavorite();
 
-  const isFavorite = (id: string) => Boolean(favorites?.some((f) => f.entity_type === "listing" && f.entity_id === id));
+  const isFavorite = (id: string) => Boolean(favorites?.some((f: Favorite) => f.entity_type === "listing" && f.entity_id === id));
 
   const filtered = (listings ?? [])
-    .map((row) => {
+    .map((row: NonNullable<typeof listings>[number]) => {
       const sortedMedia = [...(row.listing_media ?? [])].sort((a, b) => a.position - b.position);
       return { ...row, cover_media: sortedMedia[0] ?? null } as ListingSummary;
     })
-    .filter((l) => l.title.toLowerCase().includes(query.trim().toLowerCase()));
+    .filter((l: ListingSummary) => l.title.toLowerCase().includes(query.trim().toLowerCase()));
 
   return (
     <Screen>

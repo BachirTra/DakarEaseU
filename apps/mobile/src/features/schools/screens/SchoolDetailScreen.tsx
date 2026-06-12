@@ -19,9 +19,11 @@ export function SchoolDetailScreen() {
 
   if (isLoading || !school) return null;
 
+  type NearbyRow = NonNullable<typeof school>["school_nearby_listings"][number];
+  type NearbyListing = NearbyRow["listings"];
   const nearbyListings = (school.school_nearby_listings ?? [])
-    .map((row) => row.listings)
-    .filter((listing): listing is NonNullable<typeof listing> => Boolean(listing));
+    .map((row: NearbyRow) => row.listings)
+    .filter((listing: NearbyListing): listing is NonNullable<NearbyListing> => Boolean(listing));
 
   return (
     <Screen>
@@ -63,7 +65,7 @@ export function SchoolDetailScreen() {
           <View className="mt-4">
             <Text className="text-sm leading-5 text-text">{school.admission_info}</Text>
             <View className="mt-3 flex-row flex-wrap gap-2">
-              {(school.programs ?? []).map((program) => (
+              {(school.programs ?? []).map((program: string) => (
                 <View key={program} className="rounded-full border border-border bg-bg px-3 py-1.5">
                   <Text className="text-xs text-text">{program}</Text>
                 </View>
@@ -77,7 +79,7 @@ export function SchoolDetailScreen() {
             {nearbyListings.length === 0 ? (
               <EmptyState icon="🏠" title={t("schools.noNearbyHousing")} />
             ) : (
-              nearbyListings.map((listing) => (
+              nearbyListings.map((listing: NonNullable<NearbyRow["listings"]>) => (
                 <View key={listing.id} className="mb-2 flex-row items-center justify-between rounded-xl border border-border bg-card p-3" onTouchEnd={() => router.push({ pathname: "/(tabs)/home/listing/[id]", params: { id: listing.id } })}>
                   <View className="flex-1 pr-2">
                     <Text numberOfLines={1} className="text-sm font-semibold text-text">{listing.title}</Text>

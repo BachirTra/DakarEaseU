@@ -13,7 +13,7 @@ export function FavoritesScreen() {
   const { data: listings } = useFavoriteListings();
   const toggleFavorite = useToggleFavorite();
 
-  const summaries: ListingSummary[] = (listings ?? []).map((row) => {
+  const summaries: ListingSummary[] = (listings ?? []).map((row: NonNullable<typeof listings>[number]) => {
     const sortedMedia = [...(row.listing_media ?? [])].sort((a, b) => a.position - b.position);
     return { ...row, cover_media: sortedMedia[0] ?? null };
   });

@@ -10,7 +10,7 @@ import { useSessionStore } from "@/features/auth/store/sessionStore";
 import { useSubmitGuidedSearch, useGuidedSearchMatches } from "@/features/housing/hooks/useGuidedSearch";
 import { toMatchListingsArgs } from "@/features/housing/services/guidedSearch.service";
 import { DISTRICTS } from "@/constants/categories";
-import type { ListingType } from "@dakareaseu/types";
+import type { ListingType, MatchResult } from "@dakareaseu/types";
 import type { GuidedSearchInput } from "@/features/housing/schemas/guidedSearchSchemas";
 import type { BadgeTone } from "@/shared/ui/Badge";
 
@@ -155,13 +155,13 @@ export function DemandeScreen() {
             ) : !matches || matches.length === 0 ? (
               <EmptyState icon="🔍" title={t("demande.noMatches")} />
             ) : (
-              matches.map((match) => (
+              matches.map((match: MatchResult) => (
                 <View key={match.listing_id} className="mb-3 rounded-xl border border-border bg-card p-4">
                   <View className="flex-row items-center justify-between">
                     <Badge label={t("demande.matchScore", { pct: match.match_pct ?? 0 })} tone={matchTone(match.match_pct ?? 0)} />
                   </View>
                   <View className="mt-2 flex-row flex-wrap gap-2">
-                    {(match.reasons ?? []).map((reason) => (
+                    {(match.reasons ?? []).map((reason: string) => (
                       <View key={reason} className="rounded-full bg-bg px-2.5 py-1">
                         <Text className="text-xs text-text">✓ {reason}</Text>
                       </View>

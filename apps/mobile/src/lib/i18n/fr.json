@@ -185,7 +185,8 @@
     "languageEnglish": "English",
     "notifications": "Notifications",
     "logout": "Se déconnecter",
-    "logoutConfirm": "Veux-tu vraiment te déconnecter ?"
+    "logoutConfirm": "Veux-tu vraiment te déconnecter ?",
+    "changePhoto": "Changer la photo"
   },
   "notifications": {
     "title": "Notifications",

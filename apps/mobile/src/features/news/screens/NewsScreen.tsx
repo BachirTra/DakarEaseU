@@ -67,7 +67,7 @@ export function NewsScreen() {
             </Pressable>
           ) : null}
 
-          {rest.map((event) => (
+          {rest.map((event: NonNullable<typeof events>[number]) => (
             <Pressable
               key={event.id}
               onPress={() => router.push({ pathname: "/(tabs)/news/event/[id]", params: { id: event.id } })}

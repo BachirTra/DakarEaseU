@@ -13,7 +13,7 @@ export function RestaurantsScreen() {
   const [query, setQuery] = useState("");
   const { data: restaurants, isLoading } = useRestaurants();
 
-  const filtered = (restaurants ?? []).filter((r) => r.name.toLowerCase().includes(query.trim().toLowerCase()));
+  const filtered = (restaurants ?? []).filter((r: NonNullable<typeof restaurants>[number]) => r.name.toLowerCase().includes(query.trim().toLowerCase()));
 
   return (
     <Screen>
