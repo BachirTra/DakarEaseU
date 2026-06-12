@@ -5,7 +5,7 @@ import type { MatchListingsArgs, MatchResult } from "@dakareaseu/types";
 export async function fetchListings(filters: ListingFilters = {}) {
   let query = supabase
     .from("listings")
-    .select(`${LISTING_PUBLIC_COLUMNS}, listing_media(id, url, media_type, position)`)
+    .select(`${LISTING_PUBLIC_COLUMNS}, listing_media(id, url, media_type, position)` as const)
     .eq("verification_status", "published")
     .order("created_at", { ascending: false });
 
@@ -24,7 +24,7 @@ export async function fetchListingDetail(listingId: string) {
   const { data, error } = await supabase
     .from("listings")
     .select(
-      `${LISTING_PUBLIC_COLUMNS}, listing_media(id, url, media_type, position), listing_coliving_rooms(id, label, price, surface_m2, is_available)`
+      `${LISTING_PUBLIC_COLUMNS}, listing_media(id, url, media_type, position), listing_coliving_rooms(id, label, price, surface_m2, is_available)` as const
     )
     .eq("id", listingId)
     .eq("verification_status", "published")
