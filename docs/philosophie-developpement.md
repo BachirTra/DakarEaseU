@@ -107,8 +107,8 @@ Règle : utilisé par une seule feature → reste dans la feature. Utilisé par 
 
 ## Composants & écrans
 
-* Composants : ~100 lignes idéalement, 200 max → au-delà, extraire des sous-composants.
-* Écrans : très légers, ils **orchestrent** (Components + Hooks + Layout), ils ne contiennent pas la logique métier :
+- Composants : ~100 lignes idéalement, 200 max → au-delà, extraire des sous-composants.
+- Écrans : très légers, ils **orchestrent** (Components + Hooks + Layout), ils ne contiennent pas la logique métier :
 
 ```tsx
 // Mauvais
@@ -178,4 +178,4 @@ Ne jamais optimiser avant d'avoir un problème réel. Ordre de priorité : 1) Fa
 
 ## Règle finale
 
-Avant chaque abstraction : *"Cette abstraction résout-elle un problème réel aujourd'hui ?"* Si non → ne pas la créer. **Le meilleur code est souvent le code qui n'existe pas.**
+Avant chaque abstraction : _"Cette abstraction résout-elle un problème réel aujourd'hui ?"_ Si non → ne pas la créer. **Le meilleur code est souvent le code qui n'existe pas.**

@@ -1,18 +1,18 @@
-import { Text, View } from "react-native";
-import { useRouter } from "expo-router";
-import * as ImagePicker from "expo-image-picker";
-import { Screen } from "@/shared/ui/Screen";
-import { Button } from "@/shared/ui/Button";
-import { Badge } from "@/shared/ui/Badge";
-import { useTranslation } from "@/hooks/useTranslation";
-import { useSessionStore } from "@/features/auth/store/sessionStore";
-import { useUploadStudentId } from "@/features/auth/hooks/useAuth";
+import { Text, View } from 'react-native';
+import { useRouter } from 'expo-router';
+import * as ImagePicker from 'expo-image-picker';
+import { Screen } from '@/shared/ui/Screen';
+import { Button } from '@/shared/ui/Button';
+import { Badge } from '@/shared/ui/Badge';
+import { useTranslation } from '@/hooks/useTranslation';
+import { useSessionStore } from '@/features/auth/store/sessionStore';
+import { useUploadStudentId } from '@/features/auth/hooks/useAuth';
 
-const STATUS_TONE = { pending: "warning", approved: "success", rejected: "danger" } as const;
+const STATUS_TONE = { pending: 'warning', approved: 'success', rejected: 'danger' } as const;
 const STATUS_LABEL_KEY = {
-  pending: "auth.verificationPending",
-  approved: "auth.verificationApproved",
-  rejected: "auth.verificationRejected",
+  pending: 'auth.verificationPending',
+  approved: 'auth.verificationApproved',
+  rejected: 'auth.verificationRejected',
 } as const;
 
 export function StudentIdUploadScreen() {
@@ -22,7 +22,7 @@ export function StudentIdUploadScreen() {
   const profile = useSessionStore((s) => s.profile);
   const uploadStudentId = useUploadStudentId();
 
-  const status = profile?.verification_status ?? "pending";
+  const status = profile?.verification_status ?? 'pending';
   const hasUploaded = Boolean(profile?.verification_doc_url);
 
   const pickAndUpload = async () => {
@@ -39,14 +39,14 @@ export function StudentIdUploadScreen() {
       userId,
       fileUri: asset.uri,
       fileName,
-      contentType: asset.mimeType ?? "image/jpeg",
+      contentType: asset.mimeType ?? 'image/jpeg',
     });
   };
 
   return (
     <Screen className="justify-center">
-      <Text className="mb-2 text-xl font-bold text-text">{t("auth.uploadIdTitle")}</Text>
-      <Text className="mb-6 text-sm text-textLight">{t("auth.uploadIdBody")}</Text>
+      <Text className="mb-2 text-xl font-bold text-text">{t('auth.uploadIdTitle')}</Text>
+      <Text className="mb-6 text-sm text-textLight">{t('auth.uploadIdBody')}</Text>
 
       {hasUploaded ? (
         <View className="mb-6">
@@ -55,15 +55,15 @@ export function StudentIdUploadScreen() {
       ) : null}
 
       <Button
-        label={t("auth.uploadIdAction")}
+        label={t('auth.uploadIdAction')}
         onPress={pickAndUpload}
         loading={uploadStudentId.isPending}
-        variant={hasUploaded ? "outline" : "primary"}
+        variant={hasUploaded ? 'outline' : 'primary'}
       />
 
       <View className="mt-4 items-center">
-        <Text className="text-sm text-textLight" onPress={() => router.replace("/(tabs)/home")}>
-          {t("auth.uploadIdLater")}
+        <Text className="text-sm text-textLight" onPress={() => router.replace('/(tabs)/home')}>
+          {t('auth.uploadIdLater')}
         </Text>
       </View>
     </Screen>

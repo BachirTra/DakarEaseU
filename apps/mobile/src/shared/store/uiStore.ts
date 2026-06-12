@@ -1,8 +1,8 @@
-import { create } from "zustand";
+import { create } from 'zustand';
 
 interface UiState {
-  activeMediaViewer: { uri: string; kind: "photo" | "video" | "tour_3d" } | null;
-  openMediaViewer: (uri: string, kind: "photo" | "video" | "tour_3d") => void;
+  activeMediaViewer: { uri: string; kind: 'photo' | 'video' | 'tour_3d' } | null;
+  openMediaViewer: (uri: string, kind: 'photo' | 'video' | 'tour_3d') => void;
   closeMediaViewer: () => void;
 }
 

@@ -1,7 +1,7 @@
-import { ReactNode } from "react";
-import { Redirect } from "expo-router";
-import { ActivityIndicator, View } from "react-native";
-import { useSessionStore } from "@/features/auth/store/sessionStore";
+import { ReactNode } from 'react';
+import { Redirect } from 'expo-router';
+import { ActivityIndicator, View } from 'react-native';
+import { useSessionStore } from '@/features/auth/store/sessionStore';
 
 export function AuthGate({ children }: { children: ReactNode }) {
   const isInitializing = useSessionStore((s) => s.isInitializing);

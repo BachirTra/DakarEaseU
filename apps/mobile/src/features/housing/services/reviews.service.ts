@@ -1,5 +1,5 @@
-import { supabase } from "@/lib/supabase";
-import type { ReviewTargetType } from "@dakareaseu/types";
+import { supabase } from '@/lib/supabase';
+import type { ReviewTargetType } from '@dakareaseu/types';
 
 export async function submitReview(params: {
   authorId: string;
@@ -9,7 +9,7 @@ export async function submitReview(params: {
   comment: string;
 }) {
   const { data, error } = await supabase
-    .from("reviews")
+    .from('reviews')
     .insert({
       author_id: params.authorId,
       target_type: params.targetType,
@@ -17,7 +17,7 @@ export async function submitReview(params: {
       rating: params.rating,
       comment: params.comment,
     })
-    .select("*")
+    .select('*')
     .single();
   if (error) throw error;
   return data;

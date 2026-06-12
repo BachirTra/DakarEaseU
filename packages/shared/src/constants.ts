@@ -8,14 +8,7 @@
  */
 
 /** Quartiers de Dakar couverts par le moteur de recherche (logements/restaurants). */
-export const DISTRICTS = [
-  'Almadies',
-  'Fann',
-  'Mermoz',
-  'Sacré-Cœur',
-  'Ouakam',
-  'Point E',
-] as const;
+export const DISTRICTS = ['Almadies', 'Fann', 'Mermoz', 'Sacré-Cœur', 'Ouakam', 'Point E'] as const;
 
 export type District = (typeof DISTRICTS)[number];
 

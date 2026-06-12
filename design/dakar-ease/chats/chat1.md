@@ -42,6 +42,7 @@ _[tool: fork_verifier_agent]_
 Voici votre prototype **Dakar'ease** — une application mobile complète et interactive dans un cadre iPhone. Voici ce qui est inclus :
 
 **Écrans fonctionnels :**
+
 - **Splash** animé → **Onboarding** (3 étapes) → **App principale**
 - **Accueil** — recherche, catégories, logements vérifiés, bons plans
 - **Recherche** — filtres (type, budget), résultats en temps réel
@@ -50,6 +51,7 @@ Voici votre prototype **Dakar'ease** — une application mobile complète et int
 - **Favoris**, **Messages** (WhatsApp-first), **Profil**
 
 **Interactions :**
+
 - Navigation avec transitions animées
 - Ajout/retrait des favoris
 - Filtres de recherche dynamiques
@@ -102,11 +104,11 @@ Export this design as an editable PPTX: the current design
 
 ## User
 
-rajouter un espace news ou les user seront informe des evenement culturel a dakar et autre ( par exemple un partenariat avec  entreprise evenementiel )
-pour les services rajouter service transport /livraison 
-changer hotel par bailleurs /agence immobiliere 
-rajouter aussi les differents ecole 
-mettre en place le process de bout en bout 
+rajouter un espace news ou les user seront informe des evenement culturel a dakar et autre ( par exemple un partenariat avec entreprise evenementiel )
+pour les services rajouter service transport /livraison
+changer hotel par bailleurs /agence immobiliere
+rajouter aussi les differents ecole
+mettre en place le process de bout en bout
 
 poser des questions pour les tweaks
 
@@ -121,6 +123,7 @@ _[tool: questions_v2]_
 ## User
 
 Questions answered:
+
 - news_format: Onglets par catégorie (Concert, Festival, Conférence, Sport)
 - news_placement: Nouvel onglet dédié dans la barre de navigation (remplace Messages)
 - news_interactions: RSVP / Je participe, Sauvegarder dans 'Mes événements', Partager (WhatsApp)
@@ -178,6 +181,7 @@ _[tool: fork_verifier_agent]_
 Voici l'app **Dakar'ease v2** complète avec toutes les évolutions demandées :
 
 **Nouveautés :**
+
 - 🎟️ **News & Événements** (remplace Messages) — onglets par catégorie (Concert, Festival, Conférence, Sport), événement à la une, RSVP → ticket avec QR code → check-in, partage WhatsApp
 - 🚖 **Transport / Livraison** — annuaire (Yango, Jakarta, livraison repas/colis, déménagement, location voiture) avec appel + WhatsApp
 - 🏢 **Bailleurs / Agences** — liste, profils détaillés (bio, certifications, années d'expérience), annonces par agence, avis étudiants
@@ -186,6 +190,7 @@ Voici l'app **Dakar'ease v2** complète avec toutes les évolutions demandées :
 - ⭐ **Évaluation post-séjour** (notes + commentaire) après réservation
 
 **3 Tweaks expressifs :**
+
 - **Mood** — Confiance · Terracotta sénégalais · Nature · Nuit
 - **Persona** — Nouveau · Local · Parent · Bailleur (change greeting & priorités)
 - **Langue** — Français · Wolof · English
@@ -319,6 +324,7 @@ Maintenant aussi augmenter la hauteur du header image dans ListingDetail et Even
 _[tool: done]_
 
 Propre. Les deux fixes sont en place :
+
 - **Scaling responsive** — l'iPhone se redimensionne automatiquement pour tenir dans la fenêtre
 - **Boutons retour** — remontés à `top: 56` pour être au-dessus de la Dynamic Island
 
@@ -396,7 +402,7 @@ Tout est bon ✅
 
 ## User
 
-rajouter page detail ecole si on clique sur une ecole avec les moyens d'y adherer , les contacts whatsapp et autre 
+rajouter page detail ecole si on clique sur une ecole avec les moyens d'y adherer , les contacts whatsapp et autre
 
 ajouter restaurants avec le meme workflow que logements ( rajouter aussi dans la landing page
 
@@ -405,6 +411,7 @@ ajouter restaurants avec le meme workflow que logements ( rajouter aussi dans la
 _[tool: read_file]_
 
 Parfait, j'ai tout le contexte. Je vais :
+
 1. **Enrichir les données** — détails écoles (admission, contacts, WhatsApp) + restaurants
 2. **Page détail école** — admissions, filières, contacts, carte
 3. **Restaurants** — même workflow que logements (liste, détail, réservation table)
@@ -487,4 +494,3 @@ En attente du rapport du vérificateur.
 Verifier agent check completed
 
 ## Assistant
-

@@ -1,8 +1,8 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import * as bookingsService from "@/features/housing/services/bookings.service";
-import { processPayment } from "@/features/housing/services/payments.service";
-import { useSessionStore } from "@/features/auth/store/sessionStore";
-import type { PaymentMethod } from "@dakareaseu/types";
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import * as bookingsService from '@/features/housing/services/bookings.service';
+import { processPayment } from '@/features/housing/services/payments.service';
+import { useSessionStore } from '@/features/auth/store/sessionStore';
+import type { PaymentMethod } from '@dakareaseu/types';
 
 export interface SubmitBookingParams {
   listingId: string;
@@ -20,7 +20,7 @@ export function useCreateBooking() {
 
   return useMutation({
     mutationFn: async (params: SubmitBookingParams) => {
-      if (!userId) throw new Error("Utilisateur non authentifié");
+      if (!userId) throw new Error('Utilisateur non authentifié');
 
       const totalAmount = params.unitPrice * params.durationMonths;
       const reference = `bk-${params.listingId.slice(0, 8)}-${Date.now()}`;
@@ -39,7 +39,7 @@ export function useCreateBooking() {
       });
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["bookings", "list", userId] });
+      queryClient.invalidateQueries({ queryKey: ['bookings', 'list', userId] });
     },
   });
 }

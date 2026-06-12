@@ -1,5 +1,5 @@
-import { create } from "zustand";
-import type { Locale } from "@/lib/i18n";
+import { create } from 'zustand';
+import type { Locale } from '@/lib/i18n';
 
 interface PreferencesState {
   locale: Locale;
@@ -7,8 +7,8 @@ interface PreferencesState {
 }
 
 export const usePreferencesStore = create<PreferencesState>((set) => ({
-  locale: "fr",
+  locale: 'fr',
   setLocale: (locale) => {
-    if (locale === "fr") set({ locale });
+    if (locale === 'fr') set({ locale });
   },
 }));

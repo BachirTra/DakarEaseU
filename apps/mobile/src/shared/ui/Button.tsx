@@ -1,7 +1,7 @@
-﻿import { ActivityIndicator, Pressable, Text } from "react-native";
-import { COLORS } from "@/constants/colors";
+﻿import { ActivityIndicator, Pressable, Text } from 'react-native';
+import { COLORS } from '@/constants/colors';
 
-export type ButtonVariant = "primary" | "secondary" | "outline" | "ghost";
+export type ButtonVariant = 'primary' | 'secondary' | 'outline' | 'ghost';
 
 interface ButtonProps {
   label: string;
@@ -13,23 +13,23 @@ interface ButtonProps {
 }
 
 const VARIANT_CLASSES: Record<ButtonVariant, string> = {
-  primary: "bg-primary",
-  secondary: "bg-secondary",
-  outline: "bg-transparent border border-primary",
-  ghost: "bg-transparent",
+  primary: 'bg-primary',
+  secondary: 'bg-secondary',
+  outline: 'bg-transparent border border-primary',
+  ghost: 'bg-transparent',
 };
 
 const VARIANT_TEXT_CLASSES: Record<ButtonVariant, string> = {
-  primary: "text-white",
-  secondary: "text-white",
-  outline: "text-primary",
-  ghost: "text-primary",
+  primary: 'text-white',
+  secondary: 'text-white',
+  outline: 'text-primary',
+  ghost: 'text-primary',
 };
 
 export function Button({
   label,
   onPress,
-  variant = "primary",
+  variant = 'primary',
   disabled = false,
   loading = false,
   fullWidth = true,
@@ -40,12 +40,14 @@ export function Button({
       accessibilityRole="button"
       accessibilityState={{ disabled: isDisabled }}
       onPress={isDisabled ? undefined : onPress}
-      className={`${fullWidth ? "w-full" : "self-start"} ${VARIANT_CLASSES[variant]} ${
-        isDisabled ? "opacity-50" : ""
+      className={`${fullWidth ? 'w-full' : 'self-start'} ${VARIANT_CLASSES[variant]} ${
+        isDisabled ? 'opacity-50' : ''
       } items-center justify-center rounded-xl px-5 py-3.5`}
     >
       {loading ? (
-        <ActivityIndicator color={variant === "outline" || variant === "ghost" ? COLORS.primary : "#FFFFFF"} />
+        <ActivityIndicator
+          color={variant === 'outline' || variant === 'ghost' ? COLORS.primary : '#FFFFFF'}
+        />
       ) : (
         <Text className={`text-base font-semibold ${VARIANT_TEXT_CLASSES[variant]}`}>{label}</Text>
       )}

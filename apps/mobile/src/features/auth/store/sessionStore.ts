@@ -1,10 +1,10 @@
-import { create } from "zustand";
-import type { Session } from "@supabase/supabase-js";
-import type { Profile } from "@dakareaseu/types";
+import { create } from 'zustand';
+import type { Session } from '@supabase/supabase-js';
+import type { Profile } from '@dakareaseu/types';
 
 interface SessionState {
   session: Session | null;
-  user: Session["user"] | null;
+  user: Session['user'] | null;
   profile: Profile | null;
   isInitializing: boolean;
   setSession: (session: Session | null) => void;

@@ -1,7 +1,7 @@
-import { ReactNode, useEffect } from "react";
-import { supabase } from "@/lib/supabase";
-import { useSessionStore } from "@/features/auth/store/sessionStore";
-import { fetchProfile } from "@/features/auth/services/auth.service";
+import { ReactNode, useEffect } from 'react';
+import { supabase } from '@/lib/supabase';
+import { useSessionStore } from '@/features/auth/store/sessionStore';
+import { fetchProfile } from '@/features/auth/services/auth.service';
 
 export function SessionProvider({ children }: { children: ReactNode }) {
   const setSession = useSessionStore((s) => s.setSession);

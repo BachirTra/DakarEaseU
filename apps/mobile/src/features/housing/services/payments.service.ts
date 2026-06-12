@@ -1,4 +1,4 @@
-import type { PaymentMethod, PaymentStatus } from "@dakareaseu/types";
+import type { PaymentMethod, PaymentStatus } from '@dakareaseu/types';
 
 export interface PaymentResult {
   status: PaymentStatus;
@@ -27,7 +27,11 @@ export interface PaymentResult {
  *   3. No changes needed in BookingScreen, useCreateBooking, or the
  *      bookings/payments write path — they only depend on this signature.
  */
-export async function processPayment(method: PaymentMethod, amount: number, reference: string): Promise<PaymentResult> {
+export async function processPayment(
+  method: PaymentMethod,
+  amount: number,
+  reference: string,
+): Promise<PaymentResult> {
   await new Promise((resolve) => setTimeout(resolve, 600));
-  return { status: "success", method, amount, reference };
+  return { status: 'success', method, amount, reference };
 }

@@ -9,6 +9,7 @@ Guide complet pour provisionner l'environnement de développement du projet Daka
 - **Comptes créés** : GitHub, Supabase, Expo, Vercel, Google Cloud Console
 
 Vérifier les versions :
+
 ```bash
 node --version    # v20.x ou supérieur
 npm --version     # 10.x ou supérieur
@@ -229,14 +230,14 @@ Pour que les workflows CI/CD fonctionnent, ajouter les secrets à GitHub :
 2. Cliquer **New repository secret**
 3. Ajouter chaque secret :
 
-| Secret | Valeur | Source |
-|--------|--------|--------|
-| `SUPABASE_SERVICE_ROLE_KEY` | Service role key | Supabase Settings → API |
-| `SUPABASE_DB_PASSWORD` | Mot de passe DB | Supabase Settings → Database |
-| `VERCEL_TOKEN` | Token | Vercel Account Settings → Tokens |
-| `VERCEL_ORG_ID` | Account/Team ID | Vercel Account Settings |
-| `VERCEL_PROJECT_ID` | Project ID | Vercel Project Settings |
-| `EXPO_TOKEN` | Token | expo.dev Account Settings |
+| Secret                      | Valeur           | Source                           |
+| --------------------------- | ---------------- | -------------------------------- |
+| `SUPABASE_SERVICE_ROLE_KEY` | Service role key | Supabase Settings → API          |
+| `SUPABASE_DB_PASSWORD`      | Mot de passe DB  | Supabase Settings → Database     |
+| `VERCEL_TOKEN`              | Token            | Vercel Account Settings → Tokens |
+| `VERCEL_ORG_ID`             | Account/Team ID  | Vercel Account Settings          |
+| `VERCEL_PROJECT_ID`         | Project ID       | Vercel Project Settings          |
+| `EXPO_TOKEN`                | Token            | expo.dev Account Settings        |
 
 ## 8. Lancer en local
 
@@ -248,6 +249,7 @@ npx expo start
 ```
 
 Le serveur Expo démarre. Vous pouvez alors :
+
 - **Scanner le QR code** avec l'app Expo Go (iOS/Android)
 - **Simulateur iOS** : appuyer sur `i`
 - **Simulateur Android** : appuyer sur `a` (nécessite Android Studio)
@@ -302,6 +304,7 @@ npm run build
 ### Admin → Vercel (automatique)
 
 Tout push sur `main` touchant `apps/admin/**` déclenche automatiquement le workflow `.github/workflows/deploy-admin.yml`, qui :
+
 1. Exécute `npm run lint`
 2. Exécute `npm run typecheck`
 3. Exécute `npm run test`
@@ -416,6 +419,7 @@ npx expo start --clear
 ---
 
 **Questions ou problèmes ?** Consulter les logs GitHub Actions ou les documentations officielles :
+
 - Supabase : [supabase.com/docs](https://supabase.com/docs)
 - Expo : [docs.expo.dev](https://docs.expo.dev)
 - Vercel : [vercel.com/docs](https://vercel.com/docs)

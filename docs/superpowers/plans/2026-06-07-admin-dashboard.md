@@ -78,6 +78,7 @@ apps/admin/
 ### Task 0: Scaffolding du projet `apps/admin`
 
 **Files:**
+
 - Create: `apps/admin/package.json`
 - Create: `apps/admin/tsconfig.json`
 - Create: `apps/admin/next.config.mjs`
@@ -96,8 +97,8 @@ Expected: si le fichier existe déjà (posé par le plan infra), il contient `ap
 
 ```yaml
 packages:
-  - "apps/*"
-  - "packages/*"
+  - 'apps/*'
+  - 'packages/*'
 ```
 
 (Écris ce contenu dans `C:\Users\BachirTraore\Desktop\Freelance\DakarEaseU\pnpm-workspace.yaml` — n'écrase pas un fichier existant qui contient déjà ces entrées.)
@@ -105,10 +106,12 @@ packages:
 - [ ] **Step 2: Scaffolder le projet Next.js**
 
 Run (depuis la racine du repo) :
+
 ```bash
 cd apps
 npx create-next-app@latest admin --typescript --tailwind --eslint --app --src-dir --import-alias "@/*" --no-turbopack --use-pnpm
 ```
+
 Expected: crée `apps/admin/` avec App Router, TypeScript, Tailwind, ESLint configurés. Réponds "No" à toute question sur Turbopack si elle apparaît (on garde le bundler par défaut pour la stabilité avec shadcn).
 
 - [ ] **Step 3: Activer le mode strict TypeScript**
@@ -164,6 +167,7 @@ git commit -m "chore(admin): scaffolder le projet Next.js apps/admin (App Router
 ### Task 1: Installer et configurer shadcn/ui + TanStack Table/Query + dépendances de formulaires
 
 **Files:**
+
 - Create: `apps/admin/components.json` (généré par `shadcn`)
 - Create: `apps/admin/src/components/ui/*` (générés par `shadcn add`)
 - Create: `apps/admin/src/lib/utils.ts` (généré par `shadcn init`)
@@ -174,27 +178,33 @@ git commit -m "chore(admin): scaffolder le projet Next.js apps/admin (App Router
 - [ ] **Step 1: Initialiser shadcn/ui**
 
 Run (depuis `apps/admin`) :
+
 ```bash
 cd apps/admin
 npx shadcn@latest init -d
 ```
+
 Expected: crée `components.json`, `src/lib/utils.ts`, met à jour `tailwind.config.ts` et `globals.css` avec les tokens de thème shadcn (`-d` accepte les valeurs par défaut : style "new-york", couleur de base "neutral", CSS variables activées).
 
 - [ ] **Step 2: Ajouter les composants shadcn/ui nécessaires**
 
 Run (un seul appel groupé, depuis `apps/admin`) :
+
 ```bash
 npx shadcn@latest add button table dialog form input select badge tabs sonner sheet card label textarea checkbox switch dropdown-menu separator skeleton avatar tooltip
 ```
+
 Expected: crée les fichiers correspondants sous `src/components/ui/` (ex. `button.tsx`, `table.tsx`, `dialog.tsx`, `form.tsx`, `input.tsx`, `select.tsx`, `badge.tsx`, `tabs.tsx`, `sonner.tsx`, `sheet.tsx`, `card.tsx`, `label.tsx`, `textarea.tsx`, `checkbox.tsx`, `switch.tsx`, `dropdown-menu.tsx`, `separator.tsx`, `skeleton.tsx`, `avatar.tsx`, `tooltip.tsx`), sans erreur.
 
 - [ ] **Step 3: Installer TanStack Table, TanStack Query, React Hook Form, Zod et utilitaires**
 
 Run (depuis `apps/admin`) :
+
 ```bash
 pnpm add @tanstack/react-table @tanstack/react-query @tanstack/react-query-devtools react-hook-form @hookform/resolvers zod @supabase/ssr @supabase/supabase-js date-fns
 pnpm add -D @tanstack/eslint-plugin-query
 ```
+
 Expected: les paquets apparaissent dans `apps/admin/package.json` sous `dependencies`/`devDependencies`, `pnpm-lock.yaml` est mis à jour.
 
 - [ ] **Step 4: Créer le provider TanStack Query**
@@ -293,6 +303,7 @@ git commit -m "feat(admin): installer et configurer shadcn/ui, TanStack Table/Qu
 ### Task 2: Clients Supabase (navigateur, serveur, service-role) et types partagés
 
 **Files:**
+
 - Create: `apps/admin/src/lib/supabase/browser-client.ts`
 - Create: `apps/admin/src/lib/supabase/server-client.ts`
 - Create: `apps/admin/src/lib/supabase/admin-client.ts`
@@ -425,7 +436,7 @@ export function createSupabaseAdminClient() {
     throw new Error(
       'SUPABASE_SERVICE_ROLE_KEY est manquante. Ce client ne doit être instancié ' +
         'que côté serveur (Route Handler / Server Action) avec la variable définie ' +
-        'dans les variables d\'environnement Vercel / .env.local — jamais côté client.',
+        "dans les variables d'environnement Vercel / .env.local — jamais côté client.",
     );
   }
 
@@ -442,11 +453,11 @@ Crée `apps/admin/src/lib/supabase/README.md` :
 ```markdown
 # Clients Supabase — `apps/admin`
 
-| Client | Fichier | Clé | Respecte RLS ? | Utilisable dans |
-|---|---|---|---|---|
-| Navigateur | `browser-client.ts` | anon | Oui | Client Components (`'use client'`) |
-| Serveur (cookies) | `server-client.ts` | anon | Oui | Server Components, Route Handlers, Server Actions |
-| Service-role | `admin-client.ts` | service role | **Non — la contourne** | UNIQUEMENT Route Handlers / Server Actions, pour les 2 exceptions documentées dans le fichier |
+| Client            | Fichier             | Clé          | Respecte RLS ?         | Utilisable dans                                                                               |
+| ----------------- | ------------------- | ------------ | ---------------------- | --------------------------------------------------------------------------------------------- |
+| Navigateur        | `browser-client.ts` | anon         | Oui                    | Client Components (`'use client'`)                                                            |
+| Serveur (cookies) | `server-client.ts`  | anon         | Oui                    | Server Components, Route Handlers, Server Actions                                             |
+| Service-role      | `admin-client.ts`   | service role | **Non — la contourne** | UNIQUEMENT Route Handlers / Server Actions, pour les 2 exceptions documentées dans le fichier |
 
 **Règle par défaut : utilise `browser-client.ts` ou `server-client.ts`.** Comme la
 quasi-totalité des écritures admin sont déjà autorisées par les policies RLS
@@ -472,6 +483,7 @@ git commit -m "feat(admin): ajouter les clients Supabase navigateur/serveur/serv
 ### Task 3: Authentification admin — page de connexion, middleware, garde de layout
 
 **Files:**
+
 - Create: `apps/admin/middleware.ts`
 - Create: `apps/admin/src/features/auth/schemas/login.schema.ts`
 - Create: `apps/admin/src/features/auth/components/login-form.tsx`
@@ -766,7 +778,11 @@ export default async function DashboardLayout({ children }: { children: React.Re
     redirect('/login');
   }
 
-  return <DashboardShell adminName={profile.full_name ?? user.email ?? 'Admin'}>{children}</DashboardShell>;
+  return (
+    <DashboardShell adminName={profile.full_name ?? user.email ?? 'Admin'}>
+      {children}
+    </DashboardShell>
+  );
 }
 ```
 
@@ -861,6 +877,7 @@ git commit -m "feat(admin): ajouter authentification, middleware de session et g
 ### Task 4: Packages partagés — schémas Zod et constantes communes (`packages/shared`)
 
 **Files:**
+
 - Create: `packages/shared/package.json` (si absent)
 - Create: `packages/shared/src/schemas/listing.schema.ts`
 - Create: `packages/shared/src/constants/enums-labels.ts`
@@ -1031,6 +1048,7 @@ git commit -m "feat(shared): ajouter schémas Zod et libellés d'enums partagés
 ### Task 5: Vue d'ensemble — KPIs et page d'accueil du dashboard
 
 **Files:**
+
 - Create: `apps/admin/src/features/overview/services/overview.service.ts`
 - Create: `apps/admin/src/features/overview/hooks/use-overview-stats.ts`
 - Create: `apps/admin/src/features/overview/components/kpi-card.tsx`
@@ -1060,9 +1078,18 @@ export async function fetchOverviewStats(): Promise<OverviewStats> {
   const supabase = createSupabaseBrowserClient();
 
   const [pendingListings, pendingVerifications, openRequests, recentBookings] = await Promise.all([
-    supabase.from('listings').select('id', { count: 'exact', head: true }).eq('verification_status', 'pending'),
-    supabase.from('profiles').select('id', { count: 'exact', head: true }).eq('verification_status', 'pending'),
-    supabase.from('guided_search_requests').select('id', { count: 'exact', head: true }).eq('status', 'open'),
+    supabase
+      .from('listings')
+      .select('id', { count: 'exact', head: true })
+      .eq('verification_status', 'pending'),
+    supabase
+      .from('profiles')
+      .select('id', { count: 'exact', head: true })
+      .eq('verification_status', 'pending'),
+    supabase
+      .from('guided_search_requests')
+      .select('id', { count: 'exact', head: true })
+      .eq('status', 'open'),
     supabase
       .from('bookings')
       .select('id', { count: 'exact', head: true })
@@ -1177,7 +1204,11 @@ export function KpiCard({
         <CardTitle className="text-sm font-medium text-muted-foreground">{label}</CardTitle>
       </CardHeader>
       <CardContent>
-        {isLoading ? <Skeleton className="h-8 w-16" /> : <p className="text-3xl font-bold">{value ?? 0}</p>}
+        {isLoading ? (
+          <Skeleton className="h-8 w-16" />
+        ) : (
+          <p className="text-3xl font-bold">{value ?? 0}</p>
+        )}
       </CardContent>
     </Card>
   );
@@ -1204,10 +1235,26 @@ export default function OverviewPage() {
         <p className="text-muted-foreground">Indicateurs nécessitant votre attention.</p>
       </div>
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <KpiCard label="Annonces en attente de validation" value={data?.pendingListings} isLoading={isLoading} />
-        <KpiCard label="Vérifications étudiantes en attente" value={data?.pendingVerifications} isLoading={isLoading} />
-        <KpiCard label="Demandes de recherche guidée ouvertes" value={data?.openGuidedSearchRequests} isLoading={isLoading} />
-        <KpiCard label="Réservations (30 derniers jours)" value={data?.recentBookingsCount} isLoading={isLoading} />
+        <KpiCard
+          label="Annonces en attente de validation"
+          value={data?.pendingListings}
+          isLoading={isLoading}
+        />
+        <KpiCard
+          label="Vérifications étudiantes en attente"
+          value={data?.pendingVerifications}
+          isLoading={isLoading}
+        />
+        <KpiCard
+          label="Demandes de recherche guidée ouvertes"
+          value={data?.openGuidedSearchRequests}
+          isLoading={isLoading}
+        />
+        <KpiCard
+          label="Réservations (30 derniers jours)"
+          value={data?.recentBookingsCount}
+          isLoading={isLoading}
+        />
       </div>
     </div>
   );
@@ -1231,6 +1278,7 @@ git commit -m "feat(admin): ajouter la vue d'ensemble avec KPIs (annonces/vérif
 ### Task 6: Gestion des annonces (logements) — liste TanStack Table avec filtres
 
 **Files:**
+
 - Create: `apps/admin/src/features/listings/services/listings.service.ts`
 - Create: `apps/admin/src/features/listings/hooks/use-listings.ts`
 - Create: `apps/admin/src/features/listings/components/listings-columns.tsx`
@@ -1281,9 +1329,15 @@ export async function fetchListingDistricts(): Promise<string[]> {
   return Array.from(new Set(data.map((row) => row.district))).sort();
 }
 
-export async function updateListingVerificationStatus(id: string, status: ListingVerificationStatus) {
+export async function updateListingVerificationStatus(
+  id: string,
+  status: ListingVerificationStatus,
+) {
   const supabase = createSupabaseBrowserClient();
-  const { error } = await supabase.from('listings').update({ verification_status: status }).eq('id', id);
+  const { error } = await supabase
+    .from('listings')
+    .update({ verification_status: status })
+    .eq('id', id);
   if (error) throw error;
 }
 
@@ -1453,7 +1507,11 @@ const sampleListing = {
 } satisfies Listing;
 
 function TableHarness({ data }: { data: Listing[] }) {
-  const table = useReactTable({ data, columns: listingsColumns, getCoreRowModel: getCoreRowModel() });
+  const table = useReactTable({
+    data,
+    columns: listingsColumns,
+    getCoreRowModel: getCoreRowModel(),
+  });
   return (
     <table>
       <tbody>
@@ -1495,7 +1553,13 @@ Crée `apps/admin/src/features/listings/components/listings-filters.tsx` :
 'use client';
 
 import { LISTING_TYPE_LABELS, LISTING_VERIFICATION_STATUS_LABELS } from '@dakareaseu/shared';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { useListingDistricts } from '../hooks/use-listings';
 import type { ListingsFilters } from '../services/listings.service';
 
@@ -1512,7 +1576,12 @@ export function ListingsFiltersBar({
     <div className="flex flex-wrap gap-3">
       <Select
         value={filters.verificationStatus ?? 'all'}
-        onValueChange={(value) => onChange({ ...filters, verificationStatus: value as ListingsFilters['verificationStatus'] })}
+        onValueChange={(value) =>
+          onChange({
+            ...filters,
+            verificationStatus: value as ListingsFilters['verificationStatus'],
+          })
+        }
       >
         <SelectTrigger className="w-48">
           <SelectValue placeholder="Statut de vérification" />
@@ -1572,12 +1641,7 @@ Crée `apps/admin/src/shared/components/data-table.tsx` :
 ```tsx
 'use client';
 
-import {
-  type ColumnDef,
-  flexRender,
-  getCoreRowModel,
-  useReactTable,
-} from '@tanstack/react-table';
+import { type ColumnDef, flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table';
 import {
   Table,
   TableBody,
@@ -1608,7 +1672,9 @@ export function DataTable<TData, TValue>({
             <TableRow key={headerGroup.id}>
               {headerGroup.headers.map((header) => (
                 <TableHead key={header.id}>
-                  {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
+                  {header.isPlaceholder
+                    ? null
+                    : flexRender(header.column.columnDef.header, header.getContext())}
                 </TableHead>
               ))}
             </TableRow>
@@ -1617,7 +1683,10 @@ export function DataTable<TData, TValue>({
         <TableBody>
           {isLoading ? (
             <TableRow>
-              <TableCell colSpan={columns.length} className="h-24 text-center text-muted-foreground">
+              <TableCell
+                colSpan={columns.length}
+                className="h-24 text-center text-muted-foreground"
+              >
                 Chargement…
               </TableCell>
             </TableRow>
@@ -1625,13 +1694,18 @@ export function DataTable<TData, TValue>({
             table.getRowModel().rows.map((row) => (
               <TableRow key={row.id}>
                 {row.getVisibleCells().map((cell) => (
-                  <TableCell key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</TableCell>
+                  <TableCell key={cell.id}>
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </TableCell>
                 ))}
               </TableRow>
             ))
           ) : (
             <TableRow>
-              <TableCell colSpan={columns.length} className="h-24 text-center text-muted-foreground">
+              <TableCell
+                colSpan={columns.length}
+                className="h-24 text-center text-muted-foreground"
+              >
                 {emptyMessage}
               </TableCell>
             </TableRow>
@@ -1675,7 +1749,12 @@ export function ListingsTable() {
           <Link href="/dashboard/listings/new">Nouvelle annonce</Link>
         </Button>
       </div>
-      <DataTable columns={listingsColumns} data={data} isLoading={isLoading} emptyMessage="Aucune annonce ne correspond à ces filtres." />
+      <DataTable
+        columns={listingsColumns}
+        data={data}
+        isLoading={isLoading}
+        emptyMessage="Aucune annonce ne correspond à ces filtres."
+      />
     </div>
   );
 }
@@ -1693,7 +1772,9 @@ export default function ListingsPage() {
     <div className="space-y-6">
       <div>
         <h1 className="text-2xl font-bold">Annonces</h1>
-        <p className="text-muted-foreground">Gérez les logements, leur statut de publication et leurs médias.</p>
+        <p className="text-muted-foreground">
+          Gérez les logements, leur statut de publication et leurs médias.
+        </p>
       </div>
       <ListingsTable />
     </div>
@@ -1718,6 +1799,7 @@ git commit -m "feat(admin): ajouter la liste filtrable des annonces avec TanStac
 ### Task 7: Détail/édition d'une annonce — formulaire complet, médias, colocation, validation/publication
 
 **Files:**
+
 - Create: `apps/admin/src/features/listings/services/listing-detail.service.ts`
 - Create: `apps/admin/src/features/listings/hooks/use-listing-detail.ts`
 - Create: `apps/admin/src/features/listings/components/listing-form.tsx`
@@ -1753,13 +1835,17 @@ export interface ListingWithRelations {
 export async function fetchListingDetail(id: string): Promise<ListingWithRelations> {
   const supabase = createSupabaseBrowserClient();
 
-  const [{ data: listing, error: listingError }, { data: media, error: mediaError }, { data: rooms, error: roomsError }, { data: nearby, error: nearbyError }] =
-    await Promise.all([
-      supabase.from('listings').select('*').eq('id', id).single(),
-      supabase.from('listing_media').select('*').eq('listing_id', id).order('position'),
-      supabase.from('listing_coliving_rooms').select('*').eq('listing_id', id).order('label'),
-      supabase.from('school_nearby_listings').select('school_id').eq('listing_id', id),
-    ]);
+  const [
+    { data: listing, error: listingError },
+    { data: media, error: mediaError },
+    { data: rooms, error: roomsError },
+    { data: nearby, error: nearbyError },
+  ] = await Promise.all([
+    supabase.from('listings').select('*').eq('id', id).single(),
+    supabase.from('listing_media').select('*').eq('listing_id', id).order('position'),
+    supabase.from('listing_coliving_rooms').select('*').eq('listing_id', id).order('label'),
+    supabase.from('school_nearby_listings').select('school_id').eq('listing_id', id),
+  ]);
 
   if (listingError) throw listingError;
   if (mediaError) throw mediaError;
@@ -1796,9 +1882,16 @@ export async function updateListing(id: string, values: ListingFormValues): Prom
   if (error) throw error;
 }
 
-export async function addListingMedia(listingId: string, mediaType: ListingMedia['media_type'], url: string, position: number) {
+export async function addListingMedia(
+  listingId: string,
+  mediaType: ListingMedia['media_type'],
+  url: string,
+  position: number,
+) {
   const supabase = createSupabaseBrowserClient();
-  const { error } = await supabase.from('listing_media').insert({ listing_id: listingId, media_type: mediaType, url, position });
+  const { error } = await supabase
+    .from('listing_media')
+    .insert({ listing_id: listingId, media_type: mediaType, url, position });
   if (error) throw error;
 }
 
@@ -1808,13 +1901,19 @@ export async function deleteListingMedia(id: string) {
   if (error) throw error;
 }
 
-export async function upsertColivingRoom(listingId: string, room: ColivingRoomFormValues, id?: string) {
+export async function upsertColivingRoom(
+  listingId: string,
+  room: ColivingRoomFormValues,
+  id?: string,
+) {
   const supabase = createSupabaseBrowserClient();
   if (id) {
     const { error } = await supabase.from('listing_coliving_rooms').update(room).eq('id', id);
     if (error) throw error;
   } else {
-    const { error } = await supabase.from('listing_coliving_rooms').insert({ ...room, listing_id: listingId });
+    const { error } = await supabase
+      .from('listing_coliving_rooms')
+      .insert({ ...room, listing_id: listingId });
     if (error) throw error;
   }
 }
@@ -1827,7 +1926,10 @@ export async function deleteColivingRoom(id: string) {
 
 export async function setNearbySchools(listingId: string, schoolIds: string[]) {
   const supabase = createSupabaseBrowserClient();
-  const { error: deleteError } = await supabase.from('school_nearby_listings').delete().eq('listing_id', listingId);
+  const { error: deleteError } = await supabase
+    .from('school_nearby_listings')
+    .delete()
+    .eq('listing_id', listingId);
   if (deleteError) throw deleteError;
 
   if (schoolIds.length > 0) {
@@ -1847,7 +1949,9 @@ export async function setNearbySchools(listingId: string, schoolIds: string[]) {
 export async function uploadListingMediaFile(listingId: string, file: File): Promise<string> {
   const supabase = createSupabaseBrowserClient();
   const path = `${listingId}/${Date.now()}-${file.name}`;
-  const { error: uploadError } = await supabase.storage.from('listings-media').upload(path, file, { upsert: false });
+  const { error: uploadError } = await supabase.storage
+    .from('listings-media')
+    .upload(path, file, { upsert: false });
   if (uploadError) throw uploadError;
 
   const { data } = supabase.storage.from('listings-media').getPublicUrl(path);
@@ -1888,7 +1992,11 @@ export function useListingDetail(id: string | undefined) {
 }
 
 export function useSchoolsForSelection() {
-  return useQuery({ queryKey: ['schools', 'selection'], queryFn: fetchAllSchools, staleTime: 5 * 60_000 });
+  return useQuery({
+    queryKey: ['schools', 'selection'],
+    queryFn: fetchAllSchools,
+    staleTime: 5 * 60_000,
+  });
 }
 
 function useInvalidateListing(id?: string) {
@@ -1903,7 +2011,8 @@ export function useSaveListing(id?: string) {
   const invalidate = useInvalidateListing(id);
 
   return useMutation({
-    mutationFn: (values: ListingFormValues) => (id ? updateListing(id, values) : createListing(values)),
+    mutationFn: (values: ListingFormValues) =>
+      id ? updateListing(id, values) : createListing(values),
     onSuccess: () => {
       toast.success(id ? 'Annonce mise à jour.' : 'Annonce créée.');
       invalidate();
@@ -1916,7 +2025,15 @@ export function useUploadAndAttachMedia(listingId: string) {
   const invalidate = useInvalidateListing(listingId);
 
   return useMutation({
-    mutationFn: async ({ file, mediaType, position }: { file: File; mediaType: ListingMedia['media_type']; position: number }) => {
+    mutationFn: async ({
+      file,
+      mediaType,
+      position,
+    }: {
+      file: File;
+      mediaType: ListingMedia['media_type'];
+      position: number;
+    }) => {
       const url = await uploadListingMediaFile(listingId, file);
       await addListingMedia(listingId, mediaType, url, position);
     },
@@ -1943,7 +2060,8 @@ export function useDeleteListingMedia(listingId: string) {
 export function useUpsertColivingRoom(listingId: string) {
   const invalidate = useInvalidateListing(listingId);
   return useMutation({
-    mutationFn: ({ room, id }: { room: ColivingRoomFormValues; id?: string }) => upsertColivingRoom(listingId, room, id),
+    mutationFn: ({ room, id }: { room: ColivingRoomFormValues; id?: string }) =>
+      upsertColivingRoom(listingId, room, id),
     onSuccess: () => {
       toast.success('Chambre enregistrée.');
       invalidate();
@@ -1998,7 +2116,13 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Switch } from '@/components/ui/switch';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import {
   Form,
   FormControl,
@@ -2042,7 +2166,13 @@ const DEFAULT_VALUES: ListingFormValues = {
   verification_status: 'pending',
 };
 
-export function ListingForm({ listing, onSaved }: { listing?: Listing; onSaved?: (id: string) => void }) {
+export function ListingForm({
+  listing,
+  onSaved,
+}: {
+  listing?: Listing;
+  onSaved?: (id: string) => void;
+}) {
   const saveMutation = useSaveListing(listing?.id);
 
   const form = useForm<ListingFormValues>({
@@ -2244,7 +2374,8 @@ export function ListingForm({ listing, onSaved }: { listing?: Listing; onSaved?:
                   </SelectContent>
                 </Select>
                 <FormDescription>
-                  "Publiée" rend l&apos;annonce visible côté mobile (RLS : `verification_status = 'published'`).
+                  "Publiée" rend l&apos;annonce visible côté mobile (RLS : `verification_status =
+                  'published'`).
                 </FormDescription>
                 <FormMessage />
               </FormItem>
@@ -2276,7 +2407,11 @@ export function ListingForm({ listing, onSaved }: { listing?: Listing; onSaved?:
           ))}
         </div>
         <Button type="submit" disabled={saveMutation.isPending}>
-          {saveMutation.isPending ? 'Enregistrement…' : listing ? 'Enregistrer les modifications' : "Créer l'annonce"}
+          {saveMutation.isPending
+            ? 'Enregistrement…'
+            : listing
+              ? 'Enregistrer les modifications'
+              : "Créer l'annonce"}
         </Button>
       </form>
     </Form>
@@ -2296,12 +2431,28 @@ import Image from 'next/image';
 import type { ListingMedia } from '@dakareaseu/types';
 import { MEDIA_TYPES } from '@dakareaseu/shared';
 import { Button } from '@/components/ui/button';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { useDeleteListingMedia, useUploadAndAttachMedia } from '../hooks/use-listing-detail';
 
-const MEDIA_TYPE_LABELS: Record<string, string> = { photo: 'Photo', video: 'Vidéo', tour_3d: 'Visite 3D / 360°' };
+const MEDIA_TYPE_LABELS: Record<string, string> = {
+  photo: 'Photo',
+  video: 'Vidéo',
+  tour_3d: 'Visite 3D / 360°',
+};
 
-export function ListingMediaManager({ listingId, media }: { listingId: string; media: ListingMedia[] }) {
+export function ListingMediaManager({
+  listingId,
+  media,
+}: {
+  listingId: string;
+  media: ListingMedia[];
+}) {
   const [mediaType, setMediaType] = useState<(typeof MEDIA_TYPES)[number]>('photo');
   const fileInputRef = useRef<HTMLInputElement>(null);
   const uploadMutation = useUploadAndAttachMedia(listingId);
@@ -2317,7 +2468,10 @@ export function ListingMediaManager({ listingId, media }: { listingId: string; m
   return (
     <div className="space-y-4">
       <div className="flex items-center gap-3">
-        <Select value={mediaType} onValueChange={(value) => setMediaType(value as (typeof MEDIA_TYPES)[number])}>
+        <Select
+          value={mediaType}
+          onValueChange={(value) => setMediaType(value as (typeof MEDIA_TYPES)[number])}
+        >
           <SelectTrigger className="w-48">
             <SelectValue />
           </SelectTrigger>
@@ -2329,27 +2483,53 @@ export function ListingMediaManager({ listingId, media }: { listingId: string; m
             ))}
           </SelectContent>
         </Select>
-        <input ref={fileInputRef} type="file" accept="image/*,video/*,.glb,.gltf" className="hidden" onChange={handleFileSelected} />
-        <Button type="button" variant="outline" onClick={() => fileInputRef.current?.click()} disabled={uploadMutation.isPending}>
+        <input
+          ref={fileInputRef}
+          type="file"
+          accept="image/*,video/*,.glb,.gltf"
+          className="hidden"
+          onChange={handleFileSelected}
+        />
+        <Button
+          type="button"
+          variant="outline"
+          onClick={() => fileInputRef.current?.click()}
+          disabled={uploadMutation.isPending}
+        >
           {uploadMutation.isPending ? 'Envoi…' : 'Téléverser un fichier'}
         </Button>
         <p className="text-xs text-muted-foreground">
-          Limite recommandée : photos &lt; 10 Mo, vidéos &lt; 50 Mo (compresser en H.264/MP4 avant envoi).
+          Limite recommandée : photos &lt; 10 Mo, vidéos &lt; 50 Mo (compresser en H.264/MP4 avant
+          envoi).
         </p>
       </div>
       <ul className="grid grid-cols-2 gap-3 sm:grid-cols-4">
         {media.map((item) => (
           <li key={item.id} className="space-y-2 rounded-md border p-2">
             {item.media_type === 'photo' ? (
-              <Image src={item.url} alt="" width={200} height={140} className="h-28 w-full rounded object-cover" unoptimized />
+              <Image
+                src={item.url}
+                alt=""
+                width={200}
+                height={140}
+                className="h-28 w-full rounded object-cover"
+                unoptimized
+              />
             ) : (
               <div className="flex h-28 items-center justify-center rounded bg-muted text-xs text-muted-foreground">
                 {MEDIA_TYPE_LABELS[item.media_type]}
               </div>
             )}
             <div className="flex items-center justify-between text-xs text-muted-foreground">
-              <span>{MEDIA_TYPE_LABELS[item.media_type]} · #{item.position}</span>
-              <Button type="button" variant="ghost" size="sm" onClick={() => deleteMutation.mutate(item.id)}>
+              <span>
+                {MEDIA_TYPE_LABELS[item.media_type]} · #{item.position}
+              </span>
+              <Button
+                type="button"
+                variant="ghost"
+                size="sm"
+                onClick={() => deleteMutation.mutate(item.id)}
+              >
                 Supprimer
               </Button>
             </div>
@@ -2376,10 +2556,23 @@ import type { ListingColivingRoom } from '@dakareaseu/types';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Switch } from '@/components/ui/switch';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form';
 import { useDeleteColivingRoom, useUpsertColivingRoom } from '../hooks/use-listing-detail';
 
-export function ListingColivingRoomsManager({ listingId, rooms }: { listingId: string; rooms: ListingColivingRoom[] }) {
+export function ListingColivingRoomsManager({
+  listingId,
+  rooms,
+}: {
+  listingId: string;
+  rooms: ListingColivingRoom[];
+}) {
   const [editingId, setEditingId] = useState<string | undefined>(undefined);
   const upsertMutation = useUpsertColivingRoom(listingId);
   const deleteMutation = useDeleteColivingRoom(listingId);
@@ -2391,7 +2584,12 @@ export function ListingColivingRoomsManager({ listingId, rooms }: { listingId: s
 
   function startEdit(room: ListingColivingRoom) {
     setEditingId(room.id);
-    form.reset({ label: room.label, price: room.price, surface_m2: room.surface_m2, is_available: room.is_available });
+    form.reset({
+      label: room.label,
+      price: room.price,
+      surface_m2: room.surface_m2,
+      is_available: room.is_available,
+    });
   }
 
   function startCreate() {
@@ -2408,7 +2606,10 @@ export function ListingColivingRoomsManager({ listingId, rooms }: { listingId: s
     <div className="space-y-4">
       <ul className="space-y-2">
         {rooms.map((room) => (
-          <li key={room.id} className="flex items-center justify-between rounded-md border p-3 text-sm">
+          <li
+            key={room.id}
+            className="flex items-center justify-between rounded-md border p-3 text-sm"
+          >
             <div>
               <p className="font-medium">{room.label}</p>
               <p className="text-muted-foreground">
@@ -2420,17 +2621,27 @@ export function ListingColivingRoomsManager({ listingId, rooms }: { listingId: s
               <Button type="button" variant="outline" size="sm" onClick={() => startEdit(room)}>
                 Modifier
               </Button>
-              <Button type="button" variant="ghost" size="sm" onClick={() => deleteMutation.mutate(room.id)}>
+              <Button
+                type="button"
+                variant="ghost"
+                size="sm"
+                onClick={() => deleteMutation.mutate(room.id)}
+              >
                 Supprimer
               </Button>
             </div>
           </li>
         ))}
-        {rooms.length === 0 && <p className="text-sm text-muted-foreground">Aucune chambre nommée pour cette annonce.</p>}
+        {rooms.length === 0 && (
+          <p className="text-sm text-muted-foreground">Aucune chambre nommée pour cette annonce.</p>
+        )}
       </ul>
 
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="grid grid-cols-2 gap-3 rounded-md border p-3 md:grid-cols-4">
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="grid grid-cols-2 gap-3 rounded-md border p-3 md:grid-cols-4"
+        >
           <FormField
             control={form.control}
             name="label"
@@ -2527,7 +2738,10 @@ export function ListingVerificationActions({ listing }: { listing: Listing }) {
 
   return (
     <div className="flex gap-2">
-      <Button onClick={() => mutation.mutate({ id: listing.id, status: 'published' })} disabled={mutation.isPending}>
+      <Button
+        onClick={() => mutation.mutate({ id: listing.id, status: 'published' })}
+        disabled={mutation.isPending}
+      >
         Publier
       </Button>
       <Button
@@ -2658,6 +2872,7 @@ git commit -m "feat(admin): ajouter le détail/édition des annonces (CRUD, méd
 ### Task 8: Curation des logements proches d'une école (`school_nearby_listings`)
 
 **Files:**
+
 - Modify: `apps/admin/src/app/(dashboard)/listings/[id]/page.tsx`
 - Create: `apps/admin/src/features/listings/components/listing-nearby-schools-manager.tsx`
 
@@ -2699,20 +2914,29 @@ export function ListingNearbySchoolsManager({
   return (
     <div className="space-y-3">
       <p className="text-sm text-muted-foreground">
-        Sélectionne les écoles pour lesquelles cette annonce doit apparaître dans "Logements à proximité"
-        et bénéficier du bonus de proximité dans l&apos;algorithme de matching (`match_listings`).
+        Sélectionne les écoles pour lesquelles cette annonce doit apparaître dans "Logements à
+        proximité" et bénéficier du bonus de proximité dans l&apos;algorithme de matching
+        (`match_listings`).
       </p>
       <ul className="grid grid-cols-1 gap-2 sm:grid-cols-2">
         {schools.map((school) => (
           <li key={school.id} className="flex items-center gap-2 rounded-md border p-2">
-            <Checkbox checked={selected.has(school.id)} onCheckedChange={() => toggle(school.id)} id={`school-${school.id}`} />
+            <Checkbox
+              checked={selected.has(school.id)}
+              onCheckedChange={() => toggle(school.id)}
+              id={`school-${school.id}`}
+            />
             <label htmlFor={`school-${school.id}`} className="text-sm">
               {school.name} <span className="text-muted-foreground">({school.district})</span>
             </label>
           </li>
         ))}
       </ul>
-      <Button type="button" onClick={() => mutation.mutate(Array.from(selected))} disabled={mutation.isPending}>
+      <Button
+        type="button"
+        onClick={() => mutation.mutate(Array.from(selected))}
+        disabled={mutation.isPending}
+      >
         {mutation.isPending ? 'Enregistrement…' : 'Enregistrer les écoles à proximité'}
       </Button>
     </div>
@@ -2723,24 +2947,30 @@ export function ListingNearbySchoolsManager({
 - [ ] **Step 2: Brancher le composant dans la page de détail**
 
 Édite `apps/admin/src/app/(dashboard)/listings/[id]/page.tsx` :
+
 1. Ajoute l'import en haut du fichier :
+
 ```tsx
 import { ListingNearbySchoolsManager } from '@/features/listings/components/listing-nearby-schools-manager';
 ```
+
 2. Ajoute, dans `useListingDetail`'s destructuring, `nearbySchoolIds` :
+
 ```tsx
-  const { listing, media, colivingRooms, nearbySchoolIds } = data;
+const { listing, media, colivingRooms, nearbySchoolIds } = data;
 ```
+
 3. Ajoute une nouvelle `Card` juste avant la fermeture du `</div>` final (après le bloc `{listing.colocation_available && (...)}`) :
+
 ```tsx
-      <Card>
-        <CardHeader>
-          <CardTitle>Écoles à proximité</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <ListingNearbySchoolsManager listingId={listing.id} initialSchoolIds={nearbySchoolIds} />
-        </CardContent>
-      </Card>
+<Card>
+  <CardHeader>
+    <CardTitle>Écoles à proximité</CardTitle>
+  </CardHeader>
+  <CardContent>
+    <ListingNearbySchoolsManager listingId={listing.id} initialSchoolIds={nearbySchoolIds} />
+  </CardContent>
+</Card>
 ```
 
 - [ ] **Step 3: Vérifier visuellement**
@@ -2760,6 +2990,7 @@ git commit -m "feat(admin): permettre la curation des logements proches d'une é
 ### Task 9: Gestion des écoles (CRUD + champs tableaux + image de couverture)
 
 **Files:**
+
 - Create: `apps/admin/src/features/schools/schemas/school.schema.ts`
 - Create: `apps/admin/src/features/schools/services/schools.service.ts`
 - Create: `apps/admin/src/features/schools/hooks/use-schools.ts`
@@ -2849,11 +3080,16 @@ export async function deleteSchool(id: string): Promise<void> {
 export async function uploadSchoolCoverImage(schoolId: string, file: File): Promise<string> {
   const supabase = createSupabaseBrowserClient();
   const path = `${schoolId}/cover-${Date.now()}-${file.name}`;
-  const { error: uploadError } = await supabase.storage.from('schools-media').upload(path, file, { upsert: true });
+  const { error: uploadError } = await supabase.storage
+    .from('schools-media')
+    .upload(path, file, { upsert: true });
   if (uploadError) throw uploadError;
 
   const { data } = supabase.storage.from('schools-media').getPublicUrl(path);
-  const { error: updateError } = await supabase.from('schools').update({ cover_image_url: data.publicUrl }).eq('id', schoolId);
+  const { error: updateError } = await supabase
+    .from('schools')
+    .update({ cover_image_url: data.publicUrl })
+    .eq('id', schoolId);
   if (updateError) throw updateError;
   return data.publicUrl;
 }
@@ -2883,13 +3119,18 @@ export function useSchools() {
 }
 
 export function useSchool(id: string | undefined) {
-  return useQuery({ queryKey: ['schools', 'detail', id], queryFn: () => fetchSchoolById(id!), enabled: !!id });
+  return useQuery({
+    queryKey: ['schools', 'detail', id],
+    queryFn: () => fetchSchoolById(id!),
+    enabled: !!id,
+  });
 }
 
 export function useSaveSchool(id?: string) {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (values: SchoolFormValues) => (id ? updateSchool(id, values) : createSchool(values)),
+    mutationFn: (values: SchoolFormValues) =>
+      id ? updateSchool(id, values) : createSchool(values),
     onSuccess: () => {
       toast.success(id ? 'École mise à jour.' : 'École créée.');
       queryClient.invalidateQueries({ queryKey: ['schools'] });
@@ -2915,7 +3156,7 @@ export function useUploadSchoolCoverImage(schoolId: string) {
   return useMutation({
     mutationFn: (file: File) => uploadSchoolCoverImage(schoolId, file),
     onSuccess: () => {
-      toast.success("Image de couverture mise à jour.");
+      toast.success('Image de couverture mise à jour.');
       queryClient.invalidateQueries({ queryKey: ['schools'] });
       queryClient.invalidateQueries({ queryKey: ['schools', 'detail', schoolId] });
     },
@@ -2972,7 +3213,14 @@ import type { School } from '@dakareaseu/types';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form';
 import { useSaveSchool, useUploadSchoolCoverImage } from '../hooks/use-schools';
 
 function arrayToLines(values: string[]): string {
@@ -3002,7 +3250,13 @@ const DEFAULT_VALUES: SchoolFormValues = {
   scholarships: [],
 };
 
-export function SchoolForm({ school, onSaved }: { school?: School; onSaved?: (id: string) => void }) {
+export function SchoolForm({
+  school,
+  onSaved,
+}: {
+  school?: School;
+  onSaved?: (id: string) => void;
+}) {
   const saveMutation = useSaveSchool(school?.id);
   const uploadMutation = useUploadSchoolCoverImage(school?.id ?? '');
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -3045,67 +3299,211 @@ export function SchoolForm({ school, onSaved }: { school?: School; onSaved?: (id
       {school && (
         <div className="flex items-center gap-4">
           {school.cover_image_url && (
-            <Image src={school.cover_image_url} alt="" width={160} height={100} className="h-24 w-40 rounded object-cover" unoptimized />
+            <Image
+              src={school.cover_image_url}
+              alt=""
+              width={160}
+              height={100}
+              className="h-24 w-40 rounded object-cover"
+              unoptimized
+            />
           )}
-          <input ref={fileInputRef} type="file" accept="image/*" className="hidden" onChange={handleCoverFileSelected} />
-          <Button type="button" variant="outline" onClick={() => fileInputRef.current?.click()} disabled={uploadMutation.isPending}>
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept="image/*"
+            className="hidden"
+            onChange={handleCoverFileSelected}
+          />
+          <Button
+            type="button"
+            variant="outline"
+            onClick={() => fileInputRef.current?.click()}
+            disabled={uploadMutation.isPending}
+          >
             {uploadMutation.isPending ? 'Envoi…' : "Changer l'image de couverture"}
           </Button>
         </div>
       )}
 
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="grid grid-cols-1 gap-4 md:grid-cols-2">
-          <FormField control={form.control} name="name" render={({ field }) => (
-            <FormItem><FormLabel>Nom (sigle)</FormLabel><FormControl><Input {...field} /></FormControl><FormMessage /></FormItem>
-          )} />
-          <FormField control={form.control} name="full_name" render={({ field }) => (
-            <FormItem><FormLabel>Nom complet</FormLabel><FormControl><Input {...field} value={field.value ?? ''} /></FormControl><FormMessage /></FormItem>
-          )} />
-          <FormField control={form.control} name="district" render={({ field }) => (
-            <FormItem><FormLabel>Quartier</FormLabel><FormControl><Input {...field} /></FormControl><FormMessage /></FormItem>
-          )} />
-          <FormField control={form.control} name="founded_year" render={({ field }) => (
-            <FormItem><FormLabel>Année de fondation</FormLabel><FormControl><Input type="number" {...field} value={field.value ?? ''} /></FormControl><FormMessage /></FormItem>
-          )} />
-          <FormField control={form.control} name="students_count" render={({ field }) => (
-            <FormItem><FormLabel>Nombre d&apos;étudiants</FormLabel><FormControl><Input type="number" min={0} {...field} value={field.value ?? ''} /></FormControl><FormMessage /></FormItem>
-          )} />
-          <FormField control={form.control} name="address" render={({ field }) => (
-            <FormItem><FormLabel>Adresse</FormLabel><FormControl><Input {...field} value={field.value ?? ''} /></FormControl><FormMessage /></FormItem>
-          )} />
-          <FormField control={form.control} name="website" render={({ field }) => (
-            <FormItem><FormLabel>Site web</FormLabel><FormControl><Input {...field} value={field.value ?? ''} /></FormControl><FormMessage /></FormItem>
-          )} />
-          <FormField control={form.control} name="email" render={({ field }) => (
-            <FormItem><FormLabel>Email</FormLabel><FormControl><Input type="email" {...field} value={field.value ?? ''} /></FormControl><FormMessage /></FormItem>
-          )} />
-          <FormField control={form.control} name="phone" render={({ field }) => (
-            <FormItem><FormLabel>Téléphone</FormLabel><FormControl><Input {...field} value={field.value ?? ''} /></FormControl><FormMessage /></FormItem>
-          )} />
-          <FormField control={form.control} name="whatsapp" render={({ field }) => (
-            <FormItem><FormLabel>WhatsApp</FormLabel><FormControl><Input {...field} value={field.value ?? ''} /></FormControl><FormMessage /></FormItem>
-          )} />
-          <FormField control={form.control} name="fees_text" render={({ field }) => (
-            <FormItem className="md:col-span-2"><FormLabel>Frais (texte libre)</FormLabel><FormControl><Input {...field} value={field.value ?? ''} /></FormControl><FormMessage /></FormItem>
-          )} />
-          {(['programs', 'admission_steps', 'scholarships'] as const).map((fieldName) => (
-            <FormField key={fieldName} control={form.control} name={fieldName} render={({ field }) => (
-              <FormItem className="md:col-span-2">
-                <FormLabel>
-                  {fieldName === 'programs' && 'Filières (une par ligne)'}
-                  {fieldName === 'admission_steps' && "Étapes d'admission (une par ligne)"}
-                  {fieldName === 'scholarships' && 'Bourses (une par ligne)'}
-                </FormLabel>
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="grid grid-cols-1 gap-4 md:grid-cols-2"
+        >
+          <FormField
+            control={form.control}
+            name="name"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Nom (sigle)</FormLabel>
                 <FormControl>
-                  <Textarea rows={4} value={arrayToLines(field.value)} onChange={(event) => field.onChange(linesToArray(event.target.value))} />
+                  <Input {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
-            )} />
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="full_name"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Nom complet</FormLabel>
+                <FormControl>
+                  <Input {...field} value={field.value ?? ''} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="district"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Quartier</FormLabel>
+                <FormControl>
+                  <Input {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="founded_year"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Année de fondation</FormLabel>
+                <FormControl>
+                  <Input type="number" {...field} value={field.value ?? ''} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="students_count"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Nombre d&apos;étudiants</FormLabel>
+                <FormControl>
+                  <Input type="number" min={0} {...field} value={field.value ?? ''} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="address"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Adresse</FormLabel>
+                <FormControl>
+                  <Input {...field} value={field.value ?? ''} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="website"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Site web</FormLabel>
+                <FormControl>
+                  <Input {...field} value={field.value ?? ''} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="email"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Email</FormLabel>
+                <FormControl>
+                  <Input type="email" {...field} value={field.value ?? ''} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="phone"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Téléphone</FormLabel>
+                <FormControl>
+                  <Input {...field} value={field.value ?? ''} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="whatsapp"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>WhatsApp</FormLabel>
+                <FormControl>
+                  <Input {...field} value={field.value ?? ''} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="fees_text"
+            render={({ field }) => (
+              <FormItem className="md:col-span-2">
+                <FormLabel>Frais (texte libre)</FormLabel>
+                <FormControl>
+                  <Input {...field} value={field.value ?? ''} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          {(['programs', 'admission_steps', 'scholarships'] as const).map((fieldName) => (
+            <FormField
+              key={fieldName}
+              control={form.control}
+              name={fieldName}
+              render={({ field }) => (
+                <FormItem className="md:col-span-2">
+                  <FormLabel>
+                    {fieldName === 'programs' && 'Filières (une par ligne)'}
+                    {fieldName === 'admission_steps' && "Étapes d'admission (une par ligne)"}
+                    {fieldName === 'scholarships' && 'Bourses (une par ligne)'}
+                  </FormLabel>
+                  <FormControl>
+                    <Textarea
+                      rows={4}
+                      value={arrayToLines(field.value)}
+                      onChange={(event) => field.onChange(linesToArray(event.target.value))}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
           ))}
           <Button type="submit" disabled={saveMutation.isPending} className="md:col-span-2">
-            {saveMutation.isPending ? 'Enregistrement…' : school ? 'Enregistrer les modifications' : "Créer l'école"}
+            {saveMutation.isPending
+              ? 'Enregistrement…'
+              : school
+                ? 'Enregistrer les modifications'
+                : "Créer l'école"}
           </Button>
         </form>
       </Form>
@@ -3141,7 +3539,12 @@ export default function SchoolsPage() {
           <Link href="/dashboard/schools/new">Nouvelle école</Link>
         </Button>
       </div>
-      <DataTable columns={schoolsColumns} data={data} isLoading={isLoading} emptyMessage="Aucune école enregistrée." />
+      <DataTable
+        columns={schoolsColumns}
+        data={data}
+        isLoading={isLoading}
+        emptyMessage="Aucune école enregistrée."
+      />
     </div>
   );
 }
@@ -3224,6 +3627,7 @@ git commit -m "feat(admin): ajouter le CRUD complet des écoles (champs tableaux
 ### Task 10: Gestion des restaurants (CRUD + médias)
 
 **Files:**
+
 - Create: `apps/admin/src/features/restaurants/schemas/restaurant.schema.ts`
 - Create: `apps/admin/src/features/restaurants/services/restaurants.service.ts`
 - Create: `apps/admin/src/features/restaurants/hooks/use-restaurants.ts`
@@ -3281,10 +3685,11 @@ export async function fetchRestaurants(): Promise<Restaurant[]> {
 
 export async function fetchRestaurantDetail(id: string): Promise<RestaurantWithMedia> {
   const supabase = createSupabaseBrowserClient();
-  const [{ data: restaurant, error: restaurantError }, { data: media, error: mediaError }] = await Promise.all([
-    supabase.from('restaurants').select('*').eq('id', id).single(),
-    supabase.from('restaurant_media').select('*').eq('restaurant_id', id).order('position'),
-  ]);
+  const [{ data: restaurant, error: restaurantError }, { data: media, error: mediaError }] =
+    await Promise.all([
+      supabase.from('restaurants').select('*').eq('id', id).single(),
+      supabase.from('restaurant_media').select('*').eq('restaurant_id', id).order('position'),
+    ]);
   if (restaurantError) throw restaurantError;
   if (mediaError) throw mediaError;
   return { restaurant, media };
@@ -3311,10 +3716,16 @@ export async function deleteRestaurant(id: string): Promise<void> {
   if (error) throw error;
 }
 
-export async function uploadRestaurantMedia(restaurantId: string, file: File, position: number): Promise<void> {
+export async function uploadRestaurantMedia(
+  restaurantId: string,
+  file: File,
+  position: number,
+): Promise<void> {
   const supabase = createSupabaseBrowserClient();
   const path = `${restaurantId}/${Date.now()}-${file.name}`;
-  const { error: uploadError } = await supabase.storage.from('restaurants-media').upload(path, file, { upsert: false });
+  const { error: uploadError } = await supabase.storage
+    .from('restaurants-media')
+    .upload(path, file, { upsert: false });
   if (uploadError) throw uploadError;
 
   const { data } = supabase.storage.from('restaurants-media').getPublicUrl(path);
@@ -3374,7 +3785,8 @@ function useInvalidateRestaurant(id?: string) {
 export function useSaveRestaurant(id?: string) {
   const invalidate = useInvalidateRestaurant(id);
   return useMutation({
-    mutationFn: (values: RestaurantFormValues) => (id ? updateRestaurant(id, values) : createRestaurant(values)),
+    mutationFn: (values: RestaurantFormValues) =>
+      id ? updateRestaurant(id, values) : createRestaurant(values),
     onSuccess: () => {
       toast.success(id ? 'Restaurant mis à jour.' : 'Restaurant créé.');
       invalidate();
@@ -3437,7 +3849,10 @@ export const restaurantsColumns: ColumnDef<Restaurant>[] = [
     accessorKey: 'name',
     header: 'Nom',
     cell: ({ row }) => (
-      <Link href={`/dashboard/restaurants/${row.original.id}`} className="font-medium hover:underline">
+      <Link
+        href={`/dashboard/restaurants/${row.original.id}`}
+        className="font-medium hover:underline"
+      >
         {row.original.name}
       </Link>
     ),
@@ -3476,14 +3891,24 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Switch } from '@/components/ui/switch';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form';
 import { useSaveRestaurant } from '../hooks/use-restaurants';
 
 function arrayToLines(values: string[]): string {
   return values.join('\n');
 }
 function linesToArray(text: string): string[] {
-  return text.split('\n').map((line) => line.trim()).filter(Boolean);
+  return text
+    .split('\n')
+    .map((line) => line.trim())
+    .filter(Boolean);
 }
 
 const DEFAULT_VALUES: RestaurantFormValues = {
@@ -3500,7 +3925,13 @@ const DEFAULT_VALUES: RestaurantFormValues = {
   has_delivery: false,
 };
 
-export function RestaurantForm({ restaurant, onSaved }: { restaurant?: Restaurant; onSaved?: (id: string) => void }) {
+export function RestaurantForm({
+  restaurant,
+  onSaved,
+}: {
+  restaurant?: Restaurant;
+  onSaved?: (id: string) => void;
+}) {
   const saveMutation = useSaveRestaurant(restaurant?.id);
 
   const form = useForm<RestaurantFormValues>({
@@ -3529,51 +3960,162 @@ export function RestaurantForm({ restaurant, onSaved }: { restaurant?: Restauran
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="grid grid-cols-1 gap-4 md:grid-cols-2">
-        <FormField control={form.control} name="name" render={({ field }) => (
-          <FormItem><FormLabel>Nom</FormLabel><FormControl><Input {...field} /></FormControl><FormMessage /></FormItem>
-        )} />
-        <FormField control={form.control} name="cuisine_type" render={({ field }) => (
-          <FormItem><FormLabel>Type de cuisine</FormLabel><FormControl><Input {...field} /></FormControl><FormMessage /></FormItem>
-        )} />
-        <FormField control={form.control} name="district" render={({ field }) => (
-          <FormItem><FormLabel>Quartier</FormLabel><FormControl><Input {...field} /></FormControl><FormMessage /></FormItem>
-        )} />
-        <FormField control={form.control} name="distance_label" render={({ field }) => (
-          <FormItem><FormLabel>Repère de distance</FormLabel><FormControl><Input {...field} value={field.value ?? ''} /></FormControl><FormMessage /></FormItem>
-        )} />
-        <FormField control={form.control} name="price_range" render={({ field }) => (
-          <FormItem><FormLabel>Fourchette de prix</FormLabel><FormControl><Input {...field} value={field.value ?? ''} /></FormControl><FormMessage /></FormItem>
-        )} />
-        <FormField control={form.control} name="opening_hours" render={({ field }) => (
-          <FormItem><FormLabel>Horaires</FormLabel><FormControl><Input {...field} value={field.value ?? ''} /></FormControl><FormMessage /></FormItem>
-        )} />
-        <FormField control={form.control} name="phone" render={({ field }) => (
-          <FormItem><FormLabel>Téléphone</FormLabel><FormControl><Input {...field} value={field.value ?? ''} /></FormControl><FormMessage /></FormItem>
-        )} />
-        <FormField control={form.control} name="whatsapp" render={({ field }) => (
-          <FormItem><FormLabel>WhatsApp</FormLabel><FormControl><Input {...field} value={field.value ?? ''} /></FormControl><FormMessage /></FormItem>
-        )} />
-        <FormField control={form.control} name="has_delivery" render={({ field }) => (
-          <FormItem className="flex flex-row items-center justify-between rounded-md border p-3">
-            <FormLabel className="!mt-0">Livraison disponible</FormLabel>
-            <FormControl><Switch checked={field.value} onCheckedChange={field.onChange} /></FormControl>
-          </FormItem>
-        )} />
-        <FormField control={form.control} name="description" render={({ field }) => (
-          <FormItem className="md:col-span-2"><FormLabel>Description</FormLabel><FormControl><Textarea rows={3} {...field} value={field.value ?? ''} /></FormControl><FormMessage /></FormItem>
-        )} />
-        <FormField control={form.control} name="specialties" render={({ field }) => (
-          <FormItem className="md:col-span-2">
-            <FormLabel>Spécialités (une par ligne)</FormLabel>
-            <FormControl>
-              <Textarea rows={3} value={arrayToLines(field.value)} onChange={(event) => field.onChange(linesToArray(event.target.value))} />
-            </FormControl>
-            <FormMessage />
-          </FormItem>
-        )} />
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="grid grid-cols-1 gap-4 md:grid-cols-2"
+      >
+        <FormField
+          control={form.control}
+          name="name"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Nom</FormLabel>
+              <FormControl>
+                <Input {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="cuisine_type"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Type de cuisine</FormLabel>
+              <FormControl>
+                <Input {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="district"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Quartier</FormLabel>
+              <FormControl>
+                <Input {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="distance_label"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Repère de distance</FormLabel>
+              <FormControl>
+                <Input {...field} value={field.value ?? ''} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="price_range"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Fourchette de prix</FormLabel>
+              <FormControl>
+                <Input {...field} value={field.value ?? ''} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="opening_hours"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Horaires</FormLabel>
+              <FormControl>
+                <Input {...field} value={field.value ?? ''} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="phone"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Téléphone</FormLabel>
+              <FormControl>
+                <Input {...field} value={field.value ?? ''} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="whatsapp"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>WhatsApp</FormLabel>
+              <FormControl>
+                <Input {...field} value={field.value ?? ''} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="has_delivery"
+          render={({ field }) => (
+            <FormItem className="flex flex-row items-center justify-between rounded-md border p-3">
+              <FormLabel className="!mt-0">Livraison disponible</FormLabel>
+              <FormControl>
+                <Switch checked={field.value} onCheckedChange={field.onChange} />
+              </FormControl>
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="description"
+          render={({ field }) => (
+            <FormItem className="md:col-span-2">
+              <FormLabel>Description</FormLabel>
+              <FormControl>
+                <Textarea rows={3} {...field} value={field.value ?? ''} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="specialties"
+          render={({ field }) => (
+            <FormItem className="md:col-span-2">
+              <FormLabel>Spécialités (une par ligne)</FormLabel>
+              <FormControl>
+                <Textarea
+                  rows={3}
+                  value={arrayToLines(field.value)}
+                  onChange={(event) => field.onChange(linesToArray(event.target.value))}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
         <Button type="submit" disabled={saveMutation.isPending} className="md:col-span-2">
-          {saveMutation.isPending ? 'Enregistrement…' : restaurant ? 'Enregistrer les modifications' : 'Créer le restaurant'}
+          {saveMutation.isPending
+            ? 'Enregistrement…'
+            : restaurant
+              ? 'Enregistrer les modifications'
+              : 'Créer le restaurant'}
         </Button>
       </form>
     </Form>
@@ -3594,7 +4136,13 @@ import type { RestaurantMedia } from '@dakareaseu/types';
 import { Button } from '@/components/ui/button';
 import { useDeleteRestaurantMedia, useUploadRestaurantMedia } from '../hooks/use-restaurants';
 
-export function RestaurantMediaManager({ restaurantId, media }: { restaurantId: string; media: RestaurantMedia[] }) {
+export function RestaurantMediaManager({
+  restaurantId,
+  media,
+}: {
+  restaurantId: string;
+  media: RestaurantMedia[];
+}) {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const uploadMutation = useUploadRestaurantMedia(restaurantId, media.length);
   const deleteMutation = useDeleteRestaurantMedia(restaurantId);
@@ -3609,18 +4157,41 @@ export function RestaurantMediaManager({ restaurantId, media }: { restaurantId: 
   return (
     <div className="space-y-4">
       <div className="flex items-center gap-3">
-        <input ref={fileInputRef} type="file" accept="image/*" className="hidden" onChange={handleFileSelected} />
-        <Button type="button" variant="outline" onClick={() => fileInputRef.current?.click()} disabled={uploadMutation.isPending}>
+        <input
+          ref={fileInputRef}
+          type="file"
+          accept="image/*"
+          className="hidden"
+          onChange={handleFileSelected}
+        />
+        <Button
+          type="button"
+          variant="outline"
+          onClick={() => fileInputRef.current?.click()}
+          disabled={uploadMutation.isPending}
+        >
           {uploadMutation.isPending ? 'Envoi…' : 'Téléverser une photo'}
         </Button>
       </div>
       <ul className="grid grid-cols-2 gap-3 sm:grid-cols-4">
         {media.map((item) => (
           <li key={item.id} className="space-y-2 rounded-md border p-2">
-            <Image src={item.url} alt="" width={200} height={140} className="h-28 w-full rounded object-cover" unoptimized />
+            <Image
+              src={item.url}
+              alt=""
+              width={200}
+              height={140}
+              className="h-28 w-full rounded object-cover"
+              unoptimized
+            />
             <div className="flex items-center justify-between text-xs text-muted-foreground">
               <span>#{item.position}</span>
-              <Button type="button" variant="ghost" size="sm" onClick={() => deleteMutation.mutate(item.id)}>
+              <Button
+                type="button"
+                variant="ghost"
+                size="sm"
+                onClick={() => deleteMutation.mutate(item.id)}
+              >
                 Supprimer
               </Button>
             </div>
@@ -3658,7 +4229,12 @@ export default function RestaurantsPage() {
           <Link href="/dashboard/restaurants/new">Nouveau restaurant</Link>
         </Button>
       </div>
-      <DataTable columns={restaurantsColumns} data={data} isLoading={isLoading} emptyMessage="Aucun restaurant enregistré." />
+      <DataTable
+        columns={restaurantsColumns}
+        data={data}
+        isLoading={isLoading}
+        emptyMessage="Aucun restaurant enregistré."
+      />
     </div>
   );
 }
@@ -3687,12 +4263,20 @@ export default function RestaurantDetailPage() {
     <div className="space-y-6">
       <h1 className="text-2xl font-bold">{restaurant.name}</h1>
       <Card>
-        <CardHeader><CardTitle>Informations</CardTitle></CardHeader>
-        <CardContent><RestaurantForm restaurant={restaurant} /></CardContent>
+        <CardHeader>
+          <CardTitle>Informations</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <RestaurantForm restaurant={restaurant} />
+        </CardContent>
       </Card>
       <Card>
-        <CardHeader><CardTitle>Photos</CardTitle></CardHeader>
-        <CardContent><RestaurantMediaManager restaurantId={restaurant.id} media={media} /></CardContent>
+        <CardHeader>
+          <CardTitle>Photos</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <RestaurantMediaManager restaurantId={restaurant.id} media={media} />
+        </CardContent>
       </Card>
     </div>
   );
@@ -3714,8 +4298,12 @@ export default function NewRestaurantPage() {
     <div className="space-y-6">
       <h1 className="text-2xl font-bold">Nouveau restaurant</h1>
       <Card>
-        <CardHeader><CardTitle>Informations</CardTitle></CardHeader>
-        <CardContent><RestaurantForm onSaved={(id) => router.push(`/dashboard/restaurants/${id}`)} /></CardContent>
+        <CardHeader>
+          <CardTitle>Informations</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <RestaurantForm onSaved={(id) => router.push(`/dashboard/restaurants/${id}`)} />
+        </CardContent>
       </Card>
     </div>
   );
@@ -3739,6 +4327,7 @@ git commit -m "feat(admin): ajouter le CRUD complet des restaurants avec gestion
 ### Task 11: Gestion des transporteurs (CRUD simple, une seule table)
 
 **Files:**
+
 - Create: `apps/admin/src/features/transport/schemas/transport-provider.schema.ts`
 - Create: `apps/admin/src/features/transport/services/transport-providers.service.ts`
 - Create: `apps/admin/src/features/transport/hooks/use-transport-providers.ts`
@@ -3753,7 +4342,14 @@ Crée `apps/admin/src/features/transport/schemas/transport-provider.schema.ts` :
 ```ts
 import { z } from 'zod';
 
-export const TRANSPORT_CATEGORIES = ['taxi', 'moto', 'repas', 'colis', 'demenagement', 'location'] as const;
+export const TRANSPORT_CATEGORIES = [
+  'taxi',
+  'moto',
+  'repas',
+  'colis',
+  'demenagement',
+  'location',
+] as const;
 
 export const TRANSPORT_CATEGORY_LABELS: Record<(typeof TRANSPORT_CATEGORIES)[number], string> = {
   taxi: 'Taxi / VTC',
@@ -3800,7 +4396,10 @@ export async function createTransportProvider(values: TransportProviderFormValue
   if (error) throw error;
 }
 
-export async function updateTransportProvider(id: string, values: TransportProviderFormValues): Promise<void> {
+export async function updateTransportProvider(
+  id: string,
+  values: TransportProviderFormValues,
+): Promise<void> {
   const supabase = createSupabaseBrowserClient();
   const payload: TablesUpdate<'transport_providers'> = { ...values };
   const { error } = await supabase.from('transport_providers').update(payload).eq('id', id);
@@ -3900,14 +4499,25 @@ export function buildTransportProvidersColumns(
   ];
 }
 
-function RowActions({ provider, onEdit }: { provider: TransportProvider; onEdit: (provider: TransportProvider) => void }) {
+function RowActions({
+  provider,
+  onEdit,
+}: {
+  provider: TransportProvider;
+  onEdit: (provider: TransportProvider) => void;
+}) {
   const deleteMutation = useDeleteTransportProvider();
   return (
     <div className="flex gap-2">
       <Button type="button" variant="outline" size="sm" onClick={() => onEdit(provider)}>
         Modifier
       </Button>
-      <Button type="button" variant="ghost" size="sm" onClick={() => deleteMutation.mutate(provider.id)}>
+      <Button
+        type="button"
+        variant="ghost"
+        size="sm"
+        onClick={() => deleteMutation.mutate(provider.id)}
+      >
         Supprimer
       </Button>
     </div>
@@ -3934,9 +4544,28 @@ import {
 import type { TransportProvider } from '@dakareaseu/types';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form';
 import { useSaveTransportProvider } from '../hooks/use-transport-providers';
 
 const DEFAULT_VALUES: TransportProviderFormValues = {
@@ -3996,35 +4625,99 @@ export function TransportProviderDialog({
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-            <FormField control={form.control} name="name" render={({ field }) => (
-              <FormItem><FormLabel>Nom</FormLabel><FormControl><Input {...field} /></FormControl><FormMessage /></FormItem>
-            )} />
-            <FormField control={form.control} name="category" render={({ field }) => (
-              <FormItem>
-                <FormLabel>Catégorie</FormLabel>
-                <Select value={field.value} onValueChange={field.onChange}>
-                  <FormControl><SelectTrigger><SelectValue /></SelectTrigger></FormControl>
-                  <SelectContent>
-                    {TRANSPORT_CATEGORIES.map((category) => (
-                      <SelectItem key={category} value={category}>{TRANSPORT_CATEGORY_LABELS[category]}</SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                <FormMessage />
-              </FormItem>
-            )} />
-            <FormField control={form.control} name="eta_label" render={({ field }) => (
-              <FormItem><FormLabel>Délai indicatif</FormLabel><FormControl><Input placeholder="5 min" {...field} value={field.value ?? ''} /></FormControl><FormMessage /></FormItem>
-            )} />
-            <FormField control={form.control} name="price_label" render={({ field }) => (
-              <FormItem><FormLabel>Tarif indicatif</FormLabel><FormControl><Input placeholder="à partir de 1 500 CFA" {...field} value={field.value ?? ''} /></FormControl><FormMessage /></FormItem>
-            )} />
-            <FormField control={form.control} name="phone" render={({ field }) => (
-              <FormItem><FormLabel>Téléphone</FormLabel><FormControl><Input {...field} value={field.value ?? ''} /></FormControl><FormMessage /></FormItem>
-            )} />
-            <FormField control={form.control} name="whatsapp" render={({ field }) => (
-              <FormItem><FormLabel>WhatsApp</FormLabel><FormControl><Input {...field} value={field.value ?? ''} /></FormControl><FormMessage /></FormItem>
-            )} />
+            <FormField
+              control={form.control}
+              name="name"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Nom</FormLabel>
+                  <FormControl>
+                    <Input {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="category"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Catégorie</FormLabel>
+                  <Select value={field.value} onValueChange={field.onChange}>
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {TRANSPORT_CATEGORIES.map((category) => (
+                        <SelectItem key={category} value={category}>
+                          {TRANSPORT_CATEGORY_LABELS[category]}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="eta_label"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Délai indicatif</FormLabel>
+                  <FormControl>
+                    <Input placeholder="5 min" {...field} value={field.value ?? ''} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="price_label"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Tarif indicatif</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="à partir de 1 500 CFA"
+                      {...field}
+                      value={field.value ?? ''}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="phone"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Téléphone</FormLabel>
+                  <FormControl>
+                    <Input {...field} value={field.value ?? ''} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="whatsapp"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>WhatsApp</FormLabel>
+                  <FormControl>
+                    <Input {...field} value={field.value ?? ''} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
             <DialogFooter>
               <Button type="submit" disabled={saveMutation.isPending}>
                 {saveMutation.isPending ? 'Enregistrement…' : 'Enregistrer'}
@@ -4078,8 +4771,17 @@ export default function TransportPage() {
         </div>
         <Button onClick={openCreateDialog}>Nouveau prestataire</Button>
       </div>
-      <DataTable columns={columns} data={data} isLoading={isLoading} emptyMessage="Aucun prestataire enregistré." />
-      <TransportProviderDialog open={dialogOpen} onOpenChange={setDialogOpen} provider={editingProvider} />
+      <DataTable
+        columns={columns}
+        data={data}
+        isLoading={isLoading}
+        emptyMessage="Aucun prestataire enregistré."
+      />
+      <TransportProviderDialog
+        open={dialogOpen}
+        onOpenChange={setDialogOpen}
+        provider={editingProvider}
+      />
     </div>
   );
 }
@@ -4102,6 +4804,7 @@ git commit -m "feat(admin): ajouter le CRUD des prestataires de transport (dialo
 ### Task 12: Gestion des événements (CRUD + image de couverture + RSVP)
 
 **Files:**
+
 - Create: `apps/admin/src/features/events/schemas/event.schema.ts`
 - Create: `apps/admin/src/features/events/services/events.service.ts`
 - Create: `apps/admin/src/features/events/hooks/use-events.ts`
@@ -4158,7 +4861,10 @@ export interface RsvpWithAttendee extends EventRsvp {
 
 export async function fetchEvents(): Promise<EventRow[]> {
   const supabase = createSupabaseBrowserClient();
-  const { data, error } = await supabase.from('events').select('*').order('event_date', { ascending: false });
+  const { data, error } = await supabase
+    .from('events')
+    .select('*')
+    .order('event_date', { ascending: false });
   if (error) throw error;
   return data;
 }
@@ -4205,11 +4911,16 @@ export async function deleteEvent(id: string): Promise<void> {
 export async function uploadEventCoverImage(eventId: string, file: File): Promise<string> {
   const supabase = createSupabaseBrowserClient();
   const path = `${eventId}/cover-${Date.now()}-${file.name}`;
-  const { error: uploadError } = await supabase.storage.from('events-media').upload(path, file, { upsert: true });
+  const { error: uploadError } = await supabase.storage
+    .from('events-media')
+    .upload(path, file, { upsert: true });
   if (uploadError) throw uploadError;
 
   const { data } = supabase.storage.from('events-media').getPublicUrl(path);
-  const { error: updateError } = await supabase.from('events').update({ cover_image_url: data.publicUrl }).eq('id', eventId);
+  const { error: updateError } = await supabase
+    .from('events')
+    .update({ cover_image_url: data.publicUrl })
+    .eq('id', eventId);
   if (updateError) throw updateError;
   return data.publicUrl;
 }
@@ -4240,7 +4951,11 @@ export function useEvents() {
 }
 
 export function useEvent(id: string | undefined) {
-  return useQuery({ queryKey: ['events', 'detail', id], queryFn: () => fetchEventDetail(id!), enabled: !!id });
+  return useQuery({
+    queryKey: ['events', 'detail', id],
+    queryFn: () => fetchEventDetail(id!),
+    enabled: !!id,
+  });
 }
 
 export function useEventRsvps(eventId: string | undefined) {
@@ -4288,7 +5003,7 @@ export function useUploadEventCoverImage(eventId: string) {
   return useMutation({
     mutationFn: (file: File) => uploadEventCoverImage(eventId, file),
     onSuccess: () => {
-      toast.success("Image de couverture mise à jour.");
+      toast.success('Image de couverture mise à jour.');
       invalidate();
     },
     onError: (error: Error) => toast.error(error.message),
@@ -4349,14 +5064,32 @@ import { useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Image from 'next/image';
-import { eventSchema, type EventFormValues, EVENT_CATEGORIES, EVENT_CATEGORY_LABELS } from '../schemas/event.schema';
+import {
+  eventSchema,
+  type EventFormValues,
+  EVENT_CATEGORIES,
+  EVENT_CATEGORY_LABELS,
+} from '../schemas/event.schema';
 import type { EventRow } from '@dakareaseu/types';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Switch } from '@/components/ui/switch';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form';
 import { useSaveEvent, useUploadEventCoverImage } from '../hooks/use-events';
 
 const DEFAULT_VALUES: EventFormValues = {
@@ -4372,7 +5105,13 @@ const DEFAULT_VALUES: EventFormValues = {
   description: '',
 };
 
-export function EventForm({ event, onSaved }: { event?: EventRow; onSaved?: (id: string) => void }) {
+export function EventForm({
+  event,
+  onSaved,
+}: {
+  event?: EventRow;
+  onSaved?: (id: string) => void;
+}) {
   const saveMutation = useSaveEvent(event?.id);
   const uploadMutation = useUploadEventCoverImage(event?.id ?? '');
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -4411,62 +5150,183 @@ export function EventForm({ event, onSaved }: { event?: EventRow; onSaved?: (id:
       {event && (
         <div className="flex items-center gap-4">
           {event.cover_image_url && (
-            <Image src={event.cover_image_url} alt="" width={160} height={100} className="h-24 w-40 rounded object-cover" unoptimized />
+            <Image
+              src={event.cover_image_url}
+              alt=""
+              width={160}
+              height={100}
+              className="h-24 w-40 rounded object-cover"
+              unoptimized
+            />
           )}
-          <input ref={fileInputRef} type="file" accept="image/*" className="hidden" onChange={handleCoverFileSelected} />
-          <Button type="button" variant="outline" onClick={() => fileInputRef.current?.click()} disabled={uploadMutation.isPending}>
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept="image/*"
+            className="hidden"
+            onChange={handleCoverFileSelected}
+          />
+          <Button
+            type="button"
+            variant="outline"
+            onClick={() => fileInputRef.current?.click()}
+            disabled={uploadMutation.isPending}
+          >
             {uploadMutation.isPending ? 'Envoi…' : "Changer l'image de couverture"}
           </Button>
         </div>
       )}
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="grid grid-cols-1 gap-4 md:grid-cols-2">
-          <FormField control={form.control} name="title" render={({ field }) => (
-            <FormItem className="md:col-span-2"><FormLabel>Titre</FormLabel><FormControl><Input {...field} /></FormControl><FormMessage /></FormItem>
-          )} />
-          <FormField control={form.control} name="category" render={({ field }) => (
-            <FormItem>
-              <FormLabel>Catégorie</FormLabel>
-              <Select value={field.value} onValueChange={field.onChange}>
-                <FormControl><SelectTrigger><SelectValue /></SelectTrigger></FormControl>
-                <SelectContent>
-                  {EVENT_CATEGORIES.map((category) => (
-                    <SelectItem key={category} value={category}>{EVENT_CATEGORY_LABELS[category]}</SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-              <FormMessage />
-            </FormItem>
-          )} />
-          <FormField control={form.control} name="event_date" render={({ field }) => (
-            <FormItem><FormLabel>Date</FormLabel><FormControl><Input type="date" {...field} /></FormControl><FormMessage /></FormItem>
-          )} />
-          <FormField control={form.control} name="event_time" render={({ field }) => (
-            <FormItem><FormLabel>Heure</FormLabel><FormControl><Input type="time" {...field} value={field.value ?? ''} /></FormControl><FormMessage /></FormItem>
-          )} />
-          <FormField control={form.control} name="venue" render={({ field }) => (
-            <FormItem><FormLabel>Lieu</FormLabel><FormControl><Input {...field} value={field.value ?? ''} /></FormControl><FormMessage /></FormItem>
-          )} />
-          <FormField control={form.control} name="partner" render={({ field }) => (
-            <FormItem><FormLabel>Partenaire</FormLabel><FormControl><Input {...field} value={field.value ?? ''} /></FormControl><FormMessage /></FormItem>
-          )} />
-          <FormField control={form.control} name="price_label" render={({ field }) => (
-            <FormItem><FormLabel>Prix (libellé affiché)</FormLabel><FormControl><Input placeholder="Gratuit / 5 000 CFA" {...field} value={field.value ?? ''} /></FormControl><FormMessage /></FormItem>
-          )} />
-          <FormField control={form.control} name="price_value" render={({ field }) => (
-            <FormItem><FormLabel>Prix (valeur numérique)</FormLabel><FormControl><Input type="number" min={0} {...field} value={field.value ?? 0} /></FormControl><FormMessage /></FormItem>
-          )} />
-          <FormField control={form.control} name="is_featured" render={({ field }) => (
-            <FormItem className="flex flex-row items-center justify-between rounded-md border p-3 md:col-span-2">
-              <FormLabel className="!mt-0">Mettre à la une</FormLabel>
-              <FormControl><Switch checked={field.value} onCheckedChange={field.onChange} /></FormControl>
-            </FormItem>
-          )} />
-          <FormField control={form.control} name="description" render={({ field }) => (
-            <FormItem className="md:col-span-2"><FormLabel>Description</FormLabel><FormControl><Textarea rows={4} {...field} value={field.value ?? ''} /></FormControl><FormMessage /></FormItem>
-          )} />
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="grid grid-cols-1 gap-4 md:grid-cols-2"
+        >
+          <FormField
+            control={form.control}
+            name="title"
+            render={({ field }) => (
+              <FormItem className="md:col-span-2">
+                <FormLabel>Titre</FormLabel>
+                <FormControl>
+                  <Input {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="category"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Catégorie</FormLabel>
+                <Select value={field.value} onValueChange={field.onChange}>
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    {EVENT_CATEGORIES.map((category) => (
+                      <SelectItem key={category} value={category}>
+                        {EVENT_CATEGORY_LABELS[category]}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="event_date"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Date</FormLabel>
+                <FormControl>
+                  <Input type="date" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="event_time"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Heure</FormLabel>
+                <FormControl>
+                  <Input type="time" {...field} value={field.value ?? ''} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="venue"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Lieu</FormLabel>
+                <FormControl>
+                  <Input {...field} value={field.value ?? ''} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="partner"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Partenaire</FormLabel>
+                <FormControl>
+                  <Input {...field} value={field.value ?? ''} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="price_label"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Prix (libellé affiché)</FormLabel>
+                <FormControl>
+                  <Input placeholder="Gratuit / 5 000 CFA" {...field} value={field.value ?? ''} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="price_value"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Prix (valeur numérique)</FormLabel>
+                <FormControl>
+                  <Input type="number" min={0} {...field} value={field.value ?? 0} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="is_featured"
+            render={({ field }) => (
+              <FormItem className="flex flex-row items-center justify-between rounded-md border p-3 md:col-span-2">
+                <FormLabel className="!mt-0">Mettre à la une</FormLabel>
+                <FormControl>
+                  <Switch checked={field.value} onCheckedChange={field.onChange} />
+                </FormControl>
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="description"
+            render={({ field }) => (
+              <FormItem className="md:col-span-2">
+                <FormLabel>Description</FormLabel>
+                <FormControl>
+                  <Textarea rows={4} {...field} value={field.value ?? ''} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
           <Button type="submit" disabled={saveMutation.isPending} className="md:col-span-2">
-            {saveMutation.isPending ? 'Enregistrement…' : event ? 'Enregistrer les modifications' : "Créer l'événement"}
+            {saveMutation.isPending
+              ? 'Enregistrement…'
+              : event
+                ? 'Enregistrer les modifications'
+                : "Créer l'événement"}
           </Button>
         </form>
       </Form>
@@ -4486,26 +5346,43 @@ import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useEventRsvps } from '../hooks/use-events';
 
-const STATUS_LABELS: Record<string, string> = { interested: 'Intéressé·e', confirmed: 'Confirmé·e' };
+const STATUS_LABELS: Record<string, string> = {
+  interested: 'Intéressé·e',
+  confirmed: 'Confirmé·e',
+};
 
 export function EventRsvpsList({ eventId }: { eventId: string }) {
   const { data: rsvps = [], isLoading } = useEventRsvps(eventId);
 
   if (isLoading) return <Skeleton className="h-32 w-full" />;
-  if (rsvps.length === 0) return <p className="text-sm text-muted-foreground">Aucune participation enregistrée pour le moment.</p>;
+  if (rsvps.length === 0)
+    return (
+      <p className="text-sm text-muted-foreground">
+        Aucune participation enregistrée pour le moment.
+      </p>
+    );
 
   return (
     <ul className="space-y-2">
       {rsvps.map((rsvp) => (
-        <li key={rsvp.id} className="flex items-center justify-between rounded-md border p-3 text-sm">
+        <li
+          key={rsvp.id}
+          className="flex items-center justify-between rounded-md border p-3 text-sm"
+        >
           <div>
-            <p className="font-medium">{rsvp.attendee?.full_name ?? 'Étudiant·e sans nom renseigné'}</p>
+            <p className="font-medium">
+              {rsvp.attendee?.full_name ?? 'Étudiant·e sans nom renseigné'}
+            </p>
             <p className="text-muted-foreground">{rsvp.attendee?.phone ?? '—'}</p>
           </div>
           <div className="flex items-center gap-3">
-            <Badge variant={rsvp.status === 'confirmed' ? 'default' : 'secondary'}>{STATUS_LABELS[rsvp.status] ?? rsvp.status}</Badge>
+            <Badge variant={rsvp.status === 'confirmed' ? 'default' : 'secondary'}>
+              {STATUS_LABELS[rsvp.status] ?? rsvp.status}
+            </Badge>
             <span className="text-xs text-muted-foreground">
-              {rsvp.checked_in_at ? `Check-in : ${new Date(rsvp.checked_in_at).toLocaleString('fr-FR')}` : 'Pas encore check-in'}
+              {rsvp.checked_in_at
+                ? `Check-in : ${new Date(rsvp.checked_in_at).toLocaleString('fr-FR')}`
+                : 'Pas encore check-in'}
             </span>
           </div>
         </li>
@@ -4537,9 +5414,16 @@ export default function EventsPage() {
           <h1 className="text-2xl font-bold">Événements</h1>
           <p className="text-muted-foreground">Actualités culturelles et événementielles.</p>
         </div>
-        <Button asChild><Link href="/dashboard/events/new">Nouvel événement</Link></Button>
+        <Button asChild>
+          <Link href="/dashboard/events/new">Nouvel événement</Link>
+        </Button>
       </div>
-      <DataTable columns={eventsColumns} data={data} isLoading={isLoading} emptyMessage="Aucun événement enregistré." />
+      <DataTable
+        columns={eventsColumns}
+        data={data}
+        isLoading={isLoading}
+        emptyMessage="Aucun événement enregistré."
+      />
     </div>
   );
 }
@@ -4567,12 +5451,20 @@ export default function EventDetailPage() {
     <div className="space-y-6">
       <h1 className="text-2xl font-bold">{event.title}</h1>
       <Card>
-        <CardHeader><CardTitle>Informations</CardTitle></CardHeader>
-        <CardContent><EventForm event={event} /></CardContent>
+        <CardHeader>
+          <CardTitle>Informations</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <EventForm event={event} />
+        </CardContent>
       </Card>
       <Card>
-        <CardHeader><CardTitle>Participants (RSVP)</CardTitle></CardHeader>
-        <CardContent><EventRsvpsList eventId={event.id} /></CardContent>
+        <CardHeader>
+          <CardTitle>Participants (RSVP)</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <EventRsvpsList eventId={event.id} />
+        </CardContent>
       </Card>
     </div>
   );
@@ -4594,8 +5486,12 @@ export default function NewEventPage() {
     <div className="space-y-6">
       <h1 className="text-2xl font-bold">Nouvel événement</h1>
       <Card>
-        <CardHeader><CardTitle>Informations</CardTitle></CardHeader>
-        <CardContent><EventForm onSaved={(id) => router.push(`/dashboard/events/${id}`)} /></CardContent>
+        <CardHeader>
+          <CardTitle>Informations</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <EventForm onSaved={(id) => router.push(`/dashboard/events/${id}`)} />
+        </CardContent>
       </Card>
     </div>
   );
@@ -4619,6 +5515,7 @@ git commit -m "feat(admin): ajouter le CRUD des événements avec image de couve
 ### Task 13: File de vérification étudiante (signed URLs + approbation/rejet + blocage)
 
 **Files:**
+
 - Create: `apps/admin/src/app/api/student-id-signed-url/route.ts`
 - Create: `apps/admin/src/features/verifications/services/verifications.service.ts`
 - Create: `apps/admin/src/features/verifications/hooks/use-verifications.ts`
@@ -4654,16 +5551,25 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'Non authentifié.' }, { status: 401 });
   }
 
-  const { data: profile } = await supabase.from('profiles').select('role').eq('id', user.id).single();
+  const { data: profile } = await supabase
+    .from('profiles')
+    .select('role')
+    .eq('id', user.id)
+    .single();
   if (profile?.role !== 'admin') {
     return NextResponse.json({ error: 'Accès réservé aux administrateurs.' }, { status: 403 });
   }
 
   // RLS (`student_ids_select_owner_or_admin`) autorise cet appel pour un admin —
   // contournement par le client navigateur impossible, contournement RLS inutile ici.
-  const { data, error } = await supabase.storage.from('student-ids').createSignedUrl(path, SIGNED_URL_TTL_SECONDS);
+  const { data, error } = await supabase.storage
+    .from('student-ids')
+    .createSignedUrl(path, SIGNED_URL_TTL_SECONDS);
   if (error || !data) {
-    return NextResponse.json({ error: error?.message ?? 'Impossible de générer une URL signée.' }, { status: 500 });
+    return NextResponse.json(
+      { error: error?.message ?? 'Impossible de générer une URL signée.' },
+      { status: 500 },
+    );
   }
 
   return NextResponse.json({ signedUrl: data.signedUrl, expiresInSeconds: SIGNED_URL_TTL_SECONDS });
@@ -4697,15 +5603,24 @@ export async function fetchPendingVerifications(): Promise<Profile[]> {
  * foundation (notification_type = 'verification_status_update') s'exécute
  * automatiquement côté base — aucune action supplémentaire ici.
  */
-export async function setVerificationStatus(profileId: string, status: VerificationStatus): Promise<void> {
+export async function setVerificationStatus(
+  profileId: string,
+  status: VerificationStatus,
+): Promise<void> {
   const supabase = createSupabaseBrowserClient();
-  const { error } = await supabase.from('profiles').update({ verification_status: status }).eq('id', profileId);
+  const { error } = await supabase
+    .from('profiles')
+    .update({ verification_status: status })
+    .eq('id', profileId);
   if (error) throw error;
 }
 
 export async function setProfileBlocked(profileId: string, isBlocked: boolean): Promise<void> {
   const supabase = createSupabaseBrowserClient();
-  const { error } = await supabase.from('profiles').update({ is_blocked: isBlocked }).eq('id', profileId);
+  const { error } = await supabase
+    .from('profiles')
+    .update({ is_blocked: isBlocked })
+    .eq('id', profileId);
   if (error) throw error;
 }
 
@@ -4722,7 +5637,7 @@ export async function fetchSignedDocumentUrl(path: string): Promise<string> {
   });
   const body = (await response.json()) as { signedUrl?: string; error?: string };
   if (!response.ok || !body.signedUrl) {
-    throw new Error(body.error ?? "Impossible de récupérer le document.");
+    throw new Error(body.error ?? 'Impossible de récupérer le document.');
   }
   return body.signedUrl;
 }
@@ -4751,7 +5666,11 @@ describe('fetchSignedDocumentUrl', () => {
   it('returns the signed URL when the route handler responds successfully', async () => {
     global.fetch = vi.fn().mockResolvedValue({
       ok: true,
-      json: () => Promise.resolve({ signedUrl: 'https://signed.example.com/card.jpg', expiresInSeconds: 120 }),
+      json: () =>
+        Promise.resolve({
+          signedUrl: 'https://signed.example.com/card.jpg',
+          expiresInSeconds: 120,
+        }),
     }) as unknown as typeof fetch;
 
     const url = await fetchSignedDocumentUrl('user-123/carte.jpg');
@@ -4769,7 +5688,9 @@ describe('fetchSignedDocumentUrl', () => {
       json: () => Promise.resolve({ error: 'Accès réservé aux administrateurs.' }),
     }) as unknown as typeof fetch;
 
-    await expect(fetchSignedDocumentUrl('user-123/carte.jpg')).rejects.toThrow('Accès réservé aux administrateurs.');
+    await expect(fetchSignedDocumentUrl('user-123/carte.jpg')).rejects.toThrow(
+      'Accès réservé aux administrateurs.',
+    );
   });
 });
 ```
@@ -4816,7 +5737,9 @@ export function useSetVerificationStatus() {
     mutationFn: ({ profileId, status }: { profileId: string; status: VerificationStatus }) =>
       setVerificationStatus(profileId, status),
     onSuccess: (_data, variables) => {
-      toast.success(variables.status === 'approved' ? 'Carte étudiante approuvée.' : 'Carte étudiante rejetée.');
+      toast.success(
+        variables.status === 'approved' ? 'Carte étudiante approuvée.' : 'Carte étudiante rejetée.',
+      );
       queryClient.invalidateQueries({ queryKey: ['verifications', 'pending'] });
       queryClient.invalidateQueries({ queryKey: ['overview', 'stats'] });
     },
@@ -4858,7 +5781,11 @@ export function VerificationDocumentViewer({ documentPath }: { documentPath: str
   }
   if (isLoading) return <Skeleton className="h-64 w-full max-w-sm" />;
   if (isError || !signedUrl) {
-    return <p className="text-sm text-destructive">{error instanceof Error ? error.message : 'Document inaccessible.'}</p>;
+    return (
+      <p className="text-sm text-destructive">
+        {error instanceof Error ? error.message : 'Document inaccessible.'}
+      </p>
+    );
   }
 
   return (
@@ -4872,7 +5799,8 @@ export function VerificationDocumentViewer({ documentPath }: { documentPath: str
         unoptimized
       />
       <p className="text-xs text-muted-foreground">
-        Lien temporaire (expire après 2 minutes) généré via une URL signée du bucket privé `student-ids`.
+        Lien temporaire (expire après 2 minutes) généré via une URL signée du bucket privé
+        `student-ids`.
       </p>
     </div>
   );
@@ -4902,7 +5830,9 @@ export function VerificationCard({ profile }: { profile: Profile }) {
       <CardHeader className="flex flex-row items-center justify-between">
         <div>
           <CardTitle>{profile.full_name ?? 'Étudiant·e sans nom renseigné'}</CardTitle>
-          <p className="text-sm text-muted-foreground">{profile.phone ?? 'Téléphone non renseigné'}</p>
+          <p className="text-sm text-muted-foreground">
+            {profile.phone ?? 'Téléphone non renseigné'}
+          </p>
         </div>
         <Badge variant={profile.is_blocked ? 'destructive' : 'secondary'}>
           {profile.is_blocked ? 'Compte bloqué' : 'Compte actif'}
@@ -4926,7 +5856,9 @@ export function VerificationCard({ profile }: { profile: Profile }) {
           </Button>
           <Button
             variant="outline"
-            onClick={() => blockMutation.mutate({ profileId: profile.id, isBlocked: !profile.is_blocked })}
+            onClick={() =>
+              blockMutation.mutate({ profileId: profile.id, isBlocked: !profile.is_blocked })
+            }
             disabled={blockMutation.isPending}
           >
             {profile.is_blocked ? 'Débloquer le compte' : 'Bloquer le compte'}
@@ -4957,7 +5889,8 @@ export default function VerificationsPage() {
       <div>
         <h1 className="text-2xl font-bold">Vérification étudiante</h1>
         <p className="text-muted-foreground">
-          Cartes étudiantes en attente de revue manuelle (cf. décision produit §4.6 — pas d&apos;OCR automatisé).
+          Cartes étudiantes en attente de revue manuelle (cf. décision produit §4.6 — pas d&apos;OCR
+          automatisé).
         </p>
       </div>
       {isLoading ? (
@@ -4995,6 +5928,7 @@ git commit -m "feat(admin): ajouter la file de vérification étudiante (URLs si
 ### Task 14: Gestion des réservations (liste filtrable + transitions de statut)
 
 **Files:**
+
 - Create: `apps/admin/src/features/bookings/services/bookings.service.ts`
 - Create: `apps/admin/src/features/bookings/hooks/use-bookings.ts`
 - Create: `apps/admin/src/features/bookings/components/bookings-columns.tsx`
@@ -5029,7 +5963,8 @@ export async function fetchBookings(filters: BookingsFilters): Promise<BookingWi
     .order('created_at', { ascending: false });
 
   if (filters.status && filters.status !== 'all') query = query.eq('status', filters.status);
-  if (filters.paymentStatus && filters.paymentStatus !== 'all') query = query.eq('payment_status', filters.paymentStatus);
+  if (filters.paymentStatus && filters.paymentStatus !== 'all')
+    query = query.eq('payment_status', filters.paymentStatus);
 
   const { data, error } = await query;
   if (error) throw error;
@@ -5069,7 +6004,12 @@ Crée `apps/admin/src/features/bookings/hooks/use-bookings.ts` :
 
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
-import { fetchBookingDetail, fetchBookings, setBookingStatus, type BookingsFilters } from '../services/bookings.service';
+import {
+  fetchBookingDetail,
+  fetchBookings,
+  setBookingStatus,
+  type BookingsFilters,
+} from '../services/bookings.service';
 import type { BookingStatus } from '@dakareaseu/types';
 
 export function useBookings(filters: BookingsFilters) {
@@ -5077,13 +6017,18 @@ export function useBookings(filters: BookingsFilters) {
 }
 
 export function useBookingDetail(id: string | undefined) {
-  return useQuery({ queryKey: ['bookings', 'detail', id], queryFn: () => fetchBookingDetail(id!), enabled: !!id });
+  return useQuery({
+    queryKey: ['bookings', 'detail', id],
+    queryFn: () => fetchBookingDetail(id!),
+    enabled: !!id,
+  });
 }
 
 export function useSetBookingStatus() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: ({ id, status }: { id: string; status: BookingStatus }) => setBookingStatus(id, status),
+    mutationFn: ({ id, status }: { id: string; status: BookingStatus }) =>
+      setBookingStatus(id, status),
     onSuccess: (_data, variables) => {
       toast.success('Statut de la réservation mis à jour.');
       queryClient.invalidateQueries({ queryKey: ['bookings'] });
@@ -5175,7 +6120,13 @@ Crée `apps/admin/src/features/bookings/components/bookings-filters.tsx` :
 'use client';
 
 import { BOOKING_STATUS_LABELS, PAYMENT_STATUS_LABELS } from '@dakareaseu/shared';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import type { BookingsFilters } from '../services/bookings.service';
 
 export function BookingsFiltersBar({
@@ -5187,24 +6138,39 @@ export function BookingsFiltersBar({
 }) {
   return (
     <div className="flex flex-wrap gap-3">
-      <Select value={filters.status ?? 'all'} onValueChange={(value) => onChange({ ...filters, status: value as BookingsFilters['status'] })}>
-        <SelectTrigger className="w-48"><SelectValue placeholder="Statut" /></SelectTrigger>
+      <Select
+        value={filters.status ?? 'all'}
+        onValueChange={(value) =>
+          onChange({ ...filters, status: value as BookingsFilters['status'] })
+        }
+      >
+        <SelectTrigger className="w-48">
+          <SelectValue placeholder="Statut" />
+        </SelectTrigger>
         <SelectContent>
           <SelectItem value="all">Tous les statuts</SelectItem>
           {Object.entries(BOOKING_STATUS_LABELS).map(([value, label]) => (
-            <SelectItem key={value} value={value}>{label}</SelectItem>
+            <SelectItem key={value} value={value}>
+              {label}
+            </SelectItem>
           ))}
         </SelectContent>
       </Select>
       <Select
         value={filters.paymentStatus ?? 'all'}
-        onValueChange={(value) => onChange({ ...filters, paymentStatus: value as BookingsFilters['paymentStatus'] })}
+        onValueChange={(value) =>
+          onChange({ ...filters, paymentStatus: value as BookingsFilters['paymentStatus'] })
+        }
       >
-        <SelectTrigger className="w-48"><SelectValue placeholder="Statut de paiement" /></SelectTrigger>
+        <SelectTrigger className="w-48">
+          <SelectValue placeholder="Statut de paiement" />
+        </SelectTrigger>
         <SelectContent>
           <SelectItem value="all">Tous les paiements</SelectItem>
           {Object.entries(PAYMENT_STATUS_LABELS).map(([value, label]) => (
-            <SelectItem key={value} value={value}>{label}</SelectItem>
+            <SelectItem key={value} value={value}>
+              {label}
+            </SelectItem>
           ))}
         </SelectContent>
       </Select>
@@ -5224,7 +6190,10 @@ import { Button } from '@/components/ui/button';
 import { useSetBookingStatus } from '../hooks/use-bookings';
 import type { Booking } from '@dakareaseu/types';
 
-const TRANSITIONS: Record<Booking['status'], { label: string; next: Booking['status']; variant?: 'default' | 'destructive' | 'outline' }[]> = {
+const TRANSITIONS: Record<
+  Booking['status'],
+  { label: string; next: Booking['status']; variant?: 'default' | 'destructive' | 'outline' }[]
+> = {
   pending: [
     { label: 'Confirmer', next: 'confirmed' },
     { label: 'Annuler', next: 'cancelled', variant: 'destructive' },
@@ -5242,7 +6211,9 @@ export function BookingStatusActions({ booking }: { booking: Booking }) {
   const transitions = TRANSITIONS[booking.status];
 
   if (transitions.length === 0) {
-    return <p className="text-sm text-muted-foreground">Aucune transition possible depuis ce statut.</p>;
+    return (
+      <p className="text-sm text-muted-foreground">Aucune transition possible depuis ce statut.</p>
+    );
   }
 
   return (
@@ -5284,10 +6255,17 @@ export default function BookingsPage() {
     <div className="space-y-6">
       <div>
         <h1 className="text-2xl font-bold">Réservations</h1>
-        <p className="text-muted-foreground">Suivi des réservations de logement et de leur statut de paiement simulé.</p>
+        <p className="text-muted-foreground">
+          Suivi des réservations de logement et de leur statut de paiement simulé.
+        </p>
       </div>
       <BookingsFiltersBar filters={filters} onChange={setFilters} />
-      <DataTable columns={bookingsColumns} data={data} isLoading={isLoading} emptyMessage="Aucune réservation ne correspond à ces filtres." />
+      <DataTable
+        columns={bookingsColumns}
+        data={data}
+        isLoading={isLoading}
+        emptyMessage="Aucune réservation ne correspond à ces filtres."
+      />
     </div>
   );
 }
@@ -5317,7 +6295,10 @@ export default function BookingDetailPage() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold">{booking.listing?.title ?? 'Logement supprimé'}</h1>
-          <p className="text-muted-foreground">Locataire : {booking.renter?.full_name ?? '—'} ({booking.renter?.phone ?? 'téléphone non renseigné'})</p>
+          <p className="text-muted-foreground">
+            Locataire : {booking.renter?.full_name ?? '—'} (
+            {booking.renter?.phone ?? 'téléphone non renseigné'})
+          </p>
         </div>
         <div className="flex gap-2">
           <Badge>{BOOKING_STATUS_LABELS[booking.status]}</Badge>
@@ -5325,17 +6306,35 @@ export default function BookingDetailPage() {
         </div>
       </div>
       <Card>
-        <CardHeader><CardTitle>Détails</CardTitle></CardHeader>
+        <CardHeader>
+          <CardTitle>Détails</CardTitle>
+        </CardHeader>
         <CardContent className="grid grid-cols-2 gap-4 text-sm">
-          <div><p className="text-muted-foreground">Date de début</p><p className="font-medium">{booking.start_date}</p></div>
-          <div><p className="text-muted-foreground">Durée</p><p className="font-medium">{booking.duration_months} mois</p></div>
-          <div><p className="text-muted-foreground">Montant total</p><p className="font-medium">{booking.total_amount.toLocaleString('fr-FR')} XOF</p></div>
-          <div><p className="text-muted-foreground">Moyen de paiement</p><p className="font-medium">{booking.payment_method ?? '—'}</p></div>
+          <div>
+            <p className="text-muted-foreground">Date de début</p>
+            <p className="font-medium">{booking.start_date}</p>
+          </div>
+          <div>
+            <p className="text-muted-foreground">Durée</p>
+            <p className="font-medium">{booking.duration_months} mois</p>
+          </div>
+          <div>
+            <p className="text-muted-foreground">Montant total</p>
+            <p className="font-medium">{booking.total_amount.toLocaleString('fr-FR')} XOF</p>
+          </div>
+          <div>
+            <p className="text-muted-foreground">Moyen de paiement</p>
+            <p className="font-medium">{booking.payment_method ?? '—'}</p>
+          </div>
         </CardContent>
       </Card>
       <Card>
-        <CardHeader><CardTitle>Changer le statut</CardTitle></CardHeader>
-        <CardContent><BookingStatusActions booking={booking} /></CardContent>
+        <CardHeader>
+          <CardTitle>Changer le statut</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <BookingStatusActions booking={booking} />
+        </CardContent>
       </Card>
     </div>
   );
@@ -5359,6 +6358,7 @@ git commit -m "feat(admin): ajouter la gestion des réservations (filtres, trans
 ### Task 15: File des demandes de recherche guidée + alerte Realtime
 
 **Files:**
+
 - Create: `apps/admin/src/features/guided-search/services/guided-search.service.ts`
 - Create: `apps/admin/src/features/guided-search/hooks/use-guided-search-requests.ts`
 - Create: `apps/admin/src/features/guided-search/hooks/use-new-request-realtime-alert.ts`
@@ -5385,7 +6385,9 @@ export interface GuidedSearchFilters {
   status?: GuidedSearchStatus | 'all';
 }
 
-export async function fetchGuidedSearchRequests(filters: GuidedSearchFilters): Promise<GuidedSearchRequestWithRelations[]> {
+export async function fetchGuidedSearchRequests(
+  filters: GuidedSearchFilters,
+): Promise<GuidedSearchRequestWithRelations[]> {
   const supabase = createSupabaseBrowserClient();
   let query = supabase
     .from('guided_search_requests')
@@ -5399,7 +6401,9 @@ export async function fetchGuidedSearchRequests(filters: GuidedSearchFilters): P
   return data as unknown as GuidedSearchRequestWithRelations[];
 }
 
-export async function fetchGuidedSearchRequestDetail(id: string): Promise<GuidedSearchRequestWithRelations> {
+export async function fetchGuidedSearchRequestDetail(
+  id: string,
+): Promise<GuidedSearchRequestWithRelations> {
   const supabase = createSupabaseBrowserClient();
   const { data, error } = await supabase
     .from('guided_search_requests')
@@ -5456,7 +6460,10 @@ import {
 import type { GuidedSearchRequest, GuidedSearchStatus } from '@dakareaseu/types';
 
 export function useGuidedSearchRequests(filters: GuidedSearchFilters) {
-  return useQuery({ queryKey: ['guided-search', filters], queryFn: () => fetchGuidedSearchRequests(filters) });
+  return useQuery({
+    queryKey: ['guided-search', filters],
+    queryFn: () => fetchGuidedSearchRequests(filters),
+  });
 }
 
 export function useGuidedSearchRequestDetail(id: string | undefined) {
@@ -5478,7 +6485,8 @@ export function useMatchesForRequest(request: GuidedSearchRequest | undefined) {
 export function useSetGuidedSearchStatus() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: ({ id, status }: { id: string; status: GuidedSearchStatus }) => setGuidedSearchStatus(id, status),
+    mutationFn: ({ id, status }: { id: string; status: GuidedSearchStatus }) =>
+      setGuidedSearchStatus(id, status),
     onSuccess: (_data, variables) => {
       toast.success('Statut de la demande mis à jour.');
       queryClient.invalidateQueries({ queryKey: ['guided-search'] });
@@ -5552,6 +6560,7 @@ export function useNewGuidedSearchRequestAlert(currentUserId: string | undefined
 Édite `apps/admin/src/shared/components/dashboard-shell.tsx` :
 
 1. Modifie la signature du composant pour accepter `currentUserId` :
+
 ```tsx
 export function DashboardShell({
   adminName,
@@ -5563,26 +6572,35 @@ export function DashboardShell({
   children: React.ReactNode;
 }) {
 ```
+
 2. Ajoute l'import en haut du fichier :
+
 ```tsx
 import { useNewGuidedSearchRequestAlert } from '@/features/guided-search/hooks/use-new-request-realtime-alert';
 ```
+
 3. Ajoute, juste après la ligne `const signOut = useSignOut();`, l'appel au hook :
+
 ```tsx
-  useNewGuidedSearchRequestAlert(currentUserId);
+useNewGuidedSearchRequestAlert(currentUserId);
 ```
 
 Ensuite, édite `apps/admin/src/app/(dashboard)/layout.tsx` pour passer la nouvelle prop — remplace la ligne :
+
 ```tsx
-  return <DashboardShell adminName={profile.full_name ?? user.email ?? 'Admin'}>{children}</DashboardShell>;
+return (
+  <DashboardShell adminName={profile.full_name ?? user.email ?? 'Admin'}>{children}</DashboardShell>
+);
 ```
+
 par :
+
 ```tsx
-  return (
-    <DashboardShell adminName={profile.full_name ?? user.email ?? 'Admin'} currentUserId={user.id}>
-      {children}
-    </DashboardShell>
-  );
+return (
+  <DashboardShell adminName={profile.full_name ?? user.email ?? 'Admin'} currentUserId={user.id}>
+    {children}
+  </DashboardShell>
+);
 ```
 
 - [ ] **Step 5: Définir les colonnes**
@@ -5609,7 +6627,10 @@ export const guidedSearchColumns: ColumnDef<GuidedSearchRequestWithRelations>[] 
     id: 'student',
     header: 'Étudiant·e',
     cell: ({ row }) => (
-      <Link href={`/dashboard/guided-search/${row.original.id}`} className="font-medium hover:underline">
+      <Link
+        href={`/dashboard/guided-search/${row.original.id}`}
+        className="font-medium hover:underline"
+      >
         {row.original.student?.full_name ?? 'Étudiant·e sans nom renseigné'}
       </Link>
     ),
@@ -5666,7 +6687,10 @@ export function GuidedSearchStatusActions({ request }: { request: GuidedSearchRe
   return (
     <div className="flex flex-wrap gap-2">
       {request.status === 'open' && (
-        <Button onClick={() => mutation.mutate({ id: request.id, status: 'matched' })} disabled={mutation.isPending}>
+        <Button
+          onClick={() => mutation.mutate({ id: request.id, status: 'matched' })}
+          disabled={mutation.isPending}
+        >
           Marquer comme matchée
         </Button>
       )}
@@ -5691,7 +6715,13 @@ Crée `apps/admin/src/app/(dashboard)/guided-search/page.tsx` :
 
 import { useState } from 'react';
 import { GUIDED_SEARCH_STATUS_LABELS } from '@dakareaseu/shared';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { DataTable } from '@/shared/components/data-table';
 import { useGuidedSearchRequests } from '@/features/guided-search/hooks/use-guided-search-requests';
 import { guidedSearchColumns } from '@/features/guided-search/components/guided-search-columns';
@@ -5705,18 +6735,32 @@ export default function GuidedSearchPage() {
     <div className="space-y-6">
       <div>
         <h1 className="text-2xl font-bold">Demandes de recherche guidée</h1>
-        <p className="text-muted-foreground">Critères soumis par les étudiants via la recherche guidée.</p>
+        <p className="text-muted-foreground">
+          Critères soumis par les étudiants via la recherche guidée.
+        </p>
       </div>
-      <Select value={filters.status ?? 'all'} onValueChange={(value) => setFilters({ status: value as GuidedSearchFilters['status'] })}>
-        <SelectTrigger className="w-48"><SelectValue placeholder="Statut" /></SelectTrigger>
+      <Select
+        value={filters.status ?? 'all'}
+        onValueChange={(value) => setFilters({ status: value as GuidedSearchFilters['status'] })}
+      >
+        <SelectTrigger className="w-48">
+          <SelectValue placeholder="Statut" />
+        </SelectTrigger>
         <SelectContent>
           <SelectItem value="all">Tous les statuts</SelectItem>
           {Object.entries(GUIDED_SEARCH_STATUS_LABELS).map(([value, label]) => (
-            <SelectItem key={value} value={value}>{label}</SelectItem>
+            <SelectItem key={value} value={value}>
+              {label}
+            </SelectItem>
           ))}
         </SelectContent>
       </Select>
-      <DataTable columns={guidedSearchColumns} data={data} isLoading={isLoading} emptyMessage="Aucune demande ne correspond à ce filtre." />
+      <DataTable
+        columns={guidedSearchColumns}
+        data={data}
+        isLoading={isLoading}
+        emptyMessage="Aucune demande ne correspond à ce filtre."
+      />
     </div>
   );
 }
@@ -5746,23 +6790,52 @@ export default function GuidedSearchDetailPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold">{request.student?.full_name ?? 'Étudiant·e sans nom renseigné'}</h1>
-        <p className="text-muted-foreground">{request.student?.phone ?? 'Téléphone non renseigné'}</p>
+        <h1 className="text-2xl font-bold">
+          {request.student?.full_name ?? 'Étudiant·e sans nom renseigné'}
+        </h1>
+        <p className="text-muted-foreground">
+          {request.student?.phone ?? 'Téléphone non renseigné'}
+        </p>
       </div>
       <Card>
-        <CardHeader><CardTitle>Critères</CardTitle></CardHeader>
+        <CardHeader>
+          <CardTitle>Critères</CardTitle>
+        </CardHeader>
         <CardContent className="grid grid-cols-2 gap-4 text-sm">
-          <div><p className="text-muted-foreground">Type recherché</p><p className="font-medium">{request.housing_type}</p></div>
-          <div><p className="text-muted-foreground">École</p><p className="font-medium">{request.school?.name ?? '—'}</p></div>
-          <div><p className="text-muted-foreground">Quartier</p><p className="font-medium">{request.district ?? '—'}</p></div>
-          <div><p className="text-muted-foreground">Budget</p><p className="font-medium">{request.budget.toLocaleString('fr-FR')} XOF</p></div>
-          <div><p className="text-muted-foreground">Préférence meublé</p><p className="font-medium">{request.furnished_pref}</p></div>
-          <div><p className="text-muted-foreground">Préférence colocation</p><p className="font-medium">{request.coloc_pref}</p></div>
-          <div><p className="text-muted-foreground">Durée souhaitée</p><p className="font-medium">{request.duration_months} mois</p></div>
+          <div>
+            <p className="text-muted-foreground">Type recherché</p>
+            <p className="font-medium">{request.housing_type}</p>
+          </div>
+          <div>
+            <p className="text-muted-foreground">École</p>
+            <p className="font-medium">{request.school?.name ?? '—'}</p>
+          </div>
+          <div>
+            <p className="text-muted-foreground">Quartier</p>
+            <p className="font-medium">{request.district ?? '—'}</p>
+          </div>
+          <div>
+            <p className="text-muted-foreground">Budget</p>
+            <p className="font-medium">{request.budget.toLocaleString('fr-FR')} XOF</p>
+          </div>
+          <div>
+            <p className="text-muted-foreground">Préférence meublé</p>
+            <p className="font-medium">{request.furnished_pref}</p>
+          </div>
+          <div>
+            <p className="text-muted-foreground">Préférence colocation</p>
+            <p className="font-medium">{request.coloc_pref}</p>
+          </div>
+          <div>
+            <p className="text-muted-foreground">Durée souhaitée</p>
+            <p className="font-medium">{request.duration_months} mois</p>
+          </div>
         </CardContent>
       </Card>
       <Card>
-        <CardHeader><CardTitle>Meilleurs logements correspondants (RPC match_listings)</CardTitle></CardHeader>
+        <CardHeader>
+          <CardTitle>Meilleurs logements correspondants (RPC match_listings)</CardTitle>
+        </CardHeader>
         <CardContent>
           {matchesLoading ? (
             <Skeleton className="h-32 w-full" />
@@ -5771,9 +6844,16 @@ export default function GuidedSearchDetailPage() {
           ) : (
             <ul className="space-y-2 text-sm">
               {matches.map((match) => (
-                <li key={match.listing_id} className="flex items-center justify-between rounded-md border p-3">
-                  <span className="font-mono text-xs text-muted-foreground">{match.listing_id}</span>
-                  <span className="font-semibold">{match.match_pct}% — {match.reasons.join(', ')}</span>
+                <li
+                  key={match.listing_id}
+                  className="flex items-center justify-between rounded-md border p-3"
+                >
+                  <span className="font-mono text-xs text-muted-foreground">
+                    {match.listing_id}
+                  </span>
+                  <span className="font-semibold">
+                    {match.match_pct}% — {match.reasons.join(', ')}
+                  </span>
                 </li>
               ))}
             </ul>
@@ -5781,8 +6861,12 @@ export default function GuidedSearchDetailPage() {
         </CardContent>
       </Card>
       <Card>
-        <CardHeader><CardTitle>Changer le statut</CardTitle></CardHeader>
-        <CardContent><GuidedSearchStatusActions request={request} /></CardContent>
+        <CardHeader>
+          <CardTitle>Changer le statut</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <GuidedSearchStatusActions request={request} />
+        </CardContent>
       </Card>
     </div>
   );
@@ -5806,6 +6890,7 @@ git commit -m "feat(admin): ajouter la file des demandes de recherche guidée av
 ### Task 16: Modération des avis (visualisation + suppression)
 
 **Files:**
+
 - Create: `apps/admin/src/features/reviews/services/reviews.service.ts`
 - Create: `apps/admin/src/features/reviews/hooks/use-reviews.ts`
 - Create: `apps/admin/src/features/reviews/components/reviews-columns.tsx`
@@ -5836,7 +6921,8 @@ export async function fetchReviews(filters: ReviewsFilters): Promise<ReviewWithA
     .select('*, author:profiles(id, full_name)')
     .order('created_at', { ascending: false });
 
-  if (filters.targetType && filters.targetType !== 'all') query = query.eq('target_type', filters.targetType);
+  if (filters.targetType && filters.targetType !== 'all')
+    query = query.eq('target_type', filters.targetType);
 
   const { data, error } = await query;
   if (error) throw error;
@@ -5908,7 +6994,11 @@ export const reviewsColumns: ColumnDef<ReviewWithAuthor>[] = [
   {
     accessorKey: 'target_type',
     header: 'Cible',
-    cell: ({ row }) => <Badge variant="outline">{TARGET_TYPE_LABELS[row.original.target_type] ?? row.original.target_type}</Badge>,
+    cell: ({ row }) => (
+      <Badge variant="outline">
+        {TARGET_TYPE_LABELS[row.original.target_type] ?? row.original.target_type}
+      </Badge>
+    ),
   },
   {
     accessorKey: 'rating',
@@ -5935,7 +7025,12 @@ export const reviewsColumns: ColumnDef<ReviewWithAuthor>[] = [
 function DeleteReviewButton({ reviewId }: { reviewId: string }) {
   const mutation = useDeleteReview();
   return (
-    <Button variant="ghost" size="sm" onClick={() => mutation.mutate(reviewId)} disabled={mutation.isPending}>
+    <Button
+      variant="ghost"
+      size="sm"
+      onClick={() => mutation.mutate(reviewId)}
+      disabled={mutation.isPending}
+    >
       Supprimer
     </Button>
   );
@@ -5950,7 +7045,13 @@ Crée `apps/admin/src/app/(dashboard)/reviews/page.tsx` :
 'use client';
 
 import { useState } from 'react';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { DataTable } from '@/shared/components/data-table';
 import { useReviews } from '@/features/reviews/hooks/use-reviews';
 import { reviewsColumns } from '@/features/reviews/components/reviews-columns';
@@ -5971,20 +7072,31 @@ export default function ReviewsPage() {
     <div className="space-y-6">
       <div>
         <h1 className="text-2xl font-bold">Modération des avis</h1>
-        <p className="text-muted-foreground">Visualisez et supprimez les avis problématiques (logements, restaurants, séjours).</p>
+        <p className="text-muted-foreground">
+          Visualisez et supprimez les avis problématiques (logements, restaurants, séjours).
+        </p>
       </div>
       <Select
         value={filters.targetType ?? 'all'}
         onValueChange={(value) => setFilters({ targetType: value as ReviewsFilters['targetType'] })}
       >
-        <SelectTrigger className="w-48"><SelectValue /></SelectTrigger>
+        <SelectTrigger className="w-48">
+          <SelectValue />
+        </SelectTrigger>
         <SelectContent>
           {TARGET_TYPE_OPTIONS.map((option) => (
-            <SelectItem key={option.value} value={option.value}>{option.label}</SelectItem>
+            <SelectItem key={option.value} value={option.value}>
+              {option.label}
+            </SelectItem>
           ))}
         </SelectContent>
       </Select>
-      <DataTable columns={reviewsColumns} data={data} isLoading={isLoading} emptyMessage="Aucun avis enregistré." />
+      <DataTable
+        columns={reviewsColumns}
+        data={data}
+        isLoading={isLoading}
+        emptyMessage="Aucun avis enregistré."
+      />
     </div>
   );
 }
@@ -6007,6 +7119,7 @@ git commit -m "feat(admin): ajouter la modération des avis (visualisation, filt
 ### Task 17: Gestion des utilisateurs (liste, rôles, blocage — exception service-role pour `auth.users`)
 
 **Files:**
+
 - Create: `apps/admin/src/app/api/users/route.ts`
 - Create: `apps/admin/src/features/users/services/users.service.ts`
 - Create: `apps/admin/src/features/users/hooks/use-users.ts`
@@ -6046,7 +7159,11 @@ export async function GET() {
     return NextResponse.json({ error: 'Non authentifié.' }, { status: 401 });
   }
 
-  const { data: requesterProfile } = await supabase.from('profiles').select('role').eq('id', user.id).single();
+  const { data: requesterProfile } = await supabase
+    .from('profiles')
+    .select('role')
+    .eq('id', user.id)
+    .single();
   if (requesterProfile?.role !== 'admin') {
     return NextResponse.json({ error: 'Accès réservé aux administrateurs.' }, { status: 403 });
   }
@@ -6062,7 +7179,9 @@ export async function GET() {
     return NextResponse.json({ error: profilesError.message }, { status: 500 });
   }
 
-  const { data: authUsers, error: authError } = await adminClient.auth.admin.listUsers({ perPage: 1000 });
+  const { data: authUsers, error: authError } = await adminClient.auth.admin.listUsers({
+    perPage: 1000,
+  });
   if (authError) {
     return NextResponse.json({ error: authError.message }, { status: 500 });
   }
@@ -6150,7 +7269,15 @@ describe('GET /api/users', () => {
       error: null,
     });
     listUsersMock.mockResolvedValue({
-      data: { users: [{ id: 'student-1', email: 'aminata@example.com', last_sign_in_at: '2026-02-01T00:00:00Z' }] },
+      data: {
+        users: [
+          {
+            id: 'student-1',
+            email: 'aminata@example.com',
+            last_sign_in_at: '2026-02-01T00:00:00Z',
+          },
+        ],
+      },
       error: null,
     });
 
@@ -6205,7 +7332,10 @@ export async function fetchAdminUsers(): Promise<AdminUserRow[]> {
  */
 export async function setUserBlocked(userId: string, isBlocked: boolean): Promise<void> {
   const supabase = createSupabaseBrowserClient();
-  const { error } = await supabase.from('profiles').update({ is_blocked: isBlocked }).eq('id', userId);
+  const { error } = await supabase
+    .from('profiles')
+    .update({ is_blocked: isBlocked })
+    .eq('id', userId);
   if (error) throw error;
 }
 ```
@@ -6228,7 +7358,8 @@ export function useAdminUsers() {
 export function useSetUserBlocked() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: ({ userId, isBlocked }: { userId: string; isBlocked: boolean }) => setUserBlocked(userId, isBlocked),
+    mutationFn: ({ userId, isBlocked }: { userId: string; isBlocked: boolean }) =>
+      setUserBlocked(userId, isBlocked),
     onSuccess: (_data, variables) => {
       toast.success(variables.isBlocked ? 'Compte bloqué.' : 'Compte débloqué.');
       queryClient.invalidateQueries({ queryKey: ['users'] });
@@ -6258,17 +7389,26 @@ export const usersColumns: ColumnDef<AdminUserRow>[] = [
   {
     accessorKey: 'role',
     header: 'Rôle',
-    cell: ({ row }) => <Badge variant={row.original.role === 'admin' ? 'default' : 'secondary'}>{row.original.role}</Badge>,
+    cell: ({ row }) => (
+      <Badge variant={row.original.role === 'admin' ? 'default' : 'secondary'}>
+        {row.original.role}
+      </Badge>
+    ),
   },
   {
     accessorKey: 'verificationStatus',
     header: 'Vérification',
-    cell: ({ row }) => VERIFICATION_STATUS_LABELS[row.original.verificationStatus] ?? row.original.verificationStatus,
+    cell: ({ row }) =>
+      VERIFICATION_STATUS_LABELS[row.original.verificationStatus] ??
+      row.original.verificationStatus,
   },
   {
     accessorKey: 'lastSignInAt',
     header: 'Dernière connexion',
-    cell: ({ row }) => (row.original.lastSignInAt ? new Date(row.original.lastSignInAt).toLocaleString('fr-FR') : 'Jamais'),
+    cell: ({ row }) =>
+      row.original.lastSignInAt
+        ? new Date(row.original.lastSignInAt).toLocaleString('fr-FR')
+        : 'Jamais',
   },
   {
     id: 'blockToggle',
@@ -6311,11 +7451,16 @@ export default function UsersPage() {
       <div>
         <h1 className="text-2xl font-bold">Utilisateurs</h1>
         <p className="text-muted-foreground">
-          Liste des comptes (email et dernière connexion via `auth.users`, lus côté serveur avec la clé service-role —
-          seule exception RLS documentée pour cette fonctionnalité).
+          Liste des comptes (email et dernière connexion via `auth.users`, lus côté serveur avec la
+          clé service-role — seule exception RLS documentée pour cette fonctionnalité).
         </p>
       </div>
-      <DataTable columns={usersColumns} data={data} isLoading={isLoading} emptyMessage="Aucun utilisateur enregistré." />
+      <DataTable
+        columns={usersColumns}
+        data={data}
+        isLoading={isLoading}
+        emptyMessage="Aucun utilisateur enregistré."
+      />
     </div>
   );
 }
@@ -6338,6 +7483,7 @@ git commit -m "feat(admin): ajouter la gestion des utilisateurs (liste fusionné
 ### Task 18: Configuration des tests (Vitest + React Testing Library) et exécution complète de la suite
 
 **Files:**
+
 - Create: `apps/admin/vitest.config.ts`
 - Create: `apps/admin/vitest.setup.ts`
 - Modify: `apps/admin/package.json`
@@ -6348,10 +7494,12 @@ git commit -m "feat(admin): ajouter la gestion des utilisateurs (liste fusionné
 - [ ] **Step 1: Installer les dépendances de test**
 
 Run (depuis `apps/admin`) :
+
 ```bash
 cd apps/admin
 pnpm add -D vitest @vitejs/plugin-react jsdom @testing-library/react @testing-library/jest-dom @testing-library/user-event
 ```
+
 Expected: les paquets apparaissent dans `devDependencies`.
 
 - [ ] **Step 2: Créer la configuration Vitest**
@@ -6429,6 +7577,7 @@ git commit -m "test(admin): configurer Vitest + React Testing Library et valider
 ### Task 19: Déploiement Vercel — `next.config`, vérification de non-fuite de la clé service-role, build de production
 
 **Files:**
+
 - Modify: `apps/admin/next.config.mjs`
 - Create: `apps/admin/.env.example` (à la racine de `apps/admin`, distinct de `.env.local.example` créé en Task 0 — celui-ci documente toutes les variables pour Vercel/CI)
 
@@ -6493,14 +7642,17 @@ SUPABASE_SERVICE_ROLE_KEY=<service-role-key>
 - [ ] **Step 3: Vérifier qu'aucun fichier client ne référence la clé service-role**
 
 Run (PowerShell, depuis la racine du repo) :
+
 ```powershell
 Get-ChildItem -Path "apps\admin\src" -Recurse -Include *.ts,*.tsx |
   Select-String -Pattern "SUPABASE_SERVICE_ROLE_KEY" |
   Where-Object { $_.Path -notmatch "admin-client\.ts$" -and $_.Path -notmatch "\.test\.(ts|tsx)$" }
 ```
+
 Expected: **aucune sortie**. Toute ligne affichée signale une fuite potentielle de la clé service-role hors de `admin-client.ts` — corrige immédiatement en remplaçant la référence par `createSupabaseAdminClient()` (qui encapsule la lecture de la variable) ou par le client RLS standard si l'opération ne nécessite pas service-role.
 
 Run (vérifie également qu'aucun composant `'use client'` n'importe `admin-client`) :
+
 ```powershell
 $clientFiles = Get-ChildItem -Path "apps\admin\src" -Recurse -Include *.tsx,*.ts |
   Select-String -Pattern "^'use client'" -List | Select-Object -ExpandProperty Path
@@ -6508,6 +7660,7 @@ foreach ($file in $clientFiles) {
   Select-String -Path $file -Pattern "lib/supabase/admin-client" | ForEach-Object { Write-Output "FUITE POTENTIELLE: $($_.Path)" }
 }
 ```
+
 Expected: aucune ligne `FUITE POTENTIELLE`.
 
 - [ ] **Step 4: Build de production complet**

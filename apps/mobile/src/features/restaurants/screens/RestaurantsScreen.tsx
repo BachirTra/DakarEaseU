@@ -1,35 +1,37 @@
-import { useState } from "react";
-import { FlatList, Pressable, Text, TextInput, View } from "react-native";
-import { useRouter } from "expo-router";
-import { Screen } from "@/shared/ui/Screen";
-import { EmptyState } from "@/shared/ui/EmptyState";
-import { useTranslation } from "@/hooks/useTranslation";
-import { useRestaurants } from "@/features/restaurants/hooks/useRestaurants";
+import { useState } from 'react';
+import { FlatList, Pressable, Text, TextInput, View } from 'react-native';
+import { useRouter } from 'expo-router';
+import { Screen } from '@/shared/ui/Screen';
+import { EmptyState } from '@/shared/ui/EmptyState';
+import { useTranslation } from '@/hooks/useTranslation';
+import { useRestaurants } from '@/features/restaurants/hooks/useRestaurants';
 
 export function RestaurantsScreen() {
   const { t } = useTranslation();
   const router = useRouter();
-  const [query, setQuery] = useState("");
+  const [query, setQuery] = useState('');
   const { data: restaurants, isLoading } = useRestaurants();
 
-  const filtered = (restaurants ?? []).filter((r: NonNullable<typeof restaurants>[number]) => r.name.toLowerCase().includes(query.trim().toLowerCase()));
+  const filtered = (restaurants ?? []).filter((r: NonNullable<typeof restaurants>[number]) =>
+    r.name.toLowerCase().includes(query.trim().toLowerCase()),
+  );
 
   return (
     <Screen>
-      <Text className="mb-3 mt-2 text-xl font-bold text-text">{t("restaurants.title")}</Text>
+      <Text className="mb-3 mt-2 text-xl font-bold text-text">{t('restaurants.title')}</Text>
       <View className="mb-3 flex-row items-center rounded-xl border border-border bg-card px-4 py-3">
         <Text className="mr-2 text-textLight">🔍</Text>
         <TextInput
           value={query}
           onChangeText={setQuery}
-          placeholder={t("restaurants.searchPlaceholder")}
+          placeholder={t('restaurants.searchPlaceholder')}
           placeholderTextColor="#6B7280"
           className="flex-1 text-sm text-text"
         />
       </View>
 
       {isLoading ? null : filtered.length === 0 ? (
-        <EmptyState icon="🍽️" title={t("search.noResults")} />
+        <EmptyState icon="🍽️" title={t('search.noResults')} />
       ) : (
         <FlatList
           data={filtered}
@@ -39,14 +41,25 @@ export function RestaurantsScreen() {
           contentContainerStyle={{ paddingBottom: 32 }}
           renderItem={({ item }) => (
             <Pressable
-              onPress={() => router.push({ pathname: "/(tabs)/search/restaurants/[id]", params: { id: item.id } })}
+              onPress={() =>
+                router.push({
+                  pathname: '/(tabs)/search/restaurants/[id]',
+                  params: { id: item.id },
+                })
+              }
               className="flex-row items-center overflow-hidden rounded-2xl border border-border bg-card p-3"
             >
               <View className="ml-1 flex-1">
-                <Text numberOfLines={1} className="text-sm font-semibold text-text">{item.name}</Text>
-                <Text className="text-xs text-textLight">{item.cuisine_type} · {item.price_range} · {item.district}</Text>
+                <Text numberOfLines={1} className="text-sm font-semibold text-text">
+                  {item.name}
+                </Text>
+                <Text className="text-xs text-textLight">
+                  {item.cuisine_type} · {item.price_range} · {item.district}
+                </Text>
               </View>
-              {item.rating != null ? <Text className="text-xs text-textLight">★ {item.rating.toFixed(1)}</Text> : null}
+              {item.rating != null ? (
+                <Text className="text-xs text-textLight">★ {item.rating.toFixed(1)}</Text>
+              ) : null}
             </Pressable>
           )}
         />

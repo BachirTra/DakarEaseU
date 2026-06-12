@@ -1,6 +1,6 @@
-import { supabase } from "@/lib/supabase";
-import type { GuidedSearchInput } from "@/features/housing/schemas/guidedSearchSchemas";
-import type { MatchListingsArgs } from "@dakareaseu/types";
+import { supabase } from '@/lib/supabase';
+import type { GuidedSearchInput } from '@/features/housing/schemas/guidedSearchSchemas';
+import type { MatchListingsArgs } from '@dakareaseu/types';
 
 export function toMatchListingsArgs(input: GuidedSearchInput): MatchListingsArgs {
   return {
@@ -20,7 +20,7 @@ export async function createGuidedSearchRequest(params: {
 }) {
   const { input } = params;
   const { data, error } = await supabase
-    .from("guided_search_requests")
+    .from('guided_search_requests')
     .insert({
       user_id: params.userId,
       housing_type: input.type,
@@ -30,9 +30,9 @@ export async function createGuidedSearchRequest(params: {
       duration_months: input.months,
       furnished_pref: input.furnished,
       coloc_pref: input.coloc,
-      status: "open",
+      status: 'open',
     })
-    .select("*")
+    .select('*')
     .single();
   if (error) throw error;
   return data;

@@ -24,6 +24,7 @@ Ce plan est l'un de quatre plans frères écrits en parallèle (socle Supabase d
 ### Task 1: Poser le squelette du monorepo (répertoires + `package.json` racine + workspaces)
 
 **Files:**
+
 - Create: `package.json` (racine — actuellement vide)
 - Create: `apps/mobile/.gitkeep` (placeholder si le dossier n'existe pas encore)
 - Create: `apps/admin/.gitkeep` (placeholder si le dossier n'existe pas encore)
@@ -38,6 +39,7 @@ Expected: liste les sous-dossiers existants (probablement aucun pour `apps/*` et
 - [ ] **Step 2: Créer les répertoires manquants avec un `.gitkeep`**
 
 Run (PowerShell — adapte si certains dossiers existent déjà, ignore les erreurs "already exists") :
+
 ```powershell
 foreach ($dir in @('apps/mobile', 'apps/admin', 'packages/shared', 'supabase')) {
   if (-not (Test-Path $dir)) { New-Item -ItemType Directory -Force $dir | Out-Null }
@@ -47,6 +49,7 @@ foreach ($dir in @('apps/mobile', 'apps/admin', 'packages/shared', 'supabase')) 
   }
 }
 ```
+
 Expected: aucune erreur ; `Get-ChildItem -Directory apps, packages` montre désormais `apps/mobile`, `apps/admin`, `packages/shared` (et `packages/types` apparaîtra une fois le plan socle exécuté).
 
 - [ ] **Step 3: Écrire le `package.json` racine**
@@ -59,10 +62,7 @@ Remplace le contenu (vide) de `package.json` par :
   "version": "0.1.0",
   "private": true,
   "description": "DakarEaseU — super-app étudiante pour Dakar (mobile Expo + dashboard admin Next.js + backend Supabase)",
-  "workspaces": [
-    "apps/*",
-    "packages/*"
-  ],
+  "workspaces": ["apps/*", "packages/*"],
   "engines": {
     "node": ">=20.0.0"
   },
@@ -104,6 +104,7 @@ git commit -m "chore(infra): poser le squelette du monorepo npm workspaces (apps
 ### Task 2: Configuration TypeScript, ESLint et Prettier racine
 
 **Files:**
+
 - Create: `tsconfig.base.json`
 - Create: `.eslintrc.json`
 - Create: `.prettierrc.json`
@@ -146,11 +147,7 @@ Chaque package/app référence ce fichier via `"extends": "../../tsconfig.base.j
     "project": false
   },
   "plugins": ["@typescript-eslint"],
-  "extends": [
-    "eslint:recommended",
-    "plugin:@typescript-eslint/recommended",
-    "prettier"
-  ],
+  "extends": ["eslint:recommended", "plugin:@typescript-eslint/recommended", "prettier"],
   "env": {
     "es2022": true,
     "node": true
@@ -167,7 +164,10 @@ Chaque package/app référence ce fichier via `"extends": "../../tsconfig.base.j
     "supabase/.temp"
   ],
   "rules": {
-    "@typescript-eslint/no-unused-vars": ["warn", { "argsIgnorePattern": "^_", "varsIgnorePattern": "^_" }],
+    "@typescript-eslint/no-unused-vars": [
+      "warn",
+      { "argsIgnorePattern": "^_", "varsIgnorePattern": "^_" }
+    ],
     "@typescript-eslint/no-explicit-any": "warn",
     "no-console": ["warn", { "allow": ["warn", "error"] }]
   }
@@ -213,6 +213,7 @@ packages/types/src/database.types.ts
 
 Run: `node -e "for (const f of ['tsconfig.base.json', '.eslintrc.json', '.prettierrc.json']) { JSON.parse(require('fs').readFileSync(f, 'utf-8')); console.log(f, 'valide'); }"`
 Expected:
+
 ```
 tsconfig.base.json valide
 .eslintrc.json valide
@@ -231,6 +232,7 @@ git commit -m "chore(infra): ajouter la configuration TypeScript/ESLint/Prettier
 ### Task 3: Réécrire le `.gitignore` racine (le fichier existant est un brouillon entièrement commenté)
 
 **Files:**
+
 - Modify: `.gitignore` (actuellement constitué de lignes commentées sans effet — `# prompt.md`, `# docs/`, etc., aucune ne s'applique réellement)
 
 - [ ] **Step 1: Constater le problème**
@@ -336,6 +338,7 @@ git commit -m "chore(infra): remplacer le .gitignore inerte par une version comp
 ### Task 4: Scaffold `packages/shared` — constantes transverses et schémas Zod de base
 
 **Files:**
+
 - Create: `packages/shared/package.json`
 - Create: `packages/shared/tsconfig.json`
 - Create: `packages/shared/src/constants.ts`
@@ -396,14 +399,7 @@ Valeurs reprises telles quelles de `design/dakar-ease/project/data.jsx` (`DISTRI
  */
 
 /** Quartiers de Dakar couverts par le moteur de recherche (logements/restaurants). */
-export const DISTRICTS = [
-  'Almadies',
-  'Fann',
-  'Mermoz',
-  'Sacré-Cœur',
-  'Ouakam',
-  'Point E',
-] as const;
+export const DISTRICTS = ['Almadies', 'Fann', 'Mermoz', 'Sacré-Cœur', 'Ouakam', 'Point E'] as const;
 
 export type District = (typeof DISTRICTS)[number];
 
@@ -531,10 +527,12 @@ Expected: aucune sortie (le fichier est supprimé silencieusement, ou n'existait
 - [ ] **Step 7: Installer les dépendances et vérifier la compilation**
 
 Run (depuis la racine du repo) :
+
 ```bash
 npm install
 cd packages/shared && npx tsc --noEmit && cd ../..
 ```
+
 Expected: `npm install` se termine sans erreur (crée `node_modules/` et `package-lock.json` à la racine, lie `@dakareaseu/shared` en symlink dans `node_modules/@dakareaseu/`) ; `npx tsc --noEmit` ne produit aucune sortie (0 erreur de type).
 
 - [ ] **Step 8: Commit**
@@ -549,6 +547,7 @@ git commit -m "feat(shared): scaffold packages/shared (constantes transverses + 
 ### Task 5: Écrire `.env.example` (racine) — référence complète de toutes les variables
 
 **Files:**
+
 - Create: `.env.example`
 
 > Cette tâche écrit la liste **exhaustive et commentée** des variables nécessaires à travers `supabase/`, `apps/mobile`, `apps/admin`. Elle est strictement cohérente avec la section "Avant de commencer" du plan socle (`SUPABASE_URL`, `SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`, `SUPABASE_PROJECT_REF`, `SUPABASE_DB_PASSWORD`) — ne duplique pas ses explications, les complète avec les variables `EXPO_PUBLIC_*`/`NEXT_PUBLIC_*` consommées par les deux frontends.
@@ -682,6 +681,7 @@ git commit -m "docs(infra): documenter toutes les variables d'environnement dans
 ### Task 6: Remplir le `.env` racine avec la même structure (placeholders)
 
 **Files:**
+
 - Modify: `.env` (racine, actuellement vide)
 
 > Le vrai contenu de `.env` ne peut pas être connu à ce stade (les comptes externes n'existent pas encore — c'est précisément ce que `SETUP.md` guide le porteur de projet à créer). Cette tâche pose donc la **même structure** que `.env.example`, avec les mêmes placeholders, comme point de départ explicite : le porteur de projet n'a plus qu'à remplacer chaque `<...>`/`xxxx...` par la vraie valeur, sans deviner quelles variables sont attendues.
@@ -689,9 +689,11 @@ git commit -m "docs(infra): documenter toutes les variables d'environnement dans
 - [ ] **Step 1: Copier la structure de `.env.example` vers `.env`**
 
 Run (PowerShell) :
+
 ```powershell
 Copy-Item .env.example .env -Force
 ```
+
 Expected: `.env` contient désormais exactement le même texte que `.env.example` (mêmes placeholders).
 
 - [ ] **Step 2: Adapter l'en-tête pour refléter qu'il s'agit du fichier RÉEL (pas de la référence)**
@@ -727,6 +729,7 @@ Expected: `OK: .env est ignoré`
 ### Task 7: Écrire le `Dockerfile` racine et `.dockerignore`
 
 **Files:**
+
 - Create: `Dockerfile` (actuellement vide)
 - Create: `.dockerignore`
 
@@ -855,6 +858,7 @@ git commit -m "feat(infra): ajouter le Dockerfile multi-stage pour apps/admin (p
 ### Task 8: Pipeline CI — `.github/workflows/ci.yml` (Lint → TypeCheck → Tests → Build)
 
 **Files:**
+
 - Create: `.github/workflows/ci.yml`
 
 - [ ] **Step 1: Écrire le contenu complet du workflow**
@@ -961,6 +965,7 @@ jobs:
 ```
 
 > Notes de conception :
+>
 > - Jobs **séquentiels** (`needs:`) plutôt qu'une matrice unique : reflète l'ordre `Lint → Type Check → Tests → Build` exigé par prompt.md §2/§12, et fait échouer la pipeline tôt (lint cassé = pas la peine de lancer les tests).
 > - `--workspaces --if-present` fan-out automatiquement sur `apps/mobile`, `apps/admin`, `packages/shared`, `packages/types` — chacun expose (ou non) `lint`/`typecheck`/`test`/`build` selon ses besoins (les plans `mobile-app`/`admin-dashboard` posent ces scripts dans leurs `package.json` respectifs ; `--if-present` évite que l'absence d'un script dans un package fasse échouer toute la CI).
 > - Cache npm natif via `actions/setup-node@v4` + `cache: 'npm'` (basé sur `package-lock.json`) — pas besoin de configuration manuelle de cache.
@@ -985,6 +990,7 @@ git commit -m "ci: ajouter le pipeline CI (lint, typecheck, tests, build) sur PR
 ### Task 9: Pipeline CD — `.github/workflows/deploy-admin.yml` (déploiement Vercel)
 
 **Files:**
+
 - Create: `.github/workflows/deploy-admin.yml`
 
 > Approche retenue : **`amondnet/vercel-action`**, déclenchée depuis GitHub Actions sur push vers `main` (production) et sur Pull Request vers `main` (preview). C'est l'approche la plus simple à auditer et la plus explicite dans le pipeline (vs. l'intégration Git native de Vercel qui déploie "en silence" sans passer par nos jobs CI). Elle nécessite trois secrets GitHub (`VERCEL_TOKEN`, `VERCEL_ORG_ID`, `VERCEL_PROJECT_ID`) — obtenus en suivant `SETUP.md` §4, à ajouter dans **Repo GitHub → Settings → Secrets and variables → Actions → New repository secret**.
@@ -1039,6 +1045,7 @@ jobs:
 ```
 
 > Notes :
+>
 > - `paths:` limite le déclenchement aux changements pertinents pour l'admin (et ses dépendances `packages/*`) — évite de redéployer l'admin sur chaque commit mobile.
 > - `vercel-args` bascule automatiquement entre déploiement de preview (PR) et production (`--prod`, uniquement sur push `main`) — couvre exactement l'exigence de prompt.md §12 ("preview sur PR, prod sur `main`").
 > - `working-directory: apps/admin` suppose que le projet Vercel est configuré avec **Root Directory = `apps/admin`** (cf. Task 11 et `SETUP.md` §4) — Vercel détecte alors automatiquement le framework Next.js sans configuration supplémentaire.
@@ -1061,6 +1068,7 @@ git commit -m "ci: ajouter le pipeline de déploiement Vercel pour apps/admin (p
 ### Task 10: Pipeline CD — `.github/workflows/deploy-mobile.yml` (build EAS sur tag/déclenchement manuel)
 
 **Files:**
+
 - Create: `.github/workflows/deploy-mobile.yml`
 
 > Approche retenue : **`expo/expo-github-action`**, déclenchée **manuellement** (`workflow_dispatch`) ou sur **tag** `mobile-v*` — PAS sur chaque push, conformément à prompt.md §12 ("les builds natifs sont longs et coûteux — ne pas les lancer sur chaque push"). Nécessite le secret GitHub `EXPO_TOKEN` (cf. `SETUP.md` §3).
@@ -1129,6 +1137,7 @@ jobs:
 ```
 
 > Notes :
+>
 > - `workflow_dispatch` avec des `inputs` permet de choisir le profil EAS (`development`/`preview`/`production`, cf. Task 12 — `apps/mobile/eas.json`) et la plateforme directement depuis l'onglet "Actions" de GitHub — aucune ligne de commande nécessaire pour le porteur de projet.
 > - Déclenchement secondaire sur tag `mobile-v*` (ex. `git tag mobile-v1.0.0 && git push --tags`) pour les sorties versionnées formelles.
 > - `--no-wait` : le job GitHub Actions ne bloque pas pendant toute la durée du build natif (10–30 min) — le build continue sur l'infrastructure EAS, suivable depuis le dashboard Expo. Évite de consommer des minutes GitHub Actions inutilement (coût).
@@ -1151,6 +1160,7 @@ git commit -m "ci: ajouter le pipeline de build EAS pour apps/mobile (déclenche
 ### Task 11: Configuration Vercel pour `apps/admin`
 
 **Files:**
+
 - Create: `apps/admin/vercel.json`
 
 > Pour la majorité des projets Next.js dans un monorepo, **Vercel détecte automatiquement le framework** dès lors que le "Root Directory" du projet est réglé sur `apps/admin` dans les réglages du projet Vercel (cf. `SETUP.md` §4 — aucune action requise dans ce cas). On ajoute néanmoins un `vercel.json` minimal pour : (a) documenter explicitement les commandes attendues si jamais l'auto-détection échoue dans un contexte monorepo, (b) fixer la région de déploiement proche de la cible utilisateur (Afrique de l'Ouest → Europe la plus proche desservie par Vercel).
@@ -1169,6 +1179,7 @@ git commit -m "ci: ajouter le pipeline de build EAS pour apps/mobile (déclenche
 ```
 
 > Notes :
+>
 > - `cdg1` = région Vercel à Paris — la plus proche géographiquement de Dakar parmi les régions disponibles, minimise la latence pour les admins basés au Sénégal/en France.
 > - `buildCommand`/`installCommand` préfixés par `cd ../..` : nécessaire dans un monorepo npm workspaces pour que `npm ci`/`npm run build --workspace=...` s'exécutent depuis la racine (où vit `package-lock.json`) plutôt que depuis `apps/admin` seul — sinon Vercel ne résout pas les dépendances `@dakareaseu/shared`/`@dakareaseu/types`.
 > - Si le porteur de projet configure le projet Vercel avec **Root Directory = `apps/admin`** ET que la case "Include source files outside of the Root Directory" est cochée (recommandé pour les monorepos, cf. `SETUP.md` §4), Vercel gère cela nativement et ce fichier sert surtout de documentation/garde-fou explicite.
@@ -1190,6 +1201,7 @@ git commit -m "chore(infra): configurer vercel.json pour apps/admin (région cdg
 ### Task 12: Configuration EAS pour `apps/mobile` (`eas.json` + essentiels `app.json`)
 
 **Files:**
+
 - Create: `apps/mobile/eas.json`
 - Create: `apps/mobile/app.json` (squelette minimal — étendu par le plan `mobile-app` avec le contenu spécifique aux écrans/assets)
 
@@ -1248,6 +1260,7 @@ git commit -m "chore(infra): configurer vercel.json pour apps/admin (région cdg
 ```
 
 > Notes :
+>
 > - **Trois profils** `development`/`preview`/`production` exactement comme demandé : `development` (client de dev avec hot-reload, distribution interne, simulateur iOS activé), `preview` (build interne partageable type APK, pour tests sans passer par les stores), `production` (build store : `app-bundle` Android / soumission iOS via `submit`).
 > - Les valeurs `EXPO_PUBLIC_SUPABASE_URL`/`EXPO_PUBLIC_SUPABASE_ANON_KEY` ici sont des **placeholders explicites** (`https://xxxx...`, `eyJ...`) — le porteur de projet les remplace par les vraies valeurs (les mêmes que dans `.env`/`.env.example`, cf. Task 5). Alternative plus propre à terme : utiliser `eas secret:create` pour stocker ces valeurs côté EAS plutôt qu'en clair dans `eas.json` (documenté dans `SETUP.md` §3 comme amélioration possible — YAGNI pour le MVP, la clé anon est de toute façon publique).
 > - `appVersionSource: "remote"` : EAS gère l'incrémentation de version de build automatiquement — évite les conflits de versions lors de builds parallèles.
@@ -1313,6 +1326,7 @@ git commit -m "chore(infra): configurer vercel.json pour apps/admin (région cdg
 ```
 
 > Notes :
+>
 > - `bundleIdentifier`/`package` = `sn.dakareaseu.app` : suit la convention `<TLD-pays>.<produit>.<app>` (`.sn` = Sénégal), cohérent avec "DakarEaseU partout" (prompt.md §1 — renommage complet, aucune trace de "Dakar'ease").
 > - Plugins listés correspondent aux besoins identifiés dans le spec : `expo-image-picker` (upload carte étudiante à l'onboarding §9 "auth", photos d'avatar/annonces) et `expo-notifications` (notifications ciblées Realtime §4.5/§9 "notifications"). Les permissions caméra/photos sont déclarées avec des messages en français, contextualisés à l'usage réel (carte étudiante).
 > - `extra.eas.projectId` et `owner` sont des **placeholders explicites** (`00000000-...`, `<expo-username-or-org-slug>`) — remplacés une fois le compte Expo et le projet EAS créés (cf. `SETUP.md` §3 ; `eas init` peut aussi remplir `projectId` automatiquement).
@@ -1322,6 +1336,7 @@ git commit -m "chore(infra): configurer vercel.json pour apps/admin (région cdg
 
 Run: `node -e "for (const f of ['apps/mobile/eas.json', 'apps/mobile/app.json']) { JSON.parse(require('fs').readFileSync(f, 'utf-8')); console.log(f, 'valide'); }"`
 Expected:
+
 ```
 apps/mobile/eas.json valide
 apps/mobile/app.json valide
@@ -1339,13 +1354,14 @@ git commit -m "chore(infra): configurer EAS (eas.json — profils dev/preview/pr
 ### Task 13: Écrire `SETUP.md` — runbook complet de provisionnement des comptes externes
 
 **Files:**
+
 - Create: `SETUP.md` (racine du repo)
 
 > **C'est le livrable central de ce plan.** Le porteur de projet l'utilise comme guide pas-à-pas pour créer lui-même tous les comptes/projets externes pendant que le code est généré en parallèle ("Tu t'en charges, je code en parallèle"). Chaque étape donne le chemin de menu exact (autant que raisonnablement inférable), le format de la valeur à récupérer, et où la coller ensuite.
 
 - [ ] **Step 1: Écrire le contenu complet de `SETUP.md`**
 
-```markdown
+````markdown
 # SETUP — Provisionnement des comptes et services externes (DakarEaseU)
 
 > **À qui s'adresse ce document ?** Au porteur de projet (toi). Pendant que le code de
@@ -1392,6 +1408,7 @@ Si le repo `DakarEaseU` est déjà créé et que tu lis ce fichier dedans, passe
    git remote add origin https://github.com/<ton-compte-ou-org>/DakarEaseU.git
    git push -u origin main
    ```
+````
 
 ### 1.2 Branches et protections
 
@@ -1459,13 +1476,13 @@ liste complète et la correspondance avec chaque pipeline.)
 
 Une fois le projet prêt, va dans **Project Settings** (icône engrenage, panneau latéral) :
 
-| Valeur | Où la trouver | Variable `.env` |
-|---|---|---|
-| URL du projet | **Project Settings → API → Project URL** (format `https://<ref>.supabase.co`) | `SUPABASE_URL` (et `EXPO_PUBLIC_SUPABASE_URL`/`NEXT_PUBLIC_SUPABASE_URL` — même valeur) |
-| Clé publique ("anon") | **Project Settings → API → Project API keys → `anon` `public`** | `SUPABASE_ANON_KEY` (et `EXPO_PUBLIC_SUPABASE_ANON_KEY`/`NEXT_PUBLIC_SUPABASE_ANON_KEY` — même valeur) |
-| Clé secrète ("service_role") | **Project Settings → API → Project API keys → `service_role` `secret`** (clique "Reveal") | `SUPABASE_SERVICE_ROLE_KEY` — ⚠️ SECRET, ne jamais exposer côté client |
-| Référence du projet | Dans l'URL du dashboard : `app.supabase.com/project/<ref>` — la partie `<ref>` | `SUPABASE_PROJECT_REF` |
-| Mot de passe DB | Celui que tu as généré/noté à la création (§2.2) — réinitialisable via **Project Settings → Database → Reset database password** | `SUPABASE_DB_PASSWORD` |
+| Valeur                       | Où la trouver                                                                                                                    | Variable `.env`                                                                                        |
+| ---------------------------- | -------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------ |
+| URL du projet                | **Project Settings → API → Project URL** (format `https://<ref>.supabase.co`)                                                    | `SUPABASE_URL` (et `EXPO_PUBLIC_SUPABASE_URL`/`NEXT_PUBLIC_SUPABASE_URL` — même valeur)                |
+| Clé publique ("anon")        | **Project Settings → API → Project API keys → `anon` `public`**                                                                  | `SUPABASE_ANON_KEY` (et `EXPO_PUBLIC_SUPABASE_ANON_KEY`/`NEXT_PUBLIC_SUPABASE_ANON_KEY` — même valeur) |
+| Clé secrète ("service_role") | **Project Settings → API → Project API keys → `service_role` `secret`** (clique "Reveal")                                        | `SUPABASE_SERVICE_ROLE_KEY` — ⚠️ SECRET, ne jamais exposer côté client                                 |
+| Référence du projet          | Dans l'URL du dashboard : `app.supabase.com/project/<ref>` — la partie `<ref>`                                                   | `SUPABASE_PROJECT_REF`                                                                                 |
+| Mot de passe DB              | Celui que tu as généré/noté à la création (§2.2) — réinitialisable via **Project Settings → Database → Reset database password** | `SUPABASE_DB_PASSWORD`                                                                                 |
 
 Reporte ces 5 valeurs dans `.env` (racine du repo, déjà présent avec la bonne structure de
 placeholders — remplace simplement chaque `<...>`/`xxxx...` par la vraie valeur).
@@ -1517,10 +1534,12 @@ besoin pour configurer le client OAuth Google, cf. §5.3).
 
 Pour tester l'app sur un appareil physique pendant le développement sans attendre un
 build complet :
+
 ```bash
 cd apps/mobile
 eas build --profile development --platform android
 ```
+
 (Nécessite un compte Expo configuré et `eas.json` déjà en place — posé par ce plan, cf.
 `apps/mobile/eas.json`.)
 
@@ -1552,14 +1571,15 @@ eas build --profile development --platform android
    **Project Settings → Environment Variables**) — ajoute (coche `Production`, `Preview`
    ET `Development` pour chacune sauf mention contraire) :
 
-   | Nom | Valeur | Visibilité |
-   |---|---|---|
-   | `NEXT_PUBLIC_SUPABASE_URL` | celle de `SUPABASE_URL` (§2.3) | Publique (client + serveur) |
-   | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | celle de `SUPABASE_ANON_KEY` (§2.3) | Publique (client + serveur) |
-   | `SUPABASE_SERVICE_ROLE_KEY` | celle de `SUPABASE_SERVICE_ROLE_KEY` (§2.3) | **Sensitive / serveur uniquement** — Vercel propose une case "Sensitive" : coche-la, elle masque la valeur dans l'UI après sauvegarde |
+   | Nom                             | Valeur                                      | Visibilité                                                                                                                            |
+   | ------------------------------- | ------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
+   | `NEXT_PUBLIC_SUPABASE_URL`      | celle de `SUPABASE_URL` (§2.3)              | Publique (client + serveur)                                                                                                           |
+   | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | celle de `SUPABASE_ANON_KEY` (§2.3)         | Publique (client + serveur)                                                                                                           |
+   | `SUPABASE_SERVICE_ROLE_KEY`     | celle de `SUPABASE_SERVICE_ROLE_KEY` (§2.3) | **Sensitive / serveur uniquement** — Vercel propose une case "Sensitive" : coche-la, elle masque la valeur dans l'UI après sauvegarde |
 
    ⚠️ Ne préfixe JAMAIS `SUPABASE_SERVICE_ROLE_KEY` par `NEXT_PUBLIC_` — cela l'exposerait
    dans le bundle client.
+
 5. Clique **Deploy**. Le premier déploiement peut échouer si le code de `apps/admin`
    n'existe pas encore — c'est normal à ce stade ; tu pourras relancer un déploiement une
    fois le code généré (ou laisser le pipeline `deploy-admin.yml` le faire automatiquement
@@ -1640,24 +1660,24 @@ eas build --profile development --platform android
 
 ## 6. Où coller chaque secret — tableau récapitulatif
 
-| Secret | `.env` (racine, local) | GitHub Actions Secrets | Vercel (Project Settings → Env Vars) | EAS / Expo |
-|---|:---:|:---:|:---:|:---:|
-| `SUPABASE_URL` | ✅ | — | — | — |
-| `SUPABASE_ANON_KEY` | ✅ | — | — | — |
-| `SUPABASE_SERVICE_ROLE_KEY` | ✅ (jamais commité) | — | ✅ (coché "Sensitive") | — |
-| `SUPABASE_PROJECT_REF` | ✅ | — | — | — |
-| `SUPABASE_DB_PASSWORD` | ✅ (jamais commité) | — | — | — |
-| `EXPO_PUBLIC_SUPABASE_URL` | ✅ | — | — | ✅ (`eas.json` → `build.*.env`) |
-| `EXPO_PUBLIC_SUPABASE_ANON_KEY` | ✅ | — | — | ✅ (`eas.json` → `build.*.env`) |
-| `EXPO_PUBLIC_EAS_PROJECT_ID` | ✅ | — | — | ✅ (`app.json` → `extra.eas.projectId`, rempli par `eas init`) |
-| `NEXT_PUBLIC_SUPABASE_URL` | ✅ (même valeur que `SUPABASE_URL`) | — | ✅ | — |
-| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | ✅ (même valeur que `SUPABASE_ANON_KEY`) | — | ✅ | — |
-| `GOOGLE_OAUTH_CLIENT_ID` | ✅ | — | — | — (saisi dans Supabase Dashboard, §5.4) |
-| `GOOGLE_OAUTH_CLIENT_SECRET` | ✅ (jamais commité) | — | — | — (saisi dans Supabase Dashboard, §5.4) |
-| `VERCEL_TOKEN` | — | ✅ | — | — |
-| `VERCEL_ORG_ID` | — | ✅ | — | — |
-| `VERCEL_PROJECT_ID` | — | ✅ | — | — |
-| `EXPO_TOKEN` | — | ✅ | — | — |
+| Secret                          |          `.env` (racine, local)          | GitHub Actions Secrets | Vercel (Project Settings → Env Vars) |                           EAS / Expo                           |
+| ------------------------------- | :--------------------------------------: | :--------------------: | :----------------------------------: | :------------------------------------------------------------: |
+| `SUPABASE_URL`                  |                    ✅                    |           —            |                  —                   |                               —                                |
+| `SUPABASE_ANON_KEY`             |                    ✅                    |           —            |                  —                   |                               —                                |
+| `SUPABASE_SERVICE_ROLE_KEY`     |           ✅ (jamais commité)            |           —            |        ✅ (coché "Sensitive")        |                               —                                |
+| `SUPABASE_PROJECT_REF`          |                    ✅                    |           —            |                  —                   |                               —                                |
+| `SUPABASE_DB_PASSWORD`          |           ✅ (jamais commité)            |           —            |                  —                   |                               —                                |
+| `EXPO_PUBLIC_SUPABASE_URL`      |                    ✅                    |           —            |                  —                   |                ✅ (`eas.json` → `build.*.env`)                 |
+| `EXPO_PUBLIC_SUPABASE_ANON_KEY` |                    ✅                    |           —            |                  —                   |                ✅ (`eas.json` → `build.*.env`)                 |
+| `EXPO_PUBLIC_EAS_PROJECT_ID`    |                    ✅                    |           —            |                  —                   | ✅ (`app.json` → `extra.eas.projectId`, rempli par `eas init`) |
+| `NEXT_PUBLIC_SUPABASE_URL`      |   ✅ (même valeur que `SUPABASE_URL`)    |           —            |                  ✅                  |                               —                                |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | ✅ (même valeur que `SUPABASE_ANON_KEY`) |           —            |                  ✅                  |                               —                                |
+| `GOOGLE_OAUTH_CLIENT_ID`        |                    ✅                    |           —            |                  —                   |            — (saisi dans Supabase Dashboard, §5.4)             |
+| `GOOGLE_OAUTH_CLIENT_SECRET`    |           ✅ (jamais commité)            |           —            |                  —                   |            — (saisi dans Supabase Dashboard, §5.4)             |
+| `VERCEL_TOKEN`                  |                    —                     |           ✅           |                  —                   |                               —                                |
+| `VERCEL_ORG_ID`                 |                    —                     |           ✅           |                  —                   |                               —                                |
+| `VERCEL_PROJECT_ID`             |                    —                     |           ✅           |                  —                   |                               —                                |
+| `EXPO_TOKEN`                    |                    —                     |           ✅           |                  —                   |                               —                                |
 
 Légende : ✅ = doit être configuré à cet endroit · — = non applicable / non nécessaire à
 cet endroit.
@@ -1711,13 +1731,14 @@ Coche chaque ligne uniquement quand elle est **vérifiée concrètement** (pas s
       client OAuth Web a la bonne URL de redirection Supabase, et le provider Google est
       actif côté **Supabase Dashboard → Authentication → Providers**.
 - [ ] `git status` ne montre **jamais** `.env` comme fichier suivi (`git ls-files | grep
-      '^\.env$'` retourne vide) — confirmation finale qu'aucun secret ne peut fuiter.
+'^\.env$'` retourne vide) — confirmation finale qu'aucun secret ne peut fuiter.
 - [ ] Le tableau du §6 a été parcouru ligne par ligne et chaque secret est à sa place.
 
 Une fois cette checklist entièrement cochée, les pipelines CI/CD (`ci.yml`,
 `deploy-admin.yml`, `deploy-mobile.yml`) peuvent s'exécuter avec succès de bout en bout,
 et l'équipe peut commencer à développer/tester contre de vrais services externes.
-```
+
+````
 
 - [ ] **Step 2: Vérifier que le fichier ne contient aucune vraie valeur secrète**
 
@@ -1729,7 +1750,7 @@ Expected: aucune sortie (vide) — confirme l'absence de tout token/clé réel a
 ```bash
 git add SETUP.md
 git commit -m "docs: ajouter SETUP.md — runbook complet de provisionnement des comptes externes (GitHub, Supabase, Expo/EAS, Vercel, Google Cloud)"
-```
+````
 
 ---
 

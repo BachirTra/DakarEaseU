@@ -7,8 +7,7 @@ export type TablesInsert<T extends keyof Database['public']['Tables']> =
   Database['public']['Tables'][T]['Insert'];
 export type TablesUpdate<T extends keyof Database['public']['Tables']> =
   Database['public']['Tables'][T]['Update'];
-export type Enums<T extends keyof Database['public']['Enums']> =
-  Database['public']['Enums'][T];
+export type Enums<T extends keyof Database['public']['Enums']> = Database['public']['Enums'][T];
 
 export type Profile = Tables<'profiles'>;
 export type School = Tables<'schools'>;

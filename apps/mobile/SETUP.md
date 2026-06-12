@@ -1,30 +1,38 @@
 # DakarEaseU Mobile — Setup Guide
 
 ## Prerequisites
+
 - Node.js 18+
 - npm
 - Expo Go app (iOS/Android) or an Android/iOS simulator
 - A Supabase project provisioned via `docs/superpowers/plans/2026-06-07-supabase-foundation.md` (migrations applied, seed data loaded, storage buckets created)
 
 ## 1. Install dependencies
+
 From the repo root:
+
 ```bash
 cd apps/mobile
 npm install
 ```
 
 ## 2. Configure environment variables
+
 Copy the example file and fill in your Supabase project values (Project Settings → API):
+
 ```bash
 cp .env.example .env
 ```
+
 ```
 EXPO_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
 EXPO_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
 ```
+
 These are read by `src/lib/supabase.ts`. Never commit `.env`.
 
 ## 3. Run the app
+
 ```bash
 npm run start     # Expo dev server — scan the QR code with Expo Go
 npm run android   # Android emulator
@@ -32,6 +40,7 @@ npm run ios       # iOS simulator (macOS only)
 ```
 
 ## 4. Type-check, lint, test
+
 ```bash
 npm run typecheck
 npm run lint
@@ -39,6 +48,7 @@ npm run test
 ```
 
 ## 5. Project structure
+
 ```
 src/
 ├── app/            # Expo Router routes ((auth) and (tabs) groups)
@@ -52,6 +62,7 @@ src/
 ```
 
 ## 6. Key architecture notes
+
 - **Server data**: 100% TanStack Query — no `useEffect` fetches. See `features/housing/hooks/useListings.ts` for the canonical pattern.
 - **Transverse state**: Zustand stores (`sessionStore`, `preferencesStore`, `uiStore`) hold ONLY session/preferences/UI state — never server data.
 - **Forms**: React Hook Form + Zod everywhere (see `features/auth/schemas/authSchemas.ts`).
@@ -63,6 +74,7 @@ src/
 - **Student-ID verification**: manual admin review only (no OCR) — upload to the private `student-ids` bucket, status surfaced via `profiles.verification_status`.
 
 ## 7. Common issues
+
 - **"Missing EXPO_PUBLIC_SUPABASE_URL..."**: you forgot to create `.env` from `.env.example`.
 - **NativeWind classes not applying**: ensure `babel.config.js` includes `nativewind/babel` and restart the Metro bundler with `--clear`.
 - **Realtime not firing**: confirm Realtime is enabled on the `bookings`, `event_rsvps`, and `notifications` tables in the Supabase dashboard (Database → Replication).

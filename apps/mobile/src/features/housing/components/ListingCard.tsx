@@ -1,8 +1,8 @@
-import { Pressable, Text, View } from "react-native";
-import { Image } from "expo-image";
-import { Badge } from "@/shared/ui/Badge";
-import { useTranslation } from "@/hooks/useTranslation";
-import type { ListingSummary } from "@/features/housing/types/housing.types";
+import { Pressable, Text, View } from 'react-native';
+import { Image } from 'expo-image';
+import { Badge } from '@/shared/ui/Badge';
+import { useTranslation } from '@/hooks/useTranslation';
+import type { ListingSummary } from '@/features/housing/types/housing.types';
 
 interface ListingCardProps {
   listing: ListingSummary;
@@ -13,13 +13,20 @@ interface ListingCardProps {
 
 export function ListingCard({ listing, isFavorite, onToggleFavorite, onPress }: ListingCardProps) {
   const { t } = useTranslation();
-  const isVerified = listing.verification_status === "published";
+  const isVerified = listing.verification_status === 'published';
 
   return (
-    <Pressable onPress={onPress} className="mr-3 w-60 overflow-hidden rounded-2xl border border-border bg-card">
+    <Pressable
+      onPress={onPress}
+      className="mr-3 w-60 overflow-hidden rounded-2xl border border-border bg-card"
+    >
       <View className="relative h-36 w-full bg-border">
         {listing.cover_media ? (
-          <Image source={{ uri: listing.cover_media.url }} style={{ width: "100%", height: "100%" }} contentFit="cover" />
+          <Image
+            source={{ uri: listing.cover_media.url }}
+            style={{ width: '100%', height: '100%' }}
+            contentFit="cover"
+          />
         ) : null}
         <Pressable
           onPress={onToggleFavorite}
@@ -27,11 +34,13 @@ export function ListingCard({ listing, isFavorite, onToggleFavorite, onPress }: 
           accessibilityLabel="favorite-toggle"
           className="absolute right-2 top-2 h-8 w-8 items-center justify-center rounded-full bg-white/90"
         >
-          <Text className={isFavorite ? "text-danger" : "text-textLight"}>{isFavorite ? "♥" : "♡"}</Text>
+          <Text className={isFavorite ? 'text-danger' : 'text-textLight'}>
+            {isFavorite ? '♥' : '♡'}
+          </Text>
         </Pressable>
         {isVerified ? (
           <View className="absolute left-2 top-2">
-            <Badge label={t("listing.verified")} tone="success" />
+            <Badge label={t('listing.verified')} tone="success" />
           </View>
         ) : null}
       </View>
@@ -47,14 +56,14 @@ export function ListingCard({ listing, isFavorite, onToggleFavorite, onPress }: 
         </View>
         <View className="mt-2 flex-row items-baseline justify-between">
           <Text className="text-base font-bold text-primary">
-            {listing.price.toLocaleString("fr-FR")} {listing.currency}
-            <Text className="text-xs font-normal text-textLight"> {t("common.perMonth")}</Text>
+            {listing.price.toLocaleString('fr-FR')} {listing.currency}
+            <Text className="text-xs font-normal text-textLight"> {t('common.perMonth')}</Text>
           </Text>
           <Text className="text-xs text-textLight">★ {(listing.rating ?? 0).toFixed(1)}</Text>
         </View>
         {listing.colocation_available ? (
           <View className="mt-2">
-            <Badge label={t("listing.colocationAvailable")} tone="primary" />
+            <Badge label={t('listing.colocationAvailable')} tone="primary" />
           </View>
         ) : null}
       </View>

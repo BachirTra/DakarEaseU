@@ -10,28 +10,27 @@ le nom de l'app est DakarEaseU
 
 dans la page connexion rajouter conneion via apple
 
-
-dans la landing page et dans tout l'app enlever partie bailleur , on ne veut aucune apparition ou lien bailleur 
+dans la landing page et dans tout l'app enlever partie bailleur , on ne veut aucune apparition ou lien bailleur
 
 mettre en avant logement et ecole partenaire dans la landing page ( mettre tout en haut et mieux exposer)
 
-restaurants : 
-A la place de resrver une able mettre 
-enlvever tag verified 
+restaurants :
+A la place de resrver une able mettre
+enlvever tag verified
 
 logement:
 enelever nom proprietaire ( enlever tout ce qui est en lien avec les bailleurs )
-Gerer particularites de chaque logement , exigneces 
+Gerer particularites de chaque logement , exigneces
 ajouter patie medias ( videos + images )
-rajouter visite 3d 
+rajouter visite 3d
 
-Mettre en place proposition ou non de colocation , donner le nombre , prix pour chacun 
+Mettre en place proposition ou non de colocation , donner le nombre , prix pour chacun
 
 Ajouter admin dashboard ( ony app owners)
 
 rajouter workflow de recherche d'un logement ( algo based on metadatas)
 rajouter demande user ( type de logement , loalisation ,pricing bref filtre quoi)
-workflow de reservation 
+workflow de reservation
 rajouter gestion de la duree ( rester sur minimum 3 mois )
 
 ## Assistant
@@ -340,7 +339,7 @@ _[tool: screenshot_user_view]_
 
 _[tool: read_file]_
 
-The lower sections (Colocation, Exigences) are confirmed present in the DOM and the listing renders cleanly. Everything works. 
+The lower sections (Colocation, Exigences) are confirmed present in the DOM and the listing renders cleanly. Everything works.
 
 The stale `Dakar'ease.html` bundle still contains old bailleur content — let me regenerate it so the standalone version matches. First I'll add a thumbnail template to the app.
 
@@ -364,7 +363,7 @@ Tout est en place et vérifié. Voici ce qui a changé dans **Dakar'ease** :
 
 **Bailleurs — supprimés partout** : catégorie, persona, écran Bailleurs/Agences, nom du propriétaire sur les annonces, et tous les liens associés.
 
-**Accueil (landing)** — *Logements partenaires* et *Écoles partenaires* sont désormais tout en haut, mieux exposés (carrousels), avec un accès direct à la recherche guidée.
+**Accueil (landing)** — _Logements partenaires_ et _Écoles partenaires_ sont désormais tout en haut, mieux exposés (carrousels), avec un accès direct à la recherche guidée.
 
 **Restaurants** — tag « Vérifié » retiré ; « Réserver une table » remplacé par **Voir le menu / Commander** (livraison ou téléphone).
 
@@ -377,6 +376,6 @@ Tout est en place et vérifié. Voici ce qui a changé dans **Dakar'ease** :
 Le standalone `Dakar'ease.html` a été régénéré pour refléter ces changements.
 
 Deux points à confirmer de ton côté :
+
 - **Nom de l'app** : tu as écrit « DakarEaseU » mais tout l'app utilise « Dakar'ease ». J'ai gardé **Dakar'ease** (présent partout). Dis-moi si tu veux que je renomme.
 - **Restaurants** : ta consigne était coupée (« à la place de réserver une table mettre… »). J'ai opté pour **menu/commande** — précise si tu voulais autre chose.
-

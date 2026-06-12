@@ -1,8 +1,8 @@
-import { supabase } from "@/lib/supabase";
-import type { LoginInput, SignupInput } from "@/features/auth/schemas/authSchemas";
-import type { OnboardingAnswers } from "@/features/auth/lib/derivePersona";
-import { derivePersona } from "@/features/auth/lib/derivePersona";
-import type { Profile } from "@dakareaseu/types";
+import { supabase } from '@/lib/supabase';
+import type { LoginInput, SignupInput } from '@/features/auth/schemas/authSchemas';
+import type { OnboardingAnswers } from '@/features/auth/lib/derivePersona';
+import { derivePersona } from '@/features/auth/lib/derivePersona';
+import type { Profile } from '@dakareaseu/types';
 
 export async function signInWithPassword({ email, password }: LoginInput) {
   const { data, error } = await supabase.auth.signInWithPassword({ email, password });
@@ -26,7 +26,11 @@ export async function signOut() {
 }
 
 export async function fetchProfile(userId: string): Promise<Profile | null> {
-  const { data, error } = await supabase.from("profiles").select("*").eq("id", userId).maybeSingle();
+  const { data, error } = await supabase
+    .from('profiles')
+    .select('*')
+    .eq('id', userId)
+    .maybeSingle();
   if (error) throw error;
   return data;
 }
@@ -39,30 +43,35 @@ export async function completeOnboarding(params: {
 }): Promise<Profile> {
   const persona = derivePersona(params.answers);
   const { data, error } = await supabase
-    .from("profiles")
+    .from('profiles')
     .update({ full_name: params.fullName, school_id: params.schoolId, persona })
-    .eq("id", params.userId)
-    .select("*")
+    .eq('id', params.userId)
+    .select('*')
     .single();
   if (error) throw error;
   return data;
 }
 
-export async function uploadStudentId(params: { userId: string; fileUri: string; fileName: string; contentType: string }) {
+export async function uploadStudentId(params: {
+  userId: string;
+  fileUri: string;
+  fileName: string;
+  contentType: string;
+}) {
   const path = `${params.userId}/${params.fileName}`;
   const response = await fetch(params.fileUri);
   const arrayBuffer = await response.arrayBuffer();
 
   const { error: uploadError } = await supabase.storage
-    .from("student-ids")
+    .from('student-ids')
     .upload(path, arrayBuffer, { contentType: params.contentType, upsert: true });
   if (uploadError) throw uploadError;
 
   const { data, error } = await supabase
-    .from("profiles")
-    .update({ verification_doc_url: path, verification_status: "pending" })
-    .eq("id", params.userId)
-    .select("*")
+    .from('profiles')
+    .update({ verification_doc_url: path, verification_status: 'pending' })
+    .eq('id', params.userId)
+    .select('*')
     .single();
   if (error) throw error;
   return data;

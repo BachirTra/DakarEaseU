@@ -1,7 +1,7 @@
-import { render, screen } from "@testing-library/react-native";
-import { PersonaGreeting } from "../PersonaGreeting";
+import { render, screen } from '@testing-library/react-native';
+import { PersonaGreeting } from '../PersonaGreeting';
 
-describe("PersonaGreeting", () => {
+describe('PersonaGreeting', () => {
   it("shows the 'nouveau' greeting and hint", () => {
     render(<PersonaGreeting persona="nouveau" fullName="Awa" />);
     expect(screen.getByText(/Bienvenue à Dakar/)).toBeTruthy();
@@ -14,9 +14,9 @@ describe("PersonaGreeting", () => {
     expect(screen.getByText(/Logements vérifiés et écoles partenaires/)).toBeTruthy();
   });
 
-  it("never renders any persona-switching control", () => {
+  it('never renders any persona-switching control', () => {
     render(<PersonaGreeting persona="local" fullName="Fatou" />);
     expect(screen.queryByText(/changer de profil/i)).toBeNull();
-    expect(screen.queryByRole("button")).toBeNull();
+    expect(screen.queryByRole('button')).toBeNull();
   });
 });

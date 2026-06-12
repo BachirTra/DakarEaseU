@@ -33,8 +33,8 @@ plutôt que de tout faire séquentiellement dans un seul fil. Concrètement :
    - **Subagent B — Dashboard admin (`apps/admin`)** : scaffold Next.js + shadcn/ui + toutes les
      entités CRUD décrites en §10.
    - **Subagent C — Infra/CI-CD** : monorepo, GitHub Actions, configuration Vercel, scripts de setup.
-   Donne à chaque subagent : le schéma de données final, les conventions de §2/§9/§10, et la portion de
-   périmètre fonctionnel qui le concerne. Ils ne doivent pas se marcher dessus (dossiers distincts).
+     Donne à chaque subagent : le schéma de données final, les conventions de §2/§9/§10, et la portion de
+     périmètre fonctionnel qui le concerne. Ils ne doivent pas se marcher dessus (dossiers distincts).
 3. **Phase 2 (toi, intégration)** : vérifie la cohérence entre les trois pistes (types partagés, env vars,
    policies RLS testées depuis le mobile ET l'admin), lance lint/typecheck/tests/build, corrige les
    éventuels conflits d'intégration.
@@ -66,19 +66,19 @@ parents). Elle centralise tout ce dont un étudiant a besoin pour s'installer et
 
 ## 2. Stack technique (résumé — voir `docs/architecture-cible.md` pour le détail)
 
-| Domaine | Choix | À ne PAS faire |
-|---|---|---|
-| Mobile | Expo + React Native + TypeScript strict | JavaScript classique |
-| UI mobile | NativeWind (Tailwind-like) | Gros objets `StyleSheet` |
-| État global | Zustand (user connecté, préférences, transverse) | Redux, stocker les données serveur dans Zustand |
-| Données serveur | TanStack Query (`useQuery`/`useMutation`) | `useEffect(async () => {})` |
-| Formulaires | React Hook Form + Zod (validations centralisées et typées) | Validation ad hoc dispersée |
-| Backend | Supabase (Auth + PostgreSQL + Storage + Realtime ciblé + Edge Functions ciblées) | NestJS, Express, Spring, Laravel, VPS, API REST custom |
-| Sécurité | RLS activé sur **toutes** les tables, policies SELECT/INSERT/UPDATE/DELETE | Logique de sécurité uniquement côté frontend |
-| Dashboard admin | Next.js + TypeScript + Supabase + shadcn/ui + TanStack Table, app séparée (`apps/admin`) | Dupliquer la logique métier mobile/admin |
-| Hébergement admin | Vercel | — |
-| CI/CD | GitHub Actions : Lint → Type Check → Tests → Build → Deploy | Déploiement manuel |
-| Repo | GitHub, branches `main` / `develop` / `feature/*` | — |
+| Domaine           | Choix                                                                                    | À ne PAS faire                                         |
+| ----------------- | ---------------------------------------------------------------------------------------- | ------------------------------------------------------ |
+| Mobile            | Expo + React Native + TypeScript strict                                                  | JavaScript classique                                   |
+| UI mobile         | NativeWind (Tailwind-like)                                                               | Gros objets `StyleSheet`                               |
+| État global       | Zustand (user connecté, préférences, transverse)                                         | Redux, stocker les données serveur dans Zustand        |
+| Données serveur   | TanStack Query (`useQuery`/`useMutation`)                                                | `useEffect(async () => {})`                            |
+| Formulaires       | React Hook Form + Zod (validations centralisées et typées)                               | Validation ad hoc dispersée                            |
+| Backend           | Supabase (Auth + PostgreSQL + Storage + Realtime ciblé + Edge Functions ciblées)         | NestJS, Express, Spring, Laravel, VPS, API REST custom |
+| Sécurité          | RLS activé sur **toutes** les tables, policies SELECT/INSERT/UPDATE/DELETE               | Logique de sécurité uniquement côté frontend           |
+| Dashboard admin   | Next.js + TypeScript + Supabase + shadcn/ui + TanStack Table, app séparée (`apps/admin`) | Dupliquer la logique métier mobile/admin               |
+| Hébergement admin | Vercel                                                                                   | —                                                      |
+| CI/CD             | GitHub Actions : Lint → Type Check → Tests → Build → Deploy                              | Déploiement manuel                                     |
+| Repo              | GitHub, branches `main` / `develop` / `feature/*`                                        | —                                                      |
 
 **Le mobile et l'admin parlent directement à Supabase.** Pas de couche API intermédiaire.
 
@@ -184,16 +184,19 @@ et `data.jsx` dans `design/dakar-ease/project/`) en appliquant les écarts du §
 Organise le code mobile en dossiers `features/<nom>/` (cf. `docs/philosophie-developpement.md`).
 
 ### `auth` — Authentification & onboarding
+
 Splash animé → Onboarding (3 étapes) → Auth (connexion/inscription email+mot de passe, OAuth Google,
 OAuth Apple [cf. §4.8]) → sélection de l'école → upload carte étudiante → app principale. Persona déduite
 des réponses d'onboarding (cf. §3) et stockée sur le profil.
 
 ### `home` — Accueil
+
 Recherche, accès à la recherche guidée, **logements partenaires** et **écoles partenaires** mis en avant
 en haut (carrousels), événements à venir, restaurants à proximité, bons plans étudiants. Catégories :
 Logements / Écoles / Restaurants / Transport.
 
 ### `housing` — Logements
+
 - Liste + filtres (type, budget, quartier, durée, meublé, colocation).
 - **Recherche guidée** (`Demande`) : formulaire multi-étapes (type, école/quartier, budget, meublé,
   colocation, durée) → **algorithme de matching** qui score chaque logement par compatibilité (% +
@@ -211,32 +214,39 @@ Logements / Écoles / Restaurants / Transport.
 - **Évaluation post-séjour** : notes + commentaire après une réservation terminée.
 
 ### `schools` — Écoles
+
 Annuaire (UCAD, IAM, UGB, ESP, ISM, Sup de Co, UADB, Polytechnique Thiès...) avec fiche détail :
 filières, frais, bourses, process d'admission étape par étape, contacts (téléphone, email, WhatsApp,
 site web), logements à proximité, et **moyens d'adhésion/contact directs**.
 
 ### `restaurants` — Restaurants
+
 Même squelette de workflow que les logements (liste avec filtres par type, fiche détail avec
 spécialités, horaires, avis). **Pas de tag "Vérifié"**. Action principale = **voir le menu / commander**
 (livraison ou appel téléphonique) — pas de "réserver une table" (cf. décision prise en chat3.md).
 
 ### `transport` — Transport / Livraison
+
 Annuaire par catégories (Taxi/VTC, Moto-taxi, Livraison repas, Livraison colis, Déménagement étudiant,
 Location voiture) avec contact direct (appel, WhatsApp).
 
 ### `news` — News & Événements culturels
+
 Onglets par catégorie (Concert, Festival, Conférence, Sport), événement à la une, fiche détail, **RSVP /
 "Je participe"** → ticket avec QR code → check-in, sauvegarde dans "Mes événements", partage WhatsApp.
 Partenaires d'exemple : Sorano, Institut Français, Festival Salam, Place du Souvenir.
 
 ### `favorites` — Favoris
+
 Logements et restaurants sauvegardés.
 
 ### `profile` — Profil
+
 Infos utilisateur, langue (cf. §4.4), mes réservations, mes événements, mes avis, paramètres,
 déconnexion. **Pas de lien "Espace admin"** (cf. §3).
 
 ### `notifications` — Notifications ciblées (Realtime)
+
 Cf. §4.5 : statut de réservation, confirmation RSVP, (côté admin) nouvelle demande de recherche guidée.
 
 ---

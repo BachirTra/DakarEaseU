@@ -1,5 +1,5 @@
-import { Redirect } from "expo-router";
-import { useSessionStore } from "@/features/auth/store/sessionStore";
+import { Redirect } from 'expo-router';
+import { useSessionStore } from '@/features/auth/store/sessionStore';
 
 export default function Index() {
   const user = useSessionStore((s) => s.user);

@@ -4,14 +4,14 @@
 
 Nous développons une application mobile moderne en mode **vibe coding**, avec un objectif principal :
 
-* sortir un MVP rapidement ;
-* minimiser la maintenance infrastructure ;
-* éviter de développer un backend complexe ;
-* disposer immédiatement de l'authentification ;
-* disposer immédiatement du stockage de fichiers ;
-* disposer immédiatement d'un dashboard d'administration ;
-* disposer immédiatement d'un système CRUD ;
-* conserver une architecture suffisamment propre pour évoluer vers une V1/V2 plus ambitieuse.
+- sortir un MVP rapidement ;
+- minimiser la maintenance infrastructure ;
+- éviter de développer un backend complexe ;
+- disposer immédiatement de l'authentification ;
+- disposer immédiatement du stockage de fichiers ;
+- disposer immédiatement d'un dashboard d'administration ;
+- disposer immédiatement d'un système CRUD ;
+- conserver une architecture suffisamment propre pour évoluer vers une V1/V2 plus ambitieuse.
 
 Nous privilégions la simplicité, la rapidité de développement et le coût réduit plutôt que l'optimisation prématurée.
 
@@ -51,12 +51,12 @@ Nous voulons supprimer autant que possible les couches intermédiaires inutiles.
 
 Pas de :
 
-* NestJS
-* Express
-* Spring
-* Laravel
-* Serveur VPS
-* API REST custom pour le MVP
+- NestJS
+- Express
+- Spring
+- Laravel
+- Serveur VPS
+- API REST custom pour le MVP
 
 L'application mobile doit communiquer directement avec Supabase.
 
@@ -89,8 +89,8 @@ L'application mobile doit communiquer directement avec Supabase.
 ```ts
 const UserSchema = z.object({
   email: z.string().email(),
-  name: z.string().min(2)
-})
+  name: z.string().min(2),
+});
 ```
 
 ---
@@ -145,9 +145,9 @@ Stack : **Next.js + TypeScript + Supabase + shadcn/ui + TanStack Table**.
 
 ## Déploiement & CI/CD
 
-* **Vercel** pour le dashboard (simplicité, preview deployments, intégration GitHub, coût réduit).
-* **GitHub** comme référentiel unique (`main`, `develop`, `feature/*`).
-* **GitHub Actions** : `Lint → Type Check → Tests → Build → Deploy`, automatisé, sans intervention manuelle.
+- **Vercel** pour le dashboard (simplicité, preview deployments, intégration GitHub, coût réduit).
+- **GitHub** comme référentiel unique (`main`, `develop`, `feature/*`).
+- **GitHub Actions** : `Lint → Type Check → Tests → Build → Deploy`, automatisé, sans intervention manuelle.
 
 ---
 
