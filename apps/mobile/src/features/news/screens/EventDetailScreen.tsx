@@ -1,4 +1,4 @@
-import { Linking, ScrollView, Share, Text, View } from 'react-native';
+import { ScrollView, Share, Text, View } from 'react-native';
 import { useLocalSearchParams } from 'expo-router';
 import { Image } from 'expo-image';
 import { Screen } from '@/shared/ui/Screen';

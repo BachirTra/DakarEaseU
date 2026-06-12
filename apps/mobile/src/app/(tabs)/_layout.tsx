@@ -5,7 +5,7 @@ import { COLORS } from '@/constants/colors';
 import { useTranslation } from '@/hooks/useTranslation';
 
 export default function TabsLayout() {
-  const { t } = useTranslation();
+  const { t: _t } = useTranslation();
 
   return (
     <AuthGate>
