@@ -1,0 +1,71 @@
+import { Linking, ScrollView, Share, Text, View } from "react-native";
+import { useLocalSearchParams } from "expo-router";
+import { Image } from "expo-image";
+import { Screen } from "@/shared/ui/Screen";
+import { Button } from "@/shared/ui/Button";
+import { Badge } from "@/shared/ui/Badge";
+import { useTranslation } from "@/hooks/useTranslation";
+import { useEventDetail, useMyRsvp, useSetRsvp } from "@/features/news/hooks/useEvents";
+
+export function EventDetailScreen() {
+  const { t } = useTranslation();
+  const { id } = useLocalSearchParams<{ id: string }>();
+  const { data: event, isLoading } = useEventDetail(id);
+  const { data: rsvp } = useMyRsvp(id);
+  const setRsvp = useSetRsvp(id ?? "");
+
+  if (isLoading || !event) return null;
+
+  const isConfirmed = rsvp?.status === "confirmed";
+  const isInterested = rsvp?.status === "interested";
+
+  return (
+    <Screen>
+      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 32 }}>
+        <View className="h-48 w-full overflow-hidden rounded-2xl bg-border">
+          {event.cover_url ? <Image source={{ uri: event.cover_url }} style={{ width: "100%", height: "100%" }} contentFit="cover" /> : null}
+        </View>
+
+        <Text className="mt-3 text-xl font-bold text-text">{event.title}</Text>
+        <Text className="mt-1 text-sm text-textLight">
+          {new Date(event.starts_at).toLocaleString("fr-FR", { dateStyle: "full", timeStyle: "short" })}
+        </Text>
+        <Text className="mt-0.5 text-sm text-textLight">{event.address ?? event.district}</Text>
+
+        {isConfirmed ? (
+          <View className="mt-3">
+            <Badge label={t("news.rsvpConfirmedBadge")} tone="success" />
+          </View>
+        ) : null}
+
+        <Text className="mt-4 text-sm leading-5 text-text">{event.description}</Text>
+
+        <View className="mt-6 gap-2">
+          <Button
+            label={isConfirmed ? t("news.rsvpConfirmedBadge") : t("news.rsvpConfirmed")}
+            disabled={isConfirmed || setRsvp.isPending}
+            onPress={() => setRsvp.mutate("going")}
+          />
+          <Button
+            label={t("news.rsvpInterested")}
+            variant="outline"
+            disabled={isInterested || isConfirmed || setRsvp.isPending}
+            onPress={() => setRsvp.mutate("interested")}
+          />
+          <Button
+            label={t("news.shareEvent")}
+            variant="ghost"
+            onPress={() => Share.share({ message: `${event.title} — ${new Date(event.starts_at).toLocaleDateString("fr-FR")} — ${event.district}` })}
+          />
+          {event.organizer_whatsapp ? (
+            <Button
+              label={t("common.whatsapp")}
+              variant="ghost"
+              onPress={() => Linking.openURL(`https://wa.me/${event.organizer_whatsapp}`)}
+            />
+          ) : null}
+        </View>
+      </ScrollView>
+    </Screen>
+  );
+}
