@@ -79,8 +79,7 @@ jobs:
     strategy:
       matrix:
         target:
-          - workspace: '@dakareaseu/admin'
-            label: admin
+          # admin sera ajouté quand apps/admin sera créé (plan admin-dashboard)
           - workspace: '@dakareaseu/mobile'
             label: mobile
     steps:
