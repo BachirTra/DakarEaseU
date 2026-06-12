@@ -29,6 +29,7 @@ export type UserRole = Enums<'user_role'>;
 export type PersonaType = Enums<'persona_type'>;
 export type ListingType = Enums<'listing_type'>;
 export type BookingStatus = Enums<'booking_status'>;
+export type GuidedSearchStatus = Enums<'guided_search_status'>;
 export type PaymentMethod = Enums<'payment_method'>;
 export type PaymentStatus = Enums<'payment_status'>;
 export type ReviewTargetType = Enums<'review_target_type'>;

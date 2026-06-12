@@ -4,30 +4,34 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { useSignOut } from '@/features/auth/hooks/use-sign-out';
+import { useNewGuidedSearchRequestAlert } from '@/features/guided-search/hooks/use-new-request-realtime-alert';
 
 const NAV_ITEMS = [
-  { href: '/dashboard', label: "Vue d'ensemble" },
-  { href: '/dashboard/listings', label: 'Annonces' },
-  { href: '/dashboard/schools', label: 'Écoles' },
-  { href: '/dashboard/restaurants', label: 'Restaurants' },
-  { href: '/dashboard/transport', label: 'Transport' },
-  { href: '/dashboard/events', label: 'Événements' },
-  { href: '/dashboard/verifications', label: 'Vérification étudiante' },
-  { href: '/dashboard/bookings', label: 'Réservations' },
-  { href: '/dashboard/guided-search', label: 'Demandes' },
-  { href: '/dashboard/reviews', label: 'Avis' },
-  { href: '/dashboard/users', label: 'Utilisateurs' },
+  { href: '/', label: "Vue d'ensemble" },
+  { href: '/listings', label: 'Annonces' },
+  { href: '/schools', label: 'Écoles' },
+  { href: '/restaurants', label: 'Restaurants' },
+  { href: '/transport', label: 'Transport' },
+  { href: '/events', label: 'Événements' },
+  { href: '/verifications', label: 'Vérification étudiante' },
+  { href: '/bookings', label: 'Réservations' },
+  { href: '/guided-search', label: 'Demandes' },
+  { href: '/reviews', label: 'Avis' },
+  { href: '/users', label: 'Utilisateurs' },
 ];
 
 export function DashboardShell({
   adminName,
+  currentUserId,
   children,
 }: {
   adminName: string;
+  currentUserId: string;
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
   const signOut = useSignOut();
+  useNewGuidedSearchRequestAlert(currentUserId);
 
   return (
     <div className="flex min-h-screen">
@@ -38,7 +42,8 @@ export function DashboardShell({
         </div>
         <nav className="flex flex-col gap-1">
           {NAV_ITEMS.map((item) => {
-            const isActive = pathname === item.href;
+            const isActive =
+              item.href === '/' ? pathname === '/' : pathname.startsWith(item.href);
             return (
               <Link
                 key={item.href}

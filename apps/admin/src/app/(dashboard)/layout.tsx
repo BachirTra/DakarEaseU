@@ -25,7 +25,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
   }
 
   return (
-    <DashboardShell adminName={profile.full_name ?? user.email ?? 'Admin'}>
+    <DashboardShell adminName={profile.full_name ?? user.email ?? 'Admin'} currentUserId={user.id}>
       {children}
     </DashboardShell>
   );
