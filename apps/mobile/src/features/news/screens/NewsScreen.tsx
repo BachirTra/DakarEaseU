@@ -56,12 +56,13 @@ export function NewsScreen() {
               className="mb-4 overflow-hidden rounded-2xl border border-border bg-card"
             >
               <View className="h-44 w-full bg-border">
-                {featured.cover_url ? <Image source={{ uri: featured.cover_url }} style={{ width: "100%", height: "100%" }} contentFit="cover" /> : null}
+                {featured.cover_image_url ? <Image source={{ uri: featured.cover_image_url }} style={{ width: "100%", height: "100%" }} contentFit="cover" /> : null}
               </View>
               <View className="p-3">
                 <Text className="text-base font-bold text-text">{featured.title}</Text>
                 <Text className="mt-1 text-xs text-textLight">
-                  {new Date(featured.starts_at).toLocaleDateString("fr-FR", { weekday: "long", day: "numeric", month: "long" })} · {featured.district}
+                  {new Date(featured.event_date).toLocaleDateString("fr-FR", { weekday: "long", day: "numeric", month: "long" })}
+                  {featured.venue ? ` · ${featured.venue}` : ""}
                 </Text>
               </View>
             </Pressable>
@@ -74,11 +75,14 @@ export function NewsScreen() {
               className="mb-3 flex-row items-center overflow-hidden rounded-2xl border border-border bg-card p-2"
             >
               <View className="h-16 w-16 overflow-hidden rounded-xl bg-border">
-                {event.cover_url ? <Image source={{ uri: event.cover_url }} style={{ width: "100%", height: "100%" }} contentFit="cover" /> : null}
+                {event.cover_image_url ? <Image source={{ uri: event.cover_image_url }} style={{ width: "100%", height: "100%" }} contentFit="cover" /> : null}
               </View>
               <View className="ml-3 flex-1">
                 <Text numberOfLines={1} className="text-sm font-semibold text-text">{event.title}</Text>
-                <Text className="text-xs text-textLight">{new Date(event.starts_at).toLocaleDateString("fr-FR")} · {event.district}</Text>
+                <Text className="text-xs text-textLight">
+                  {new Date(event.event_date).toLocaleDateString("fr-FR")}
+                  {event.venue ? ` · ${event.venue}` : ""}
+                </Text>
               </View>
             </Pressable>
           ))}

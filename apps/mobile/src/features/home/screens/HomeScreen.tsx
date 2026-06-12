@@ -65,7 +65,7 @@ export function HomeScreen() {
               className="mr-3 w-40 overflow-hidden rounded-2xl border border-border bg-card"
             >
               <View className="h-24 w-full bg-border">
-                {school.logo_url ? <Image source={{ uri: school.logo_url }} style={{ width: "100%", height: "100%" }} contentFit="cover" /> : null}
+                {school.cover_image_url ? <Image source={{ uri: school.cover_image_url }} style={{ width: "100%", height: "100%" }} contentFit="cover" /> : null}
               </View>
               <View className="p-2.5">
                 <Text numberOfLines={1} className="text-sm font-semibold text-text">{school.name}</Text>
@@ -84,15 +84,10 @@ export function HomeScreen() {
             <Pressable
               key={r.id}
               onPress={() => router.push({ pathname: "/(tabs)/search/restaurants/[id]", params: { id: r.id } })}
-              className="mr-3 w-44 overflow-hidden rounded-2xl border border-border bg-card"
+              className="mr-3 w-44 overflow-hidden rounded-2xl border border-border bg-card p-3"
             >
-              <View className="h-28 w-full bg-border">
-                {r.cover_url ? <Image source={{ uri: r.cover_url }} style={{ width: "100%", height: "100%" }} contentFit="cover" /> : null}
-              </View>
-              <View className="p-2.5">
-                <Text numberOfLines={1} className="text-sm font-semibold text-text">{r.name}</Text>
-                <Text className="text-xs text-textLight">{r.cuisine_type} · {r.price_range}</Text>
-              </View>
+              <Text numberOfLines={1} className="text-sm font-semibold text-text">{r.name}</Text>
+              <Text className="mt-0.5 text-xs text-textLight">{r.cuisine_type} · {r.price_range}</Text>
             </Pressable>
           ))}
         </ScrollView>
@@ -153,11 +148,11 @@ export function HomeScreen() {
                 className="mr-3 w-48 overflow-hidden rounded-2xl border border-border bg-card"
               >
                 <View className="h-28 w-full bg-border">
-                  {event.cover_url ? <Image source={{ uri: event.cover_url }} style={{ width: "100%", height: "100%" }} contentFit="cover" /> : null}
+                  {event.cover_image_url ? <Image source={{ uri: event.cover_image_url }} style={{ width: "100%", height: "100%" }} contentFit="cover" /> : null}
                 </View>
                 <View className="p-2.5">
                   <Text numberOfLines={1} className="text-sm font-semibold text-text">{event.title}</Text>
-                  <Text className="text-xs text-textLight">{new Date(event.starts_at).toLocaleDateString("fr-FR")}</Text>
+                  <Text className="text-xs text-textLight">{new Date(event.event_date).toLocaleDateString("fr-FR")}</Text>
                 </View>
               </Pressable>
             ))}

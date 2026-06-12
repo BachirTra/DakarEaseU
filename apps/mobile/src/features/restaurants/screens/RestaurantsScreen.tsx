@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { FlatList, Pressable, Text, TextInput, View } from "react-native";
 import { useRouter } from "expo-router";
-import { Image } from "expo-image";
 import { Screen } from "@/shared/ui/Screen";
 import { EmptyState } from "@/shared/ui/EmptyState";
 import { useTranslation } from "@/hooks/useTranslation";
@@ -41,16 +40,13 @@ export function RestaurantsScreen() {
           renderItem={({ item }) => (
             <Pressable
               onPress={() => router.push({ pathname: "/(tabs)/search/restaurants/[id]", params: { id: item.id } })}
-              className="flex-row items-center overflow-hidden rounded-2xl border border-border bg-card p-2"
+              className="flex-row items-center overflow-hidden rounded-2xl border border-border bg-card p-3"
             >
-              <View className="h-16 w-16 overflow-hidden rounded-xl bg-border">
-                {item.cover_url ? <Image source={{ uri: item.cover_url }} style={{ width: "100%", height: "100%" }} contentFit="cover" /> : null}
-              </View>
-              <View className="ml-3 flex-1">
+              <View className="ml-1 flex-1">
                 <Text numberOfLines={1} className="text-sm font-semibold text-text">{item.name}</Text>
                 <Text className="text-xs text-textLight">{item.cuisine_type} · {item.price_range} · {item.district}</Text>
               </View>
-              <Text className="text-xs text-textLight">★ {item.rating.toFixed(1)}</Text>
+              {item.rating != null ? <Text className="text-xs text-textLight">★ {item.rating.toFixed(1)}</Text> : null}
             </Pressable>
           )}
         />

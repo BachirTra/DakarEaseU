@@ -29,7 +29,7 @@ export function SchoolDetailScreen() {
     <Screen>
       <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 32 }}>
         <View className="h-44 w-full overflow-hidden rounded-2xl bg-border">
-          {school.logo_url ? <Image source={{ uri: school.logo_url }} style={{ width: "100%", height: "100%" }} contentFit="cover" /> : null}
+          {school.cover_image_url ? <Image source={{ uri: school.cover_image_url }} style={{ width: "100%", height: "100%" }} contentFit="cover" /> : null}
         </View>
         <Text className="mt-3 text-xl font-bold text-text">{school.name}</Text>
         <Text className="mt-1 text-sm text-textLight">{school.address ?? school.district}</Text>
@@ -46,16 +46,15 @@ export function SchoolDetailScreen() {
 
         {tab === "info" ? (
           <View className="mt-4">
-            <Text className="text-sm leading-5 text-text">{school.description}</Text>
-            <View className="mt-4 gap-2">
-              {school.contact_whatsapp ? (
-                <Button label={t("schools.contactWhatsapp")} variant="outline" onPress={() => Linking.openURL(`https://wa.me/${school.contact_whatsapp}`)} />
+            <View className="gap-2">
+              {school.whatsapp ? (
+                <Button label={t("schools.contactWhatsapp")} variant="outline" onPress={() => Linking.openURL(`https://wa.me/${school.whatsapp}`)} />
               ) : null}
-              {school.contact_phone ? (
-                <Button label={t("common.call")} variant="outline" onPress={() => Linking.openURL(`tel:${school.contact_phone}`)} />
+              {school.phone ? (
+                <Button label={t("common.call")} variant="outline" onPress={() => Linking.openURL(`tel:${school.phone}`)} />
               ) : null}
-              {school.contact_email ? (
-                <Button label={t("schools.contactEmail")} variant="outline" onPress={() => Linking.openURL(`mailto:${school.contact_email}`)} />
+              {school.email ? (
+                <Button label={t("schools.contactEmail")} variant="outline" onPress={() => Linking.openURL(`mailto:${school.email}`)} />
               ) : null}
             </View>
           </View>
@@ -63,8 +62,12 @@ export function SchoolDetailScreen() {
 
         {tab === "admission" ? (
           <View className="mt-4">
-            <Text className="text-sm leading-5 text-text">{school.admission_info}</Text>
-            <View className="mt-3 flex-row flex-wrap gap-2">
+            <View className="gap-1 mb-3">
+              {(school.admission_steps ?? []).map((step: string, i: number) => (
+                <Text key={i} className="text-sm leading-5 text-text">{i + 1}. {step}</Text>
+              ))}
+            </View>
+            <View className="flex-row flex-wrap gap-2">
               {(school.programs ?? []).map((program: string) => (
                 <View key={program} className="rounded-full border border-border bg-bg px-3 py-1.5">
                   <Text className="text-xs text-text">{program}</Text>

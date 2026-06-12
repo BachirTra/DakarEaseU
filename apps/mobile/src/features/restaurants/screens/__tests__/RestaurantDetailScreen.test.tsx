@@ -19,7 +19,6 @@ jest.mock("@/features/restaurants/hooks/useRestaurants", () => ({
       description: "Cuisine traditionnelle.",
       specialties: ["Thiéboudiène", "Yassa poulet"],
       restaurant_media: [],
-      menu_items: [{ id: "m1", name: "Thiéboudiène", price: 2500, currency: "XOF" }],
     },
     isLoading: false,
   }),

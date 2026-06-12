@@ -3,7 +3,7 @@ import { supabase } from "@/lib/supabase";
 export async function fetchRestaurants() {
   const { data, error } = await supabase
     .from("restaurants")
-    .select("id, name, cuisine_type, price_range, district, rating, cover_url")
+    .select("id, name, cuisine_type, price_range, district, rating")
     .order("rating", { ascending: false });
   if (error) throw error;
   return data;
@@ -13,7 +13,7 @@ export async function fetchRestaurantDetail(restaurantId: string) {
   const { data, error } = await supabase
     .from("restaurants")
     .select(
-      "id, name, cuisine_type, price_range, district, phone, whatsapp, description, specialties, menu_items, restaurant_media(id, url, media_type, position)"
+      "id, name, cuisine_type, price_range, district, phone, whatsapp, description, specialties, restaurant_media(id, url, position)"
     )
     .eq("id", restaurantId)
     .single();

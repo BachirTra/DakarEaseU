@@ -49,7 +49,11 @@ export function TransportScreen() {
           {providers.map((p: NonNullable<typeof providers>[number]) => (
             <View key={p.id} className="mb-3 rounded-2xl border border-border bg-card p-3">
               <Text className="text-sm font-semibold text-text">{p.name}</Text>
-              <Text className="mt-0.5 text-xs text-textLight">{p.description}</Text>
+              {(p.eta_label ?? p.price_label) ? (
+                <Text className="mt-0.5 text-xs text-textLight">
+                  {[p.eta_label, p.price_label].filter(Boolean).join(" · ")}
+                </Text>
+              ) : null}
               <View className="mt-3 flex-row gap-2">
                 {p.whatsapp ? (
                   <Button label={t("common.whatsapp")} fullWidth={false} onPress={() => Linking.openURL(`https://wa.me/${p.whatsapp}`)} />

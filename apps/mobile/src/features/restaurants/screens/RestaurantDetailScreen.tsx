@@ -6,7 +6,7 @@ import { Screen } from "@/shared/ui/Screen";
 import { Button } from "@/shared/ui/Button";
 import { useTranslation } from "@/hooks/useTranslation";
 import { useRestaurantDetail } from "@/features/restaurants/hooks/useRestaurants";
-import { MenuSheet, type MenuItem } from "@/features/restaurants/components/MenuSheet";
+import { MenuSheet } from "@/features/restaurants/components/MenuSheet";
 
 export function RestaurantDetailScreen() {
   const { t } = useTranslation();
@@ -17,7 +17,6 @@ export function RestaurantDetailScreen() {
   if (isLoading || !restaurant) return null;
 
   const media = [...(restaurant.restaurant_media ?? [])].sort((a, b) => a.position - b.position);
-  const menuItems = (restaurant.menu_items ?? []) as unknown as MenuItem[];
 
   return (
     <Screen>
@@ -62,7 +61,7 @@ export function RestaurantDetailScreen() {
       <MenuSheet
         visible={menuVisible}
         onClose={() => setMenuVisible(false)}
-        items={menuItems}
+        items={[]}
         whatsapp={restaurant.whatsapp}
         phone={restaurant.phone}
       />

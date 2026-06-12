@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dakar'ease</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Poppins', system-ui, sans-serif; background: #0f0f13; display: flex; align-items: center; justify-content: center; min-height: 100vh; overflow: hidden; -webkit-font-smoothing: antialiased; }
+    input, button, select, textarea { font-family: inherit; }
+    ::-webkit-scrollbar { width: 0; height: 0; }
+  </style>
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+</head>
+<body>
+
+<script type="text/babel" src="ios-frame.jsx"></script>
+<script type="text/babel" src="tweaks-panel.jsx"></script>
+<script type="text/babel" src="data.jsx"></script>
+<script type="text/babel" src="components.jsx"></script>
+<script type="text/babel" src="screens.jsx"></script>
+<script type="text/babel" src="screens2.jsx"></script>
+<script type="text/babel" src="screens3.jsx"></script>
+<script type="text/babel" src="screens4.jsx"></script>
+
+<script type="text/babel">
+const { useState, useEffect, useCallback } = React;
+
+const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+  "mood": "confiance",
+  "persona": "nouveau",
+  "lang": "fr"
+}/*EDITMODE-END*/;
+
+const MOODS = {
+  confiance:  { primary: '#1E3A8A', primaryLight: '#3B5FC7', secondary: '#10B981', accent: '#F59E0B', bg: '#F9FAFB', card: '#FFFFFF', text: '#111827', textLight: '#6B7280', border: '#E5E7EB', danger: '#EF4444' },
+  terracotta: { primary: '#9A3412', primaryLight: '#C2410C', secondary: '#D97706', accent: '#EAB308', bg: '#FFFBF5', card: '#FFFFFF', text: '#1C1917', textLight: '#78716C', border: '#E7E5E4', danger: '#DC2626' },
+  nature:     { primary: '#166534', primaryLight: '#15803D', secondary: '#0D9488', accent: '#CA8A04', bg: '#F7FDF9', card: '#FFFFFF', text: '#14532D', textLight: '#6B7280', border: '#D1FAE5', danger: '#DC2626' },
+  nuit:       { primary: '#818CF8', primaryLight: '#6366F1', secondary: '#34D399', accent: '#FBBF24', bg: '#0F172A', card: '#1E293B', text: '#F9FAFB', textLight: '#94A3B8', border: '#334155', danger: '#F87171' },
+};
+
+function SplashScreen({ onDone }) {
+  const [fade, setFade] = useState(false);
+  useEffect(() => {
+    const t1 = setTimeout(() => setFade(true), 1600);
+    const t2 = setTimeout(onDone, 2000);
+    return () => { clearTimeout(t1); clearTimeout(t2); };
+  }, []);
+  return (
+    <div style={{ height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', background: `linear-gradient(160deg, ${COLORS.primary}, ${COLORS.primaryLight})`, transition: 'opacity 0.4s', opacity: fade ? 0 : 1 }}>
+      <div style={{ animation: 'logoIn 0.8s ease', textAlign: 'center' }}>
+        <div style={{ width: 80, height: 80, borderRadius: 24, background: 'rgba(255,255,255,0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 20px', backdropFilter: 'blur(10px)' }}>
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"></path>
+            <polyline points="9 22 9 12 15 12 15 22"></polyline>
+          </svg>
+        </div>
+        <div style={{ fontSize: 28, fontWeight: 800, color: '#fff', letterSpacing: '-0.02em' }}>Dakar'ease</div>
+        <div style={{ fontSize: 13, color: 'rgba(255,255,255,0.6)', marginTop: 6 }}>Ton logement sûr à Dakar</div>
+      </div>
+      <style>{`@keyframes logoIn { from { opacity: 0; transform: scale(0.8) translateY(20px); } to { opacity: 1; transform: scale(1) translateY(0); } }`}</style>
+    </div>
+  );
+}
+
+function App() {
+  const [phase, setPhase] = useState('splash'); // splash → onboarding → auth → app
+  const [tab, setTab] = useState('home');
+  const [detailListing, setDetailListing] = useState(null);
+  const [reserveListing, setReserveListing] = useState(null);
+  const [eventDetail, setEventDetail] = useState(null);
+  const [subscreen, setSubscreen] = useState(null); // transport, ecoles, restaurants
+  const [schoolDetail, setSchoolDetail] = useState(null);
+  const [restaurantDetail, setRestaurantDetail] = useState(null);
+  const [reservePlace, setReservePlace] = useState(null); // colocation place
+  const [adminOpen, setAdminOpen] = useState(false);
+  const [demandeOpen, setDemandeOpen] = useState(false);
+  const [favorites, setFavorites] = useState(new Set([1, 3]));
+  const [savedEvents, setSavedEvents] = useState(new Set([1]));
+  const [direction, setDirection] = useState('right');
+
+  const [tweaks, setTweak] = useTweaks(TWEAK_DEFAULTS);
+
+  // Apply mood
+  useEffect(() => { Object.assign(COLORS, MOODS[tweaks.mood] || MOODS.confiance); }, [tweaks.mood]);
+  const t = (I18N[tweaks.lang] || I18N.fr);
+  const persona = PERSONAS[tweaks.persona] || PERSONAS.local;
+
+  const toggleFav = useCallback((id) => setFavorites(prev => { const n = new Set(prev); n.has(id) ? n.delete(id) : n.add(id); return n; }), []);
+  const toggleSave = useCallback((id) => setSavedEvents(prev => { const n = new Set(prev); n.has(id) ? n.delete(id) : n.add(id); return n; }), []);
+
+  const navigate = useCallback((newTab) => {
+    const order = ['home', 'search', 'news', 'favorites', 'profile'];
+    setDirection(order.indexOf(newTab) > order.indexOf(tab) ? 'right' : 'left');
+    setDetailListing(null); setReserveListing(null); setEventDetail(null); setSubscreen(null);
+    setAdminOpen(false); setDemandeOpen(false);
+    setTab(newTab);
+  }, [tab]);
+
+  const onCategory = (id) => {
+    if (id === 'logements') navigate('search');
+    else if (id === 'transport') setSubscreen('transport');
+    else if (id === 'ecoles') setSubscreen('ecoles');
+    else if (id === 'restaurants') setSubscreen('restaurants');
+  };
+
+  if (phase === 'splash') return <IOSDevice><SplashScreen onDone={() => setPhase('onboarding')} /></IOSDevice>;
+  if (phase === 'onboarding') return <IOSDevice><OnboardingScreen onDone={() => setPhase('auth')} /></IOSDevice>;
+  if (phase === 'auth') return <IOSDevice><AuthScreen onDone={() => setPhase('app')} /></IOSDevice>;
+
+  // Overlays
+  if (adminOpen) return <IOSDevice><AdminDashboard onBack={() => setAdminOpen(false)} /></IOSDevice>;
+  if (demandeOpen) return <IOSDevice><DemandeScreen onBack={() => setDemandeOpen(false)} onViewListing={l => { setDemandeOpen(false); setDetailListing(l); }} /></IOSDevice>;
+  if (restaurantDetail) return <IOSDevice><RestaurantDetail restaurant={restaurantDetail} onBack={() => setRestaurantDetail(null)} /></IOSDevice>;
+  if (reserveListing) return <IOSDevice><ReservationScreen listing={reserveListing} place={reservePlace} onBack={() => { setReserveListing(null); setReservePlace(null); }} onDone={() => { setReserveListing(null); setReservePlace(null); setDetailListing(null); setTab('home'); }} /></IOSDevice>;
+  if (detailListing) return <IOSDevice><ListingDetail listing={detailListing} onBack={() => setDetailListing(null)} isFav={favorites.has(detailListing.id)} onToggleFav={toggleFav} onReserve={(l, place) => { setReserveListing(l); setReservePlace(place || null); }} /></IOSDevice>;
+  if (eventDetail) return <IOSDevice><EventDetail event={eventDetail} onBack={() => setEventDetail(null)} isSaved={savedEvents.has(eventDetail.id)} onToggleSave={toggleSave} /></IOSDevice>;
+  if (schoolDetail) return <IOSDevice><SchoolDetail school={schoolDetail} onBack={() => setSchoolDetail(null)} /></IOSDevice>;
+  if (subscreen === 'transport') return <IOSDevice><TransportScreen onBack={() => setSubscreen(null)} /></IOSDevice>;
+  if (subscreen === 'ecoles') return <IOSDevice><SchoolsScreen onBack={() => setSubscreen(null)} onViewSchool={s => setSchoolDetail(s)} /></IOSDevice>;
+  if (subscreen === 'restaurants') return <IOSDevice><RestaurantScreen onBack={() => setSubscreen(null)} onViewRestaurant={r => setRestaurantDetail(r)} /></IOSDevice>;
+
+  let screen;
+  switch (tab) {
+    case 'home': screen = <HomeScreen onViewListing={l => setDetailListing(l)} favorites={favorites} onToggleFav={toggleFav} onGoSearch={() => navigate('search')} onGoNews={() => navigate('news')} onGoCategory={onCategory} onViewSchool={s => setSchoolDetail(s)} onOpenDemande={() => setDemandeOpen(true)} t={t} persona={persona} />; break;
+    case 'search': screen = <SearchScreen onViewListing={l => setDetailListing(l)} favorites={favorites} onToggleFav={toggleFav} onOpenDemande={() => setDemandeOpen(true)} />; break;
+    case 'news': screen = <NewsScreen savedEvents={savedEvents} onToggleSave={toggleSave} onViewEvent={ev => setEventDetail(ev)} />; break;
+    case 'favorites': screen = <FavoritesScreen favorites={favorites} onViewListing={l => setDetailListing(l)} onToggleFav={toggleFav} />; break;
+    case 'profile': screen = <ProfileScreen onLogout={() => setPhase('auth')} persona={persona} onOpenAdmin={() => setAdminOpen(true)} />; break;
+  }
+
+  return (
+    <>
+      <IOSDevice>
+        <div style={{ display: 'flex', flexDirection: 'column', height: '100%', background: COLORS.bg }}>
+          <div style={{ flex: 1, position: 'relative', overflow: 'hidden' }}>
+            <PageTransition screenKey={tab} direction={direction}>{screen}</PageTransition>
+          </div>
+          <BottomTabBar active={tab} onNavigate={navigate} />
+        </div>
+      </IOSDevice>
+
+      <TweaksPanel title="Dakar'ease — Personnalité">
+        <TweakSection label="Mood — palette de couleurs">
+          <TweakRadio label="" value={tweaks.mood} options={['confiance', 'terracotta', 'nature', 'nuit']} onChange={v => setTweak('mood', v)} />
+        </TweakSection>
+        <TweakSection label="Persona — qui es-tu ?">
+          <TweakRadio label="" value={tweaks.persona} options={['nouveau', 'local', 'parent']} onChange={v => setTweak('persona', v)} />
+        </TweakSection>
+        <TweakSection label="Langue">
+          <TweakRadio label="" value={tweaks.lang} options={['fr', 'wo', 'en']} onChange={v => setTweak('lang', v)} />
+        </TweakSection>
+      </TweaksPanel>
+    </>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+
+<div id="root"></div>
+
+<template id="__bundler_thumbnail">
+  <svg viewBox="0 0 400 700" xmlns="http://www.w3.org/2000/svg">
+    <rect x="60" y="30" width="280" height="640" rx="40" fill="#162d6e"></rect>
+    <rect x="72" y="55" width="256" height="580" rx="28" fill="#1a3580"></rect>
+    <rect x="155" y="58" width="90" height="18" rx="9" fill="#162d6e"></rect>
+    <rect x="72" y="73" width="256" height="64" fill="#1E3A8A"></rect>
+    <rect x="168" y="88" width="36" height="36" rx="10" fill="rgba(255,255,255,0.2)"></rect>
+    <path d="M178 110 l8-8 8 8 v10 a2 2 0 0 1-2 2h-12 a2 2 0 0 1-2-2z" stroke="#fff" stroke-width="1.5" fill="none"></path>
+    <rect x="88" y="155" width="220" height="90" rx="14" fill="rgba(255,255,255,0.12)"></rect>
+    <rect x="88" y="258" width="104" height="90" rx="14" fill="rgba(255,255,255,0.1)"></rect>
+    <rect x="204" y="258" width="104" height="90" rx="14" fill="rgba(255,255,255,0.1)"></rect>
+    <rect x="72" y="575" width="256" height="56" fill="#162d6e"></rect>
+    <circle cx="132" cy="603" r="8" fill="rgba(255,255,255,0.7)"></circle>
+    <circle cx="180" cy="603" r="8" fill="rgba(255,255,255,0.3)"></circle>
+    <circle cx="228" cy="603" r="8" fill="rgba(255,255,255,0.3)"></circle>
+    <circle cx="276" cy="603" r="8" fill="rgba(255,255,255,0.3)"></circle>
+  </svg>
+</template>
+</body>
+</html>

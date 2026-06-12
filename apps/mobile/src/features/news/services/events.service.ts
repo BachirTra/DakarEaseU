@@ -4,8 +4,8 @@ import type { EventCategory, RsvpStatus } from "@dakareaseu/types";
 export async function fetchEvents(category: EventCategory | "all") {
   let query = supabase
     .from("events")
-    .select("id, title, category, starts_at, ends_at, district, cover_url, description")
-    .order("starts_at", { ascending: true });
+    .select("id, title, category, event_date, event_time, venue, cover_image_url, description")
+    .order("event_date", { ascending: true });
   if (category !== "all") query = query.eq("category", category);
   const { data, error } = await query;
   if (error) throw error;
@@ -15,7 +15,7 @@ export async function fetchEvents(category: EventCategory | "all") {
 export async function fetchEventDetail(eventId: string) {
   const { data, error } = await supabase
     .from("events")
-    .select("id, title, category, starts_at, ends_at, district, address, cover_url, description, organizer_whatsapp")
+    .select("id, title, category, event_date, event_time, venue, cover_image_url, description, partner, price_label, price_value")
     .eq("id", eventId)
     .single();
   if (error) throw error;

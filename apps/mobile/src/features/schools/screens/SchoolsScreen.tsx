@@ -37,7 +37,7 @@ export function SchoolsScreen() {
             className="flex-1 overflow-hidden rounded-2xl border border-border bg-card"
           >
             <View className="h-28 w-full bg-border">
-              {item.logo_url ? <Image source={{ uri: item.logo_url }} style={{ width: "100%", height: "100%" }} contentFit="cover" /> : null}
+              {item.cover_image_url ? <Image source={{ uri: item.cover_image_url }} style={{ width: "100%", height: "100%" }} contentFit="cover" /> : null}
             </View>
             <View className="p-3">
               <Text numberOfLines={1} className="text-sm font-semibold text-text">{item.name}</Text>
