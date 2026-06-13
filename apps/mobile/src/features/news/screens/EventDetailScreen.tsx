@@ -73,7 +73,9 @@ export function EventDetailScreen() {
             <Button
               label="🗺️  Y aller"
               variant="outline"
-              onPress={() => openMapsDirections(event.latitude!, event.longitude!, event.venue ?? event.title)}
+              onPress={() =>
+                openMapsDirections(event.latitude!, event.longitude!, event.venue ?? event.title)
+              }
             />
           ) : null}
           <Button

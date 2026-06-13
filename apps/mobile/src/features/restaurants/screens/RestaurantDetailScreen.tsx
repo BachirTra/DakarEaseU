@@ -61,7 +61,9 @@ export function RestaurantDetailScreen() {
             <Button
               label="🗺️  Y aller"
               variant="outline"
-              onPress={() => openMapsDirections(restaurant.latitude!, restaurant.longitude!, restaurant.name)}
+              onPress={() =>
+                openMapsDirections(restaurant.latitude!, restaurant.longitude!, restaurant.name)
+              }
             />
           ) : null}
           <View className="flex-row gap-2">

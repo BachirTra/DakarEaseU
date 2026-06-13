@@ -102,9 +102,9 @@ export function ListingMediaManager({
 
       {isPano ? (
         <p className="text-xs text-muted-foreground">
-          Capturez chaque pièce en photo-sphère 360° avec une app gratuite (ex. Google Street
-          View), exportez le JPG, puis téléversez-le ici avec le nom de la pièce. Le client pourra
-          balayer la pièce à 360° dans l&apos;app mobile.
+          Capturez chaque pièce en photo-sphère 360° avec une app gratuite (ex. Google Street View),
+          exportez le JPG, puis téléversez-le ici avec le nom de la pièce. Le client pourra balayer
+          la pièce à 360° dans l&apos;app mobile.
         </p>
       ) : (
         <p className="text-xs text-muted-foreground">

@@ -90,7 +90,10 @@ export function StudentIdUploadScreen() {
 
       {previewUri ? (
         <View className="mb-5">
-          <View className="overflow-hidden rounded-2xl border border-border" style={{ height: 200 }}>
+          <View
+            className="overflow-hidden rounded-2xl border border-border"
+            style={{ height: 200 }}
+          >
             <Image
               source={{ uri: previewUri }}
               style={{ width: '100%', height: '100%' }}
@@ -98,7 +101,10 @@ export function StudentIdUploadScreen() {
             />
           </View>
           <Pressable
-            onPress={() => { setPreviewUri(null); setPendingAsset(null); }}
+            onPress={() => {
+              setPreviewUri(null);
+              setPendingAsset(null);
+            }}
             className="mt-2 items-center"
           >
             <Text className="text-xs font-semibold text-danger">Changer de photo</Text>
@@ -106,16 +112,8 @@ export function StudentIdUploadScreen() {
         </View>
       ) : (
         <View className="mb-5 gap-3">
-          <Button
-            label="Importer depuis la galerie"
-            variant="outline"
-            onPress={pickFromGallery}
-          />
-          <Button
-            label="Prendre une photo"
-            variant="outline"
-            onPress={takePhoto}
-          />
+          <Button label="Importer depuis la galerie" variant="outline" onPress={pickFromGallery} />
+          <Button label="Prendre une photo" variant="outline" onPress={takePhoto} />
         </View>
       )}
 

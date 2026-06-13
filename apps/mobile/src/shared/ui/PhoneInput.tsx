@@ -1,13 +1,5 @@
 import { useState } from 'react';
-import {
-  FlatList,
-  Modal,
-  Pressable,
-  SafeAreaView,
-  Text,
-  TextInput,
-  View,
-} from 'react-native';
+import { FlatList, Modal, Pressable, SafeAreaView, Text, TextInput, View } from 'react-native';
 
 export interface Country {
   code: string;
@@ -53,7 +45,11 @@ interface PhoneInputProps {
   placeholder?: string;
 }
 
-export function PhoneInput({ value, onChange, placeholder = 'Numéro de téléphone' }: PhoneInputProps) {
+export function PhoneInput({
+  value,
+  onChange,
+  placeholder = 'Numéro de téléphone',
+}: PhoneInputProps) {
   const parsed = splitPhoneE164(value);
   const SENEGAL: Country = { code: 'SN', dialCode: '+221', flag: '🇸🇳', name: 'Sénégal' };
   const defaultCountry = COUNTRIES.find((c) => c.dialCode === parsed.dialCode) ?? SENEGAL;

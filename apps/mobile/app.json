@@ -25,7 +25,7 @@
       },
       "package": "com.dakareaseu.mobile"
     },
-    "plugins": ["expo-router"],
+    "plugins": ["expo-router", "expo-video"],
     "experiments": {
       "typedRoutes": true
     },

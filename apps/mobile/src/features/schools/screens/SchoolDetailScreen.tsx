@@ -68,7 +68,9 @@ export function SchoolDetailScreen() {
               {school.latitude != null && school.longitude != null ? (
                 <Button
                   label="🗺️  Y aller"
-                  onPress={() => openMapsDirections(school.latitude!, school.longitude!, school.name)}
+                  onPress={() =>
+                    openMapsDirections(school.latitude!, school.longitude!, school.name)
+                  }
                 />
               ) : null}
               {school.whatsapp ? (

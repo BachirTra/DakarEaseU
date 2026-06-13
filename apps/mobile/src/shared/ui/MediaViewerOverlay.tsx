@@ -1,6 +1,7 @@
+import { useEffect } from 'react';
 import { Modal, Pressable, Text, View } from 'react-native';
 import { Image } from 'expo-image';
-import { ResizeMode, Video } from 'expo-av';
+import { useVideoPlayer, VideoView } from 'expo-video';
 import { useUiStore } from '@/shared/store/uiStore';
 import { PanoramaViewer } from '@/shared/ui/PanoramaViewer';
 
@@ -9,13 +10,24 @@ export type MediaKind = 'photo' | 'video' | 'tour_3d' | 'pano_360';
 /**
  * Visualiseur média plein écran. Monté une fois à la racine de l'app, il lit
  * `activeMediaViewer` du uiStore et rend le bon visualiseur selon le type :
- * photo, vidéo (expo-av), ou photo-sphère 360° (PanoramaViewer).
+ * photo, vidéo (expo-video), ou photo-sphère 360° (PanoramaViewer).
  */
 export function MediaViewerOverlay() {
   const active = useUiStore((s) => s.activeMediaViewer);
   const close = useUiStore((s) => s.closeMediaViewer);
 
   const visible = active != null;
+  const isVideo = active?.kind === 'video';
+
+  // Le hook doit être appelé inconditionnellement. Source nulle si pas de vidéo.
+  const player = useVideoPlayer(isVideo ? active!.uri : null, (p) => {
+    p.loop = false;
+  });
+
+  useEffect(() => {
+    if (isVideo) player.play();
+    else player.pause();
+  }, [isVideo, player, active?.uri]);
 
   return (
     <Modal
@@ -27,20 +39,16 @@ export function MediaViewerOverlay() {
     >
       <View style={{ flex: 1, backgroundColor: '#000' }}>
         {active?.kind === 'photo' ? (
-          <Image
-            source={{ uri: active.uri }}
-            style={{ flex: 1 }}
-            contentFit="contain"
-          />
+          <Image source={{ uri: active.uri }} style={{ flex: 1 }} contentFit="contain" />
         ) : null}
 
-        {active?.kind === 'video' ? (
-          <Video
-            source={{ uri: active.uri }}
+        {isVideo ? (
+          <VideoView
+            player={player}
             style={{ flex: 1 }}
-            useNativeControls
-            resizeMode={ResizeMode.CONTAIN}
-            shouldPlay
+            contentFit="contain"
+            nativeControls
+            allowsFullscreen
           />
         ) : null}
 
@@ -68,7 +76,14 @@ export function MediaViewerOverlay() {
           pointerEvents="box-none"
         >
           {active?.title ? (
-            <View style={{ backgroundColor: 'rgba(0,0,0,0.55)', borderRadius: 999, paddingHorizontal: 14, paddingVertical: 7 }}>
+            <View
+              style={{
+                backgroundColor: 'rgba(0,0,0,0.55)',
+                borderRadius: 999,
+                paddingHorizontal: 14,
+                paddingVertical: 7,
+              }}
+            >
               <Text style={{ color: '#FFFFFF', fontWeight: '600', fontSize: 13 }}>
                 {active.title}
               </Text>

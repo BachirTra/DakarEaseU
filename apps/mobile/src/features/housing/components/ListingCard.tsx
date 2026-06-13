@@ -12,7 +12,13 @@ interface ListingCardProps {
   fullWidth?: boolean;
 }
 
-export function ListingCard({ listing, isFavorite, onToggleFavorite, onPress, fullWidth = false }: ListingCardProps) {
+export function ListingCard({
+  listing,
+  isFavorite,
+  onToggleFavorite,
+  onPress,
+  fullWidth = false,
+}: ListingCardProps) {
   const { t } = useTranslation();
   const isVerified = listing.verification_status === 'published';
 

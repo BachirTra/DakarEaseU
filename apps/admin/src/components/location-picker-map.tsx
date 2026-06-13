@@ -29,6 +29,10 @@ export interface LocationPickerMapProps {
 
 const DAKAR: [number, number] = [14.6937, -17.4441];
 
+// Cadre approximatif de la région de Dakar (lon1,lat1,lon2,lat2) — utilisé pour
+// prioriser les résultats de la zone sans exclure le reste du Sénégal.
+const DAKAR_VIEWBOX = '-17.55,14.90,-17.10,14.60';
+
 export function LocationPickerMap({ lat, lng, onChange }: LocationPickerMapProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<Map | null>(null);
@@ -47,7 +51,8 @@ export function LocationPickerMap({ lat, lng, onChange }: LocationPickerMapProps
 
     const map = L.map(containerRef.current).setView(center, zoom);
     tileRef.current = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+      attribution:
+        '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
       maxZoom: 19,
     }).addTo(map);
 
@@ -88,7 +93,12 @@ export function LocationPickerMap({ lat, lng, onChange }: LocationPickerMapProps
     if (!query.trim()) return;
     setSearching(true);
     try {
-      const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}&limit=5&countrycodes=sn,fr,us,ml,ci,gn`;
+      // countrycodes=sn → uniquement le Sénégal (plus de résultats français).
+      // viewbox + bounded=0 → priorise la région de Dakar tout en gardant
+      // accessibles les autres villes sénégalaises (Thiès, Saint-Louis…).
+      const url =
+        `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}` +
+        `&limit=6&countrycodes=sn&viewbox=${DAKAR_VIEWBOX}&bounded=0`;
       const res = await fetch(url, { headers: { 'Accept-Language': 'fr' } });
       const data: NominatimResult[] = await res.json();
       setResults(data);

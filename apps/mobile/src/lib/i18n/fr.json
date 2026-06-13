@@ -147,14 +147,12 @@
   },
   "transport": {
     "title": "Transport",
-    "subtitle": "Choisis un service et contacte le prestataire",
+    "subtitle": "Réserve ta course avec les apps disponibles à Dakar",
+    "openApp": "Ouvrir",
     "cat": {
       "taxi": "Taxi / VTC",
-      "moto": "Moto Jakarta",
-      "repas": "Livraison repas",
-      "colis": "Livraison colis",
-      "demenagement": "Déménagement",
-      "location": "Location voiture"
+      "moto": "Moto",
+      "livraison": "Livraison"
     }
   },
   "news": {

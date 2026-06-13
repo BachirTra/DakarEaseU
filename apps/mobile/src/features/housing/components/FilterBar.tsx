@@ -43,7 +43,9 @@ export function FilterBar({ filters, onChange }: FilterBarProps) {
         style={{ marginRight: 8 }}
         className={`rounded-full border px-3.5 py-2 ${filters.colocationOnly ? 'border-primary bg-primary' : 'border-border bg-card'}`}
       >
-        <Text className={`text-xs font-semibold ${filters.colocationOnly ? 'text-white' : 'text-text'}`}>
+        <Text
+          className={`text-xs font-semibold ${filters.colocationOnly ? 'text-white' : 'text-text'}`}
+        >
           Colocation
         </Text>
       </Pressable>
