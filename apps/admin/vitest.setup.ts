@@ -3,7 +3,15 @@ import * as matchers from '@testing-library/jest-dom/matchers';
 expect.extend(matchers);
 
 vi.mock('next/link', () => ({
-  default: ({ href, children, className }: { href: string; children: React.ReactNode; className?: string }) =>
+  default: ({
+    href,
+    children,
+    className,
+  }: {
+    href: string;
+    children: React.ReactNode;
+    className?: string;
+  }) =>
     // eslint-disable-next-line @typescript-eslint/no-require-imports
     require('react').createElement('a', { href, className }, children),
 }));

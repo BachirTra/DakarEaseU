@@ -12,8 +12,8 @@ export default function VerificationsPage() {
       <div>
         <h1 className="text-2xl font-bold">Vérification étudiante</h1>
         <p className="text-muted-foreground">
-          Cartes étudiantes en attente de revue manuelle (cf. décision produit §4.6 — pas
-          d&apos;OCR automatisé).
+          Cartes étudiantes en attente de revue manuelle (cf. décision produit §4.6 — pas d&apos;OCR
+          automatisé).
         </p>
       </div>
       {isLoading ? (

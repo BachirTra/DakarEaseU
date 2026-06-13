@@ -44,8 +44,7 @@ export function ListingNearbySchoolsManager({
               id={`school-${school.id}`}
             />
             <label htmlFor={`school-${school.id}`} className="cursor-pointer text-sm">
-              {school.name}{' '}
-              <span className="text-muted-foreground">({school.district})</span>
+              {school.name} <span className="text-muted-foreground">({school.district})</span>
             </label>
           </li>
         ))}

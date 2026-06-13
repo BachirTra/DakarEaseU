@@ -42,8 +42,7 @@ export function DashboardShell({
         </div>
         <nav className="flex flex-col gap-1">
           {NAV_ITEMS.map((item) => {
-            const isActive =
-              item.href === '/' ? pathname === '/' : pathname.startsWith(item.href);
+            const isActive = item.href === '/' ? pathname === '/' : pathname.startsWith(item.href);
             return (
               <Link
                 key={item.href}

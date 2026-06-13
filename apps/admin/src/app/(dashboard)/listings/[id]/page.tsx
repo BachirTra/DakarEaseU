@@ -64,10 +64,7 @@ export default function ListingDetailPage() {
           <CardTitle>Écoles à proximité</CardTitle>
         </CardHeader>
         <CardContent>
-          <ListingNearbySchoolsManager
-            listingId={listing.id}
-            initialSchoolIds={nearbySchoolIds}
-          />
+          <ListingNearbySchoolsManager listingId={listing.id} initialSchoolIds={nearbySchoolIds} />
         </CardContent>
       </Card>
     </div>

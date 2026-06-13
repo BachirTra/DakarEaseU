@@ -81,11 +81,7 @@ const FormLabel = ({ className, ...props }: React.ComponentProps<typeof Label>) 
   const { error, formItemId } = useFormField();
 
   return (
-    <Label
-      className={cn(error && 'text-destructive', className)}
-      htmlFor={formItemId}
-      {...props}
-    />
+    <Label className={cn(error && 'text-destructive', className)} htmlFor={formItemId} {...props} />
   );
 };
 

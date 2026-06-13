@@ -22,7 +22,9 @@ export default function GuidedSearchPage() {
     <div className="space-y-6">
       <div>
         <h1 className="text-2xl font-bold">Demandes de recherche guidée</h1>
-        <p className="text-muted-foreground">Critères soumis par les étudiants via la recherche guidée.</p>
+        <p className="text-muted-foreground">
+          Critères soumis par les étudiants via la recherche guidée.
+        </p>
       </div>
       <Select
         value={filters.status ?? 'all'}

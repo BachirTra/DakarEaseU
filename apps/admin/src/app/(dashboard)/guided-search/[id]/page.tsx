@@ -22,7 +22,9 @@ export default function GuidedSearchDetailPage() {
         <h1 className="text-2xl font-bold">
           {request.student?.full_name ?? 'Étudiant·e sans nom renseigné'}
         </h1>
-        <p className="text-muted-foreground">{request.student?.phone ?? 'Téléphone non renseigné'}</p>
+        <p className="text-muted-foreground">
+          {request.student?.phone ?? 'Téléphone non renseigné'}
+        </p>
       </div>
       <Card>
         <CardHeader>
@@ -75,7 +77,9 @@ export default function GuidedSearchDetailPage() {
                   key={match.listing_id}
                   className="flex items-center justify-between rounded-md border p-3"
                 >
-                  <span className="font-mono text-xs text-muted-foreground">{match.listing_id}</span>
+                  <span className="font-mono text-xs text-muted-foreground">
+                    {match.listing_id}
+                  </span>
                   <span className="font-semibold">
                     {match.match_pct}% — {(match.reasons ?? []).join(', ')}
                   </span>

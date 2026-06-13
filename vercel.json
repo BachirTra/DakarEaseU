@@ -1,0 +1,7 @@
+{
+  "framework": "nextjs",
+  "regions": ["cdg1"],
+  "installCommand": "npm ci",
+  "buildCommand": "npm run build --workspace=@dakareaseu/admin",
+  "outputDirectory": "apps/admin/.next"
+}

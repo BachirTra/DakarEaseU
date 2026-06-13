@@ -14,8 +14,7 @@ export function buildTransportProvidersColumns(
     {
       accessorKey: 'category',
       header: 'Catégorie',
-      cell: ({ row }) =>
-        TRANSPORT_CATEGORY_LABELS[row.original.category] ?? row.original.category,
+      cell: ({ row }) => TRANSPORT_CATEGORY_LABELS[row.original.category] ?? row.original.category,
     },
     {
       accessorKey: 'rating',
