@@ -44,7 +44,7 @@ export function LoginForm() {
         return;
       }
 
-      const redirectedFrom = searchParams.get('redirectedFrom') ?? '/dashboard';
+      const redirectedFrom = searchParams.get('redirectedFrom') ?? '/';
       toast.success('Connexion réussie.');
       router.replace(redirectedFrom);
       router.refresh();
