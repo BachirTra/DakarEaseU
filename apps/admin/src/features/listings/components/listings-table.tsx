@@ -21,7 +21,7 @@ export function ListingsTable() {
     <div className="space-y-4">
       <div className="flex items-center justify-between">
         <ListingsFiltersBar filters={filters} onChange={setFilters} />
-        <Link href="/dashboard/listings/new" className={buttonVariants()}>
+        <Link href="/listings/new" className={buttonVariants()}>
           Nouvelle annonce
         </Link>
       </div>

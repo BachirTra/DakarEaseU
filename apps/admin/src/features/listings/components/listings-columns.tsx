@@ -17,7 +17,7 @@ export const listingsColumns: ColumnDef<Listing>[] = [
     accessorKey: 'title',
     header: 'Titre',
     cell: ({ row }) => (
-      <Link href={`/dashboard/listings/${row.original.id}`} className="font-medium hover:underline">
+      <Link href={`/listings/${row.original.id}`} className="font-medium hover:underline">
         {row.original.title}
       </Link>
     ),
