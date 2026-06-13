@@ -1,0 +1,18 @@
+{
+  "expo": {
+    "extra": {
+      "eas": {
+        "projectId": "4aa5ed87-02b1-40f0-a2f4-4286440cdf53"
+      }
+    },
+    "ios": {
+      "bundleIdentifier": "com.bachirtra.dakareaseu",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
+    },
+    "android": {
+      "package": "com.bachirtra.dakareaseu"
+    }
+  }
+}

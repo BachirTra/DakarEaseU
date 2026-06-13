@@ -74,6 +74,7 @@ export function SearchScreen() {
           renderItem={({ item }) => (
             <ListingCard
               listing={item}
+              fullWidth
               isFavorite={isFavorite(item.id)}
               onToggleFavorite={() =>
                 toggleFavorite.mutate({ entityType: 'listing', entityId: item.id })

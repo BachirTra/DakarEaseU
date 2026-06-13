@@ -68,13 +68,15 @@ export function useUploadAndAttachMedia(listingId: string) {
       file,
       mediaType,
       position,
+      roomLabel,
     }: {
       file: File;
       mediaType: ListingMedia['media_type'];
       position: number;
+      roomLabel?: string | null;
     }) => {
       const url = await uploadListingMediaFile(listingId, file);
-      await addListingMedia(listingId, mediaType, url, position);
+      await addListingMedia(listingId, mediaType, url, position, roomLabel);
     },
     onSuccess: () => {
       toast.success('Média ajouté.');

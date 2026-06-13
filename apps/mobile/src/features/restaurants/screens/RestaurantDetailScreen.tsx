@@ -7,6 +7,7 @@ import { Button } from '@/shared/ui/Button';
 import { useTranslation } from '@/hooks/useTranslation';
 import { useRestaurantDetail } from '@/features/restaurants/hooks/useRestaurants';
 import { MenuSheet } from '@/features/restaurants/components/MenuSheet';
+import { openMapsDirections } from '@/lib/geo';
 
 export function RestaurantDetailScreen() {
   const { t } = useTranslation();
@@ -56,6 +57,13 @@ export function RestaurantDetailScreen() {
 
         <View className="mt-6 gap-2">
           <Button label={t('restaurants.viewMenu')} onPress={() => setMenuVisible(true)} />
+          {restaurant.latitude != null && restaurant.longitude != null ? (
+            <Button
+              label="🗺️  Y aller"
+              variant="outline"
+              onPress={() => openMapsDirections(restaurant.latitude!, restaurant.longitude!, restaurant.name)}
+            />
+          ) : null}
           <View className="flex-row gap-2">
             {restaurant.whatsapp ? (
               <Button

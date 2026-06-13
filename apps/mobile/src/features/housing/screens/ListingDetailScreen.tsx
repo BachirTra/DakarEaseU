@@ -8,7 +8,9 @@ import { useTranslation } from '@/hooks/useTranslation';
 import { useListingDetail } from '@/features/housing/hooks/useListingDetail';
 import type { ListingColivingRoom } from '@dakareaseu/types';
 import { MediaGallery } from '@/features/housing/components/MediaGallery';
+import { PanoramaTourSection } from '@/features/housing/components/PanoramaTourSection';
 import { ChipList } from '@/features/housing/components/ChipList';
+import { openMapsDirections } from '@/lib/geo';
 
 export function ListingDetailScreen() {
   const { t } = useTranslation();
@@ -34,6 +36,9 @@ export function ListingDetailScreen() {
 
   const isVerified = listing.verification_status === 'published';
   const media = listing.listing_media ?? [];
+  const panoramas = media
+    .filter((m) => m.media_type === 'pano_360')
+    .sort((a, b) => a.position - b.position);
   const rooms = listing.listing_coliving_rooms ?? [];
 
   return (
@@ -69,6 +74,8 @@ export function ListingDetailScreen() {
         </View>
 
         <Text className="mt-4 text-sm leading-5 text-text">{listing.description}</Text>
+
+        <PanoramaTourSection panoramas={panoramas} title={t('listing.virtualTour')} />
 
         <ChipList title={t('listing.amenities')} items={listing.amenities ?? []} />
         <ChipList title={t('listing.particularities')} items={listing.particularities ?? []} />
@@ -119,23 +126,33 @@ export function ListingDetailScreen() {
         ) : null}
       </ScrollView>
 
-      <View className="flex-row items-center justify-between border-t border-border bg-card px-4 py-3">
-        <View>
-          <Text className="text-lg font-bold text-primary">
-            {listing.price.toLocaleString('fr-FR')} {listing.currency}
-          </Text>
-          <Text className="text-xs text-textLight">{t('common.perMonth')}</Text>
+      <View className="border-t border-border bg-card px-4 py-3">
+        <View className="flex-row items-center justify-between">
+          <View>
+            <Text className="text-lg font-bold text-primary">
+              {listing.price.toLocaleString('fr-FR')} {listing.currency}
+            </Text>
+            <Text className="text-xs text-textLight">{t('common.perMonth')}</Text>
+          </View>
+          <Button
+            label={t('listing.reserve')}
+            fullWidth={false}
+            onPress={() =>
+              router.push({
+                pathname: '/(tabs)/home/booking/[listingId]',
+                params: { listingId: listing.id },
+              })
+            }
+          />
         </View>
-        <Button
-          label={t('listing.reserve')}
-          fullWidth={false}
-          onPress={() =>
-            router.push({
-              pathname: '/(tabs)/home/booking/[listingId]',
-              params: { listingId: listing.id },
-            })
-          }
-        />
+        {listing.latitude != null && listing.longitude != null ? (
+          <Button
+            label="🗺️  Y aller"
+            variant="outline"
+            onPress={() => openMapsDirections(listing.latitude!, listing.longitude!, listing.title)}
+            fullWidth
+          />
+        ) : null}
       </View>
     </Screen>
   );

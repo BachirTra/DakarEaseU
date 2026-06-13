@@ -3,24 +3,28 @@ import { Image } from 'expo-image';
 import { useUiStore } from '@/shared/store/uiStore';
 import type { ListingMedia } from '@dakareaseu/types';
 
-const KIND_LABEL: Record<ListingMedia['media_type'], string> = {
-  photo: '',
+const KIND_LABEL: Partial<Record<ListingMedia['media_type'], string>> = {
   video: '▶ Vidéo',
   tour_3d: '360° Visite 3D',
 };
 
+type GalleryMedia = Pick<ListingMedia, 'id' | 'url' | 'media_type'>;
+
 interface MediaGalleryProps {
-  media: Pick<ListingMedia, 'id' | 'url' | 'media_type'>[];
+  media: GalleryMedia[];
 }
 
 export function MediaGallery({ media }: MediaGalleryProps) {
   const openMediaViewer = useUiStore((s) => s.openMediaViewer);
 
-  if (media.length === 0) return null;
+  // Les photo-sphères 360° sont affichées par la section "Visite virtuelle".
+  const flatMedia = media.filter((m) => m.media_type !== 'pano_360');
+
+  if (flatMedia.length === 0) return null;
 
   return (
     <ScrollView horizontal showsHorizontalScrollIndicator={false} className="mt-3">
-      {media.map((item) => (
+      {flatMedia.map((item) => (
         <Pressable
           key={item.id}
           onPress={() => openMediaViewer(item.url, item.media_type)}

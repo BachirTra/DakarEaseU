@@ -130,6 +130,8 @@ export type Database = {
           event_time: string | null;
           id: string;
           is_featured: boolean;
+          latitude: number | null;
+          longitude: number | null;
           partner: string | null;
           price_label: string | null;
           price_value: number;
@@ -146,6 +148,8 @@ export type Database = {
           event_time?: string | null;
           id?: string;
           is_featured?: boolean;
+          latitude?: number | null;
+          longitude?: number | null;
           partner?: string | null;
           price_label?: string | null;
           price_value?: number;
@@ -161,6 +165,8 @@ export type Database = {
           event_date?: string;
           event_time?: string | null;
           id?: string;
+          latitude?: number | null;
+          longitude?: number | null;
           is_featured?: boolean;
           partner?: string | null;
           price_label?: string | null;
@@ -305,6 +311,7 @@ export type Database = {
           listing_id: string;
           media_type: Database['public']['Enums']['media_type'];
           position: number;
+          room_label: string | null;
           url: string;
         };
         Insert: {
@@ -313,6 +320,7 @@ export type Database = {
           listing_id: string;
           media_type: Database['public']['Enums']['media_type'];
           position?: number;
+          room_label?: string | null;
           url: string;
         };
         Update: {
@@ -321,6 +329,7 @@ export type Database = {
           listing_id?: string;
           media_type?: Database['public']['Enums']['media_type'];
           position?: number;
+          room_label?: string | null;
           url?: string;
         };
         Relationships: [
@@ -347,6 +356,8 @@ export type Database = {
           district: string;
           furnished: boolean;
           id: string;
+          latitude: number | null;
+          longitude: number | null;
           min_duration_months: number;
           particularities: string[];
           period: string;
@@ -373,6 +384,8 @@ export type Database = {
           district: string;
           furnished?: boolean;
           id?: string;
+          latitude?: number | null;
+          longitude?: number | null;
           min_duration_months?: number;
           particularities?: string[];
           period?: string;
@@ -399,6 +412,8 @@ export type Database = {
           district?: string;
           furnished?: boolean;
           id?: string;
+          latitude?: number | null;
+          longitude?: number | null;
           min_duration_months?: number;
           particularities?: string[];
           period?: string;
@@ -563,6 +578,8 @@ export type Database = {
           district: string;
           has_delivery: boolean;
           id: string;
+          latitude: number | null;
+          longitude: number | null;
           name: string;
           opening_hours: string | null;
           phone: string | null;
@@ -581,6 +598,8 @@ export type Database = {
           district: string;
           has_delivery?: boolean;
           id?: string;
+          latitude?: number | null;
+          longitude?: number | null;
           name: string;
           opening_hours?: string | null;
           phone?: string | null;
@@ -599,6 +618,8 @@ export type Database = {
           district?: string;
           has_delivery?: boolean;
           id?: string;
+          latitude?: number | null;
+          longitude?: number | null;
           name?: string;
           opening_hours?: string | null;
           phone?: string | null;
@@ -691,6 +712,8 @@ export type Database = {
           founded_year: number | null;
           full_name: string | null;
           id: string;
+          latitude: number | null;
+          longitude: number | null;
           name: string;
           phone: string | null;
           programs: string[];
@@ -711,6 +734,8 @@ export type Database = {
           founded_year?: number | null;
           full_name?: string | null;
           id?: string;
+          latitude?: number | null;
+          longitude?: number | null;
           name: string;
           phone?: string | null;
           programs?: string[];
@@ -731,6 +756,8 @@ export type Database = {
           founded_year?: number | null;
           full_name?: string | null;
           id?: string;
+          latitude?: number | null;
+          longitude?: number | null;
           name?: string;
           phone?: string | null;
           programs?: string[];
@@ -813,7 +840,7 @@ export type Database = {
       guided_search_status: 'open' | 'matched' | 'closed';
       listing_type: 'studio' | 'chambre' | 'appartement' | 'maison';
       listing_verification_status: 'pending' | 'published' | 'rejected';
-      media_type: 'photo' | 'video' | 'tour_3d';
+      media_type: 'photo' | 'video' | 'tour_3d' | 'pano_360';
       notification_type:
         | 'booking_status_update'
         | 'event_rsvp_confirmed'

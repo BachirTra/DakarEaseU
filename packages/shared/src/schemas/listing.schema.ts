@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 export const LISTING_TYPES = ['studio', 'chambre', 'appartement', 'maison'] as const;
-export const MEDIA_TYPES = ['photo', 'video', 'tour_3d'] as const;
+export const MEDIA_TYPES = ['photo', 'video', 'tour_3d', 'pano_360'] as const;
 export const LISTING_VERIFICATION_STATUSES = ['pending', 'published', 'rejected'] as const;
 
 export const listingSchema = z.object({
@@ -23,6 +23,8 @@ export const listingSchema = z.object({
   particularities: z.array(z.string()).default([]),
   requirements: z.array(z.string()).default([]),
   verification_status: z.enum(LISTING_VERIFICATION_STATUSES).default('pending'),
+  latitude: z.number().optional().nullable(),
+  longitude: z.number().optional().nullable(),
 });
 
 export type ListingFormValues = z.infer<typeof listingSchema>;

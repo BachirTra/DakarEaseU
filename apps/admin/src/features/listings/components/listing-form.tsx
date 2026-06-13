@@ -9,6 +9,7 @@ import {
   LISTING_TYPE_LABELS,
   LISTING_VERIFICATION_STATUS_LABELS,
 } from '@dakareaseu/shared';
+import { LocationPicker } from '@/components/location-picker';
 import type { Listing } from '@dakareaseu/types';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -95,9 +96,14 @@ export function ListingForm({
           particularities: listing.particularities,
           requirements: listing.requirements,
           verification_status: listing.verification_status,
+          latitude: listing.latitude ?? null,
+          longitude: listing.longitude ?? null,
         }
       : DEFAULT_VALUES,
   });
+
+  const lat = form.watch('latitude');
+  const lng = form.watch('longitude');
 
   useEffect(() => {
     if (listing) form.reset(form.getValues());
@@ -304,6 +310,23 @@ export function ListingForm({
             />
           ))}
         </div>
+        <div className="mt-2">
+          <FormLabel className="mb-2 block">Localisation (optionnel)</FormLabel>
+          <LocationPicker
+            lat={lat}
+            lng={lng}
+            onChange={(newLat, newLng) => {
+              form.setValue('latitude', newLat);
+              form.setValue('longitude', newLng);
+            }}
+          />
+          {lat != null && lng != null ? (
+            <p className="mt-1 text-xs text-muted-foreground">
+              {lat.toFixed(6)}, {lng.toFixed(6)}
+            </p>
+          ) : null}
+        </div>
+
         <Button type="submit" disabled={saveMutation.isPending}>
           {saveMutation.isPending
             ? 'Enregistrement…'

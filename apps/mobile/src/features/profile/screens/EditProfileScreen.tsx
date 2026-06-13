@@ -7,6 +7,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { Screen } from '@/shared/ui/Screen';
 import { Button } from '@/shared/ui/Button';
+import { PhoneInput } from '@/shared/ui/PhoneInput';
 import { useTranslation } from '@/hooks/useTranslation';
 import { useSessionStore } from '@/features/auth/store/sessionStore';
 import { useUpdateProfile, useUploadAvatar } from '@/features/profile/hooks/useProfile';
@@ -80,20 +81,17 @@ export function EditProfileScreen() {
           />
         )}
       />
-      <Controller
-        control={control}
-        name="phone"
-        render={({ field: { value, onChange } }) => (
-          <TextInput
-            placeholder="Téléphone"
-            placeholderTextColor="#6B7280"
-            keyboardType="phone-pad"
-            value={value ?? ''}
-            onChangeText={onChange}
-            className="mb-4 rounded-xl border border-border bg-card px-4 py-3 text-text"
-          />
-        )}
-      />
+
+      <View className="mb-4">
+        <Controller
+          control={control}
+          name="phone"
+          render={({ field: { value, onChange } }) => (
+            <PhoneInput value={value} onChange={onChange} />
+          )}
+        />
+      </View>
+
       <Button
         label={t('common.save')}
         onPress={handleSubmit(onSubmit)}

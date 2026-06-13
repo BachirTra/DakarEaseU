@@ -16,7 +16,7 @@ export async function fetchEventDetail(eventId: string) {
   const { data, error } = await supabase
     .from('events')
     .select(
-      'id, title, category, event_date, event_time, venue, cover_image_url, description, partner, price_label, price_value',
+      'id, title, category, event_date, event_time, venue, cover_image_url, description, partner, price_label, price_value, latitude, longitude',
     )
     .eq('id', eventId)
     .single();

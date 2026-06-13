@@ -1,7 +1,7 @@
 import type { Listing, ListingMedia, ListingType } from '@dakareaseu/types';
 
 export const LISTING_PUBLIC_COLUMNS =
-  'id, title, description, price, currency, period, type, surface_m2, bedrooms, bathrooms, district, distance_label, furnished, colocation_available, min_duration_months, amenities, particularities, requirements, verification_status, rating, reviews_count, created_at' as const;
+  'id, title, description, price, currency, period, type, surface_m2, bedrooms, bathrooms, district, distance_label, furnished, colocation_available, min_duration_months, amenities, particularities, requirements, verification_status, rating, reviews_count, created_at, latitude, longitude' as const;
 
 export interface ListingFilters {
   type?: ListingType | 'any';

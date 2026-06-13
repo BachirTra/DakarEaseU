@@ -4,6 +4,7 @@ import { useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Image from 'next/image';
+import { LocationPicker } from '@/components/location-picker';
 import {
   eventSchema,
   type EventFormValues,
@@ -43,6 +44,8 @@ const DEFAULT_VALUES: EventFormValues = {
   price_value: 0,
   is_featured: false,
   description: '',
+  latitude: null,
+  longitude: null,
 };
 
 export function EventForm({
@@ -70,9 +73,14 @@ export function EventForm({
           price_value: event.price_value,
           is_featured: event.is_featured,
           description: event.description ?? '',
+          latitude: event.latitude ?? null,
+          longitude: event.longitude ?? null,
         }
       : DEFAULT_VALUES,
   });
+
+  const lat = form.watch('latitude');
+  const lng = form.watch('longitude');
 
   async function onSubmit(values: EventFormValues) {
     const result = await saveMutation.mutateAsync(values);
@@ -261,6 +269,23 @@ export function EventForm({
               </FormItem>
             )}
           />
+          <div className="md:col-span-2">
+            <FormLabel className="mb-2 block">Localisation du lieu (optionnel)</FormLabel>
+            <LocationPicker
+              lat={lat}
+              lng={lng}
+              onChange={(newLat, newLng) => {
+                form.setValue('latitude', newLat);
+                form.setValue('longitude', newLng);
+              }}
+            />
+            {lat != null && lng != null ? (
+              <p className="mt-1 text-xs text-muted-foreground">
+                {lat.toFixed(6)}, {lng.toFixed(6)}
+              </p>
+            ) : null}
+          </div>
+
           <Button type="submit" disabled={saveMutation.isPending} className="md:col-span-2">
             {saveMutation.isPending
               ? 'Enregistrement…'

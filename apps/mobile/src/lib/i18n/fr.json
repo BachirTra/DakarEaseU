@@ -95,6 +95,7 @@
     "requirements": "Exigences",
     "media": "Médias",
     "tour3d": "Visite 3D",
+    "virtualTour": "Visite virtuelle 360°",
     "colocation": "Colocation",
     "colocationAvailable": "Colocation disponible",
     "colocationPlaces": "{{count}} places disponibles",

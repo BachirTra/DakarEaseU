@@ -13,7 +13,7 @@ export async function fetchSchoolDetail(schoolId: string) {
   const { data, error } = await supabase
     .from('schools')
     .select(
-      'id, name, district, address, cover_image_url, programs, admission_steps, phone, whatsapp, email, school_nearby_listings(listing_id, listings(id, title, price, currency, district, distance_label))',
+      'id, name, district, address, cover_image_url, programs, admission_steps, phone, whatsapp, email, latitude, longitude, school_nearby_listings(listing_id, listings(id, title, price, currency, district, distance_label))',
     )
     .eq('id', schoolId)
     .single();

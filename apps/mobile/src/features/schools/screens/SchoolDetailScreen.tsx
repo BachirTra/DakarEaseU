@@ -7,6 +7,7 @@ import { Button } from '@/shared/ui/Button';
 import { EmptyState } from '@/shared/ui/EmptyState';
 import { useTranslation } from '@/hooks/useTranslation';
 import { useSchoolDetail } from '@/features/schools/hooks/useSchools';
+import { openMapsDirections } from '@/lib/geo';
 
 type Tab = 'info' | 'admission' | 'housing';
 
@@ -64,6 +65,12 @@ export function SchoolDetailScreen() {
         {tab === 'info' ? (
           <View className="mt-4">
             <View className="gap-2">
+              {school.latitude != null && school.longitude != null ? (
+                <Button
+                  label="🗺️  Y aller"
+                  onPress={() => openMapsDirections(school.latitude!, school.longitude!, school.name)}
+                />
+              ) : null}
               {school.whatsapp ? (
                 <Button
                   label={t('schools.contactWhatsapp')}

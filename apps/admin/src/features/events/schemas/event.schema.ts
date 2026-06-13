@@ -20,6 +20,8 @@ export const eventSchema = z.object({
   price_value: z.coerce.number().min(0).default(0),
   is_featured: z.boolean().default(false),
   description: z.string().optional().nullable(),
+  latitude: z.number().optional().nullable(),
+  longitude: z.number().optional().nullable(),
 });
 
 export type EventFormValues = z.infer<typeof eventSchema>;

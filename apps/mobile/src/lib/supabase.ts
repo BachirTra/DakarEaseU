@@ -12,11 +12,6 @@ if (!supabaseUrl || !supabaseAnonKey) {
   );
 }
 
-// Node.js < 22 has no native WebSocket — required by @supabase/realtime-js in Jest/CI.
-// In React Native at runtime, WebSocket is always provided by the RN runtime.
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const wsImpl = typeof WebSocket !== 'undefined' ? undefined : (require('ws') as typeof WebSocket);
-
 export const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey, {
   auth: {
     storage: AsyncStorage,
@@ -24,5 +19,4 @@ export const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey, {
     persistSession: true,
     detectSessionInUrl: false,
   },
-  ...(wsImpl ? { realtime: { transport: wsImpl } } : {}),
 });

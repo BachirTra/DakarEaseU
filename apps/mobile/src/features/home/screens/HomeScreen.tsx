@@ -18,6 +18,13 @@ import { useFavorites, useToggleFavorite } from '@/features/favorites/hooks/useF
 import type { Favorite } from '@dakareaseu/types';
 import type { ListingSummary } from '@/features/housing/types/housing.types';
 
+const CATEGORY_ROUTES: Record<string, string> = {
+  logements: '/(tabs)/search',
+  ecoles: '/(tabs)/search/schools',
+  restaurants: '/(tabs)/search/restaurants',
+  transport: '/(tabs)/search/transport',
+};
+
 function toListingSummary(
   row: NonNullable<ReturnType<typeof useTopListings>['data']>[number],
 ): ListingSummary {
@@ -170,7 +177,7 @@ export function HomeScreen() {
           {CATEGORIES.map((cat) => (
             <Pressable
               key={cat.id}
-              onPress={() => router.push('/(tabs)/search')}
+              onPress={() => router.push(CATEGORY_ROUTES[cat.id] as any)}
               className="items-center"
             >
               <View className="h-14 w-14 items-center justify-center rounded-2xl bg-primary/10">

@@ -71,11 +71,16 @@ export async function addListingMedia(
   mediaType: ListingMedia['media_type'],
   url: string,
   position: number,
+  roomLabel?: string | null,
 ) {
   const supabase = createSupabaseBrowserClient();
-  const { error } = await supabase
-    .from('listing_media')
-    .insert({ listing_id: listingId, media_type: mediaType, url, position });
+  const { error } = await supabase.from('listing_media').insert({
+    listing_id: listingId,
+    media_type: mediaType,
+    url,
+    position,
+    room_label: roomLabel ?? null,
+  });
   if (error) throw error;
 }
 

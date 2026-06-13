@@ -12,6 +12,8 @@ export const restaurantSchema = z.object({
   specialties: z.array(z.string()).default([]),
   description: z.string().optional().nullable(),
   has_delivery: z.boolean().default(false),
+  latitude: z.number().optional().nullable(),
+  longitude: z.number().optional().nullable(),
 });
 
 export type RestaurantFormValues = z.infer<typeof restaurantSchema>;

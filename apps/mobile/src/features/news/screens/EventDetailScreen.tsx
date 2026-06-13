@@ -6,6 +6,7 @@ import { Button } from '@/shared/ui/Button';
 import { Badge } from '@/shared/ui/Badge';
 import { useTranslation } from '@/hooks/useTranslation';
 import { useEventDetail, useMyRsvp, useSetRsvp } from '@/features/news/hooks/useEvents';
+import { openMapsDirections } from '@/lib/geo';
 
 export function EventDetailScreen() {
   const { t } = useTranslation();
@@ -68,6 +69,13 @@ export function EventDetailScreen() {
             disabled={isInterested || isConfirmed || setRsvp.isPending}
             onPress={() => setRsvp.mutate('interested')}
           />
+          {event.latitude != null && event.longitude != null ? (
+            <Button
+              label="🗺️  Y aller"
+              variant="outline"
+              onPress={() => openMapsDirections(event.latitude!, event.longitude!, event.venue ?? event.title)}
+            />
+          ) : null}
           <Button
             label={t('news.shareEvent')}
             variant="ghost"

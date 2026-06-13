@@ -17,6 +17,7 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { useSaveRestaurant } from '../hooks/use-restaurants';
+import { LocationPicker } from '@/components/location-picker';
 
 function arrayToLines(values: string[]): string {
   return values.join('\n');
@@ -41,6 +42,8 @@ const DEFAULT_VALUES: RestaurantFormValues = {
   specialties: [],
   description: '',
   has_delivery: false,
+  latitude: null,
+  longitude: null,
 };
 
 export function RestaurantForm({
@@ -67,9 +70,14 @@ export function RestaurantForm({
           specialties: restaurant.specialties,
           description: restaurant.description ?? '',
           has_delivery: restaurant.has_delivery,
+          latitude: restaurant.latitude ?? null,
+          longitude: restaurant.longitude ?? null,
         }
       : DEFAULT_VALUES,
   });
+
+  const lat = form.watch('latitude');
+  const lng = form.watch('longitude');
 
   async function onSubmit(values: RestaurantFormValues) {
     const result = await saveMutation.mutateAsync(values);
@@ -228,6 +236,23 @@ export function RestaurantForm({
             </FormItem>
           )}
         />
+        <div className="md:col-span-2">
+          <FormLabel className="mb-2 block">Localisation (optionnel)</FormLabel>
+          <LocationPicker
+            lat={lat}
+            lng={lng}
+            onChange={(newLat, newLng) => {
+              form.setValue('latitude', newLat);
+              form.setValue('longitude', newLng);
+            }}
+          />
+          {lat != null && lng != null ? (
+            <p className="mt-1 text-xs text-muted-foreground">
+              {lat.toFixed(6)}, {lng.toFixed(6)}
+            </p>
+          ) : null}
+        </div>
+
         <Button type="submit" disabled={saveMutation.isPending} className="md:col-span-2">
           {saveMutation.isPending
             ? 'Enregistrement…'

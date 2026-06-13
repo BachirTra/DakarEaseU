@@ -9,16 +9,17 @@ interface ListingCardProps {
   isFavorite: boolean;
   onToggleFavorite: () => void;
   onPress: () => void;
+  fullWidth?: boolean;
 }
 
-export function ListingCard({ listing, isFavorite, onToggleFavorite, onPress }: ListingCardProps) {
+export function ListingCard({ listing, isFavorite, onToggleFavorite, onPress, fullWidth = false }: ListingCardProps) {
   const { t } = useTranslation();
   const isVerified = listing.verification_status === 'published';
 
   return (
     <Pressable
       onPress={onPress}
-      className="mr-3 w-60 overflow-hidden rounded-2xl border border-border bg-card"
+      className={`overflow-hidden rounded-2xl border border-border bg-card ${fullWidth ? 'w-full' : 'mr-3 w-60'}`}
     >
       <View className="relative h-36 w-full bg-border">
         {listing.cover_media ? (

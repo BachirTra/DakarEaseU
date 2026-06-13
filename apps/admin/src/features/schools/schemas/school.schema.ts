@@ -15,6 +15,8 @@ export const schoolSchema = z.object({
   programs: z.array(z.string()).default([]),
   admission_steps: z.array(z.string()).default([]),
   scholarships: z.array(z.string()).default([]),
+  latitude: z.number().optional().nullable(),
+  longitude: z.number().optional().nullable(),
 });
 
 export type SchoolFormValues = z.infer<typeof schoolSchema>;
