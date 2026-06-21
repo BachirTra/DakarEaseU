@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Text, View } from 'react-native';
+import { Image } from 'expo-image';
 import { useRouter } from 'expo-router';
 import { Screen } from '@/shared/ui/Screen';
 import { Button } from '@/shared/ui/Button';
@@ -8,6 +9,8 @@ import { useTranslation } from '@/hooks/useTranslation';
 import { useSessionStore } from '@/features/auth/store/sessionStore';
 import { useCompleteOnboarding } from '@/features/auth/hooks/useAuth';
 import type { OnboardingAnswers } from '@/features/auth/lib/derivePersona';
+
+const LOGO = require('../../../../assets/icon.png');
 
 const SLIDES = ['onboarding.slide1', 'onboarding.slide2', 'onboarding.slide3'] as const;
 
@@ -38,7 +41,9 @@ export function OnboardingScreen() {
     const slideKey = SLIDES[step];
     return (
       <Screen className="justify-between py-8">
-        <View />
+        <View className="items-center pt-4">
+          <Image source={LOGO} style={{ width: 80, height: 80 }} contentFit="contain" />
+        </View>
         <View className="items-center px-4">
           <Badge label={`${step + 1}/3`} tone="primary" />
           <Text className="mt-4 text-center text-2xl font-bold text-text">

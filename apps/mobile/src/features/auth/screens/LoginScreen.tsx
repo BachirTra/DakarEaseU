@@ -1,4 +1,5 @@
 import { Text, TextInput, View } from 'react-native';
+import { Image } from 'expo-image';
 import { useRouter } from 'expo-router';
 import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -7,6 +8,8 @@ import { Button } from '@/shared/ui/Button';
 import { useTranslation } from '@/hooks/useTranslation';
 import { useLogin } from '@/features/auth/hooks/useAuth';
 import { loginSchema, type LoginInput } from '@/features/auth/schemas/authSchemas';
+
+const LOGO = require('../../../../assets/icon.png');
 
 export function LoginScreen() {
   const { t } = useTranslation();
@@ -28,6 +31,10 @@ export function LoginScreen() {
 
   return (
     <Screen className="justify-center">
+      <View className="mb-5 items-center">
+        <Image source={LOGO} style={{ width: 96, height: 96 }} contentFit="contain" />
+      </View>
+
       <Text className="mb-1 text-2xl font-bold text-text">{t('common.appName')}</Text>
       <Text className="mb-6 text-base text-textLight">{t('auth.loginSubtitle')}</Text>
 
