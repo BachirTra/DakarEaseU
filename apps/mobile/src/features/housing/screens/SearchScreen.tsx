@@ -3,7 +3,9 @@ import { FlatList, Pressable, Text, TextInput, View } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Screen } from '@/shared/ui/Screen';
 import { EmptyState } from '@/shared/ui/EmptyState';
+import { Icon } from '@/shared/ui/Icon';
 import { useTranslation } from '@/hooks/useTranslation';
+import { COLORS } from '@/constants/colors';
 import { useListings } from '@/features/housing/hooks/useListings';
 import { useFavorites, useToggleFavorite } from '@/features/favorites/hooks/useFavorites';
 import { ListingCard } from '@/features/housing/components/ListingCard';
@@ -37,7 +39,9 @@ export function SearchScreen() {
       <Text className="mb-3 mt-2 text-xl font-bold text-text">{t('search.title')}</Text>
 
       <View className="mb-3 flex-row items-center rounded-xl border border-border bg-card px-4 py-3">
-        <Text className="mr-2 text-textLight">🔍</Text>
+        <View className="mr-2">
+          <Icon name="search" size={18} color={COLORS.textLight} />
+        </View>
         <TextInput
           value={query}
           onChangeText={setQuery}
@@ -75,7 +79,7 @@ export function SearchScreen() {
       {isLoading ? (
         <Text className="mt-6 text-center text-sm text-textLight">{t('common.loading')}</Text>
       ) : filtered.length === 0 ? (
-        <EmptyState icon="🏠" title={t('search.noResults')} />
+        <EmptyState icon="home" title={t('search.noResults')} />
       ) : (
         <FlatList
           data={filtered}

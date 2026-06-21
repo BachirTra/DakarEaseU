@@ -4,7 +4,9 @@ import { useLocalSearchParams } from 'expo-router';
 import { Image } from 'expo-image';
 import { Screen } from '@/shared/ui/Screen';
 import { Button } from '@/shared/ui/Button';
+import { Icon } from '@/shared/ui/Icon';
 import { useTranslation } from '@/hooks/useTranslation';
+import { COLORS } from '@/constants/colors';
 import { useRestaurantDetail } from '@/features/restaurants/hooks/useRestaurants';
 import { MenuSheet } from '@/features/restaurants/components/MenuSheet';
 import { openMapsDirections } from '@/lib/geo';
@@ -59,8 +61,9 @@ export function RestaurantDetailScreen() {
           <Button label={t('restaurants.viewMenu')} onPress={() => setMenuVisible(true)} />
           {restaurant.latitude != null && restaurant.longitude != null ? (
             <Button
-              label="🗺️  Y aller"
+              label="Y aller"
               variant="outline"
+              leftIcon={<Icon name="map-pin" size={16} color={COLORS.primary} />}
               onPress={() =>
                 openMapsDirections(restaurant.latitude!, restaurant.longitude!, restaurant.name)
               }

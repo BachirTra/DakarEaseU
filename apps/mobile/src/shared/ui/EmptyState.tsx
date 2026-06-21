@@ -1,16 +1,17 @@
-﻿import { Text, View } from 'react-native';
+import { View, Text } from 'react-native';
+import { Icon, type IconName } from './Icon';
 
 interface EmptyStateProps {
-  icon?: string;
+  icon?: IconName;
   title: string;
   description?: string;
 }
 
-export function EmptyState({ icon = '🔍', title, description }: EmptyStateProps) {
+export function EmptyState({ icon = 'search', title, description }: EmptyStateProps) {
   return (
     <View className="flex-1 items-center justify-center px-8 py-16">
-      <Text className="mb-2 text-4xl">{icon}</Text>
-      <Text className="text-center text-base font-semibold text-text">{title}</Text>
+      <Icon name={icon} size={48} color="#6B7280" />
+      <Text className="mt-3 text-center text-base font-semibold text-text">{title}</Text>
       {description ? (
         <Text className="mt-1 text-center text-sm text-textLight">{description}</Text>
       ) : null}

@@ -1,16 +1,18 @@
-﻿export type CategoryId = 'logements' | 'ecoles' | 'restaurants' | 'transport';
+import type { IconName } from '@/shared/ui/Icon';
+
+export type CategoryId = 'logements' | 'ecoles' | 'restaurants' | 'transport';
 
 export interface Category {
   id: CategoryId;
   labelKey: string;
-  icon: string;
+  iconName: IconName;
 }
 
 export const CATEGORIES: Category[] = [
-  { id: 'logements', labelKey: 'categories.logements', icon: '🏠' },
-  { id: 'ecoles', labelKey: 'categories.ecoles', icon: '🎓' },
-  { id: 'restaurants', labelKey: 'categories.restaurants', icon: '🍽️' },
-  { id: 'transport', labelKey: 'categories.transport', icon: '🚖' },
+  { id: 'logements', labelKey: 'categories.logements', iconName: 'home' },
+  { id: 'ecoles', labelKey: 'categories.ecoles', iconName: 'graduation-cap' },
+  { id: 'restaurants', labelKey: 'categories.restaurants', iconName: 'utensils' },
+  { id: 'transport', labelKey: 'categories.transport', iconName: 'car' },
 ];
 
 export const DISTRICTS = [

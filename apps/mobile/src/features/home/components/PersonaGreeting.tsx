@@ -10,17 +10,17 @@ interface PersonaCopy {
 
 export const PERSONA_COPY: Record<PersonaType, PersonaCopy> = {
   nouveau: {
-    greeting: 'Bienvenue à Dakar 👋',
+    greeting: 'Bienvenue à Dakar',
     hint: 'Découvre les écoles et logements près de toi',
     priority: ['ecoles', 'logements', 'transport'],
   },
   local: {
-    greeting: 'Bonjour 👋',
+    greeting: 'Bonjour',
     hint: 'Bons plans et événements de la semaine',
     priority: ['logements', 'transport', 'restaurants'],
   },
   parent: {
-    greeting: 'Bonsoir 👋',
+    greeting: 'Bonsoir',
     hint: 'Logements vérifiés et écoles partenaires',
     priority: ['logements', 'ecoles', 'restaurants'],
   },

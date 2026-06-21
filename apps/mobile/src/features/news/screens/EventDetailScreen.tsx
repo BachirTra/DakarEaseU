@@ -4,7 +4,9 @@ import { Image } from 'expo-image';
 import { Screen } from '@/shared/ui/Screen';
 import { Button } from '@/shared/ui/Button';
 import { Badge } from '@/shared/ui/Badge';
+import { Icon } from '@/shared/ui/Icon';
 import { useTranslation } from '@/hooks/useTranslation';
+import { COLORS } from '@/constants/colors';
 import { useEventDetail, useMyRsvp, useSetRsvp } from '@/features/news/hooks/useEvents';
 import { openMapsDirections } from '@/lib/geo';
 
@@ -71,8 +73,9 @@ export function EventDetailScreen() {
           />
           {event.latitude != null && event.longitude != null ? (
             <Button
-              label="🗺️  Y aller"
+              label="Y aller"
               variant="outline"
+              leftIcon={<Icon name="map-pin" size={16} color={COLORS.primary} />}
               onPress={() =>
                 openMapsDirections(event.latitude!, event.longitude!, event.venue ?? event.title)
               }

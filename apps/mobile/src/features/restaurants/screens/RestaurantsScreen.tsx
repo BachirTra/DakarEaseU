@@ -3,7 +3,9 @@ import { FlatList, Pressable, Text, TextInput, View } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Screen } from '@/shared/ui/Screen';
 import { EmptyState } from '@/shared/ui/EmptyState';
+import { Icon } from '@/shared/ui/Icon';
 import { useTranslation } from '@/hooks/useTranslation';
+import { COLORS } from '@/constants/colors';
 import { useRestaurants } from '@/features/restaurants/hooks/useRestaurants';
 
 export function RestaurantsScreen() {
@@ -20,7 +22,9 @@ export function RestaurantsScreen() {
     <Screen>
       <Text className="mb-3 mt-2 text-xl font-bold text-text">{t('restaurants.title')}</Text>
       <View className="mb-3 flex-row items-center rounded-xl border border-border bg-card px-4 py-3">
-        <Text className="mr-2 text-textLight">🔍</Text>
+        <View className="mr-2">
+          <Icon name="search" size={18} color={COLORS.textLight} />
+        </View>
         <TextInput
           value={query}
           onChangeText={setQuery}
@@ -31,7 +35,7 @@ export function RestaurantsScreen() {
       </View>
 
       {isLoading ? null : filtered.length === 0 ? (
-        <EmptyState icon="🍽️" title={t('search.noResults')} />
+        <EmptyState icon="utensils" title={t('search.noResults')} />
       ) : (
         <FlatList
           data={filtered}
@@ -58,7 +62,10 @@ export function RestaurantsScreen() {
                 </Text>
               </View>
               {item.rating != null ? (
-                <Text className="text-xs text-textLight">★ {item.rating.toFixed(1)}</Text>
+                <View className="flex-row items-center gap-1">
+                  <Icon name="star-filled" size={12} color={COLORS.accent} />
+                  <Text className="text-xs text-textLight">{item.rating.toFixed(1)}</Text>
+                </View>
               ) : null}
             </Pressable>
           )}

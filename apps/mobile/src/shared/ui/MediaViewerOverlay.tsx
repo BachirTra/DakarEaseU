@@ -4,6 +4,7 @@ import { Image } from 'expo-image';
 import { useVideoPlayer, VideoView } from 'expo-video';
 import { useUiStore } from '@/shared/store/uiStore';
 import { PanoramaViewer } from '@/shared/ui/PanoramaViewer';
+import { Icon } from '@/shared/ui/Icon';
 
 export type MediaKind = 'photo' | 'video' | 'tour_3d' | 'pano_360';
 
@@ -104,7 +105,7 @@ export function MediaViewerOverlay() {
               justifyContent: 'center',
             }}
           >
-            <Text style={{ color: '#FFFFFF', fontSize: 20, lineHeight: 22 }}>✕</Text>
+            <Icon name="close" color="#FFFFFF" size={20} />
           </Pressable>
         </View>
       </View>

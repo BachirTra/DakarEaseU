@@ -2,9 +2,11 @@ import { Pressable, ScrollView, Text, TextInput, View } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Image } from 'expo-image';
 import { Screen } from '@/shared/ui/Screen';
+import { Icon } from '@/shared/ui/Icon';
 import { useTranslation } from '@/hooks/useTranslation';
 import { useSessionStore } from '@/features/auth/store/sessionStore';
 import { CATEGORIES } from '@/constants/categories';
+import { COLORS } from '@/constants/colors';
 import { PersonaGreeting, PERSONA_COPY } from '@/features/home/components/PersonaGreeting';
 import { SectionHeader } from '@/features/home/components/SectionHeader';
 import {
@@ -165,7 +167,9 @@ export function HomeScreen() {
 
         <Pressable onPress={() => router.push('/(tabs)/search')}>
           <View className="flex-row items-center rounded-xl border border-border bg-card px-4 py-3">
-            <Text className="mr-2 text-textLight">🔍</Text>
+            <View className="mr-2">
+              <Icon name="search" size={18} color={COLORS.textLight} />
+            </View>
             <TextInput
               editable={false}
               pointerEvents="none"
@@ -184,7 +188,7 @@ export function HomeScreen() {
               className="items-center"
             >
               <View className="h-14 w-14 items-center justify-center rounded-2xl bg-primary/10">
-                <Text className="text-2xl">{cat.icon}</Text>
+                <Icon name={cat.iconName} size={28} color={COLORS.primary} />
               </View>
               <Text className="mt-1.5 text-xs text-text">{t(cat.labelKey)}</Text>
             </Pressable>

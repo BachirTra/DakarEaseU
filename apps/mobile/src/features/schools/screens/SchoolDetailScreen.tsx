@@ -5,7 +5,9 @@ import { Image } from 'expo-image';
 import { Screen } from '@/shared/ui/Screen';
 import { Button } from '@/shared/ui/Button';
 import { EmptyState } from '@/shared/ui/EmptyState';
+import { Icon } from '@/shared/ui/Icon';
 import { useTranslation } from '@/hooks/useTranslation';
+import { COLORS } from '@/constants/colors';
 import { useSchoolDetail } from '@/features/schools/hooks/useSchools';
 import { openMapsDirections } from '@/lib/geo';
 
@@ -67,7 +69,8 @@ export function SchoolDetailScreen() {
             <View className="gap-2">
               {school.latitude != null && school.longitude != null ? (
                 <Button
-                  label="🗺️  Y aller"
+                  label="Y aller"
+                  leftIcon={<Icon name="map-pin" size={16} color="#FFFFFF" />}
                   onPress={() =>
                     openMapsDirections(school.latitude!, school.longitude!, school.name)
                   }
@@ -120,7 +123,7 @@ export function SchoolDetailScreen() {
         {tab === 'housing' ? (
           <View className="mt-4">
             {nearbyListings.length === 0 ? (
-              <EmptyState icon="🏠" title={t('schools.noNearbyHousing')} />
+              <EmptyState icon="home" title={t('schools.noNearbyHousing')} />
             ) : (
               nearbyListings.map((listing: NonNullable<NearbyRow['listings']>) => (
                 <View

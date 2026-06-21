@@ -5,7 +5,9 @@ import { Screen } from '@/shared/ui/Screen';
 import { Button } from '@/shared/ui/Button';
 import { Badge } from '@/shared/ui/Badge';
 import { EmptyState } from '@/shared/ui/EmptyState';
+import { Icon } from '@/shared/ui/Icon';
 import { useTranslation } from '@/hooks/useTranslation';
+import { COLORS } from '@/constants/colors';
 import { useSessionStore } from '@/features/auth/store/sessionStore';
 import {
   useSubmitGuidedSearch,
@@ -217,7 +219,7 @@ export function DemandeScreen() {
             {isMatching ? (
               <Text className="text-sm text-textLight">{t('common.loading')}</Text>
             ) : !matches || matches.length === 0 ? (
-              <EmptyState icon="🔍" title={t('demande.noMatches')} />
+              <EmptyState icon="search" title={t('demande.noMatches')} />
             ) : (
               matches.map((match: MatchResult) => (
                 <View
@@ -233,7 +235,10 @@ export function DemandeScreen() {
                   <View className="mt-2 flex-row flex-wrap gap-2">
                     {(match.reasons ?? []).map((reason: string) => (
                       <View key={reason} className="rounded-full bg-bg px-2.5 py-1">
-                        <Text className="text-xs text-text">✓ {reason}</Text>
+                        <View className="flex-row items-center gap-1">
+                          <Icon name="check" size={10} color={COLORS.secondary} />
+                          <Text className="text-xs text-text">{reason}</Text>
+                        </View>
                       </View>
                     ))}
                   </View>

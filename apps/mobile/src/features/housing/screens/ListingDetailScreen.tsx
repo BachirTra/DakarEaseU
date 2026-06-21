@@ -4,7 +4,9 @@ import { Screen } from '@/shared/ui/Screen';
 import { Badge } from '@/shared/ui/Badge';
 import { Button } from '@/shared/ui/Button';
 import { EmptyState } from '@/shared/ui/EmptyState';
+import { Icon } from '@/shared/ui/Icon';
 import { useTranslation } from '@/hooks/useTranslation';
+import { COLORS } from '@/constants/colors';
 import { useListingDetail } from '@/features/housing/hooks/useListingDetail';
 import type { ListingColivingRoom } from '@dakareaseu/types';
 import { MediaGallery } from '@/features/housing/components/MediaGallery';
@@ -29,7 +31,7 @@ export function ListingDetailScreen() {
   if (isError || !listing) {
     return (
       <Screen>
-        <EmptyState icon="🏠" title={t('common.error')} description={t('common.retry')} />
+        <EmptyState icon="home" title={t('common.error')} description={t('common.retry')} />
       </Screen>
     );
   }
@@ -147,8 +149,9 @@ export function ListingDetailScreen() {
         </View>
         {listing.latitude != null && listing.longitude != null ? (
           <Button
-            label="🗺️  Y aller"
+            label="Y aller"
             variant="outline"
+            leftIcon={<Icon name="map-pin" size={16} color={COLORS.primary} />}
             onPress={() => openMapsDirections(listing.latitude!, listing.longitude!, listing.title)}
             fullWidth
           />

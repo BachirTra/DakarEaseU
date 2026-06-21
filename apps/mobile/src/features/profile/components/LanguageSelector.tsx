@@ -1,6 +1,7 @@
 import { Pressable, Text, View } from 'react-native';
 import { usePreferencesStore } from '@/features/profile/store/preferencesStore';
 import { useTranslation } from '@/hooks/useTranslation';
+import { Icon } from '@/shared/ui/Icon';
 import type { Locale } from '@/lib/i18n';
 
 const OPTIONS: { id: Locale; label: string }[] = [
@@ -32,7 +33,7 @@ export function LanguageSelector() {
             {disabled ? (
               <Text className="text-xs text-textLight">{t('common.comingSoon')}</Text>
             ) : active ? (
-              <Text className="text-xs font-semibold text-primary">✓</Text>
+              <Icon name="check" color="#1E3A8A" size={14} />
             ) : null}
           </Pressable>
         );

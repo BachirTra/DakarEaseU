@@ -49,7 +49,7 @@ export function NewsScreen() {
       </ScrollView>
 
       {isLoading ? null : !events || events.length === 0 ? (
-        <EmptyState icon="📰" title={t('search.noResults')} />
+        <EmptyState icon="newspaper" title={t('search.noResults')} />
       ) : (
         <ScrollView
           showsVerticalScrollIndicator={false}

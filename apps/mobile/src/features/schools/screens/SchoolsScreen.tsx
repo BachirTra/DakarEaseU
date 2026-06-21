@@ -15,7 +15,7 @@ export function SchoolsScreen() {
   if (!schools || schools.length === 0) {
     return (
       <Screen>
-        <EmptyState icon="🎓" title={t('schools.title')} />
+        <EmptyState icon="graduation-cap" title={t('schools.title')} />
       </Screen>
     );
   }

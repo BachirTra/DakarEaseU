@@ -1,10 +1,12 @@
 import { useState } from 'react';
-import { FlatList, Text, TextInput, View } from 'react-native';
+import { FlatList, Pressable, Text, TextInput, View } from 'react-native';
 import { Screen } from '@/shared/ui/Screen';
 import { Badge, type BadgeTone } from '@/shared/ui/Badge';
 import { Button } from '@/shared/ui/Button';
 import { EmptyState } from '@/shared/ui/EmptyState';
+import { Icon } from '@/shared/ui/Icon';
 import { useTranslation } from '@/hooks/useTranslation';
+import { COLORS } from '@/constants/colors';
 import { useMyBookings } from '@/features/housing/hooks/useMyBookings';
 import { useSubmitReview } from '@/features/housing/hooks/useReviews';
 import type { BookingStatus } from '@dakareaseu/types';
@@ -34,7 +36,7 @@ export function MyBookingsScreen() {
     return (
       <Screen>
         <Text className="mb-3 mt-2 text-xl font-bold text-text">{t('profile.myBookings')}</Text>
-        <EmptyState icon="🏠" title={t('favorites.empty')} />
+        <EmptyState icon="home" title={t('favorites.empty')} />
       </Screen>
     );
   }
@@ -68,11 +70,15 @@ export function MyBookingsScreen() {
             {item.status === 'completed' ? (
               reviewingId === item.id ? (
                 <View className="mt-3">
-                  <View className="mb-2 flex-row gap-1">
+                  <View className="mb-2 flex-row gap-2">
                     {[1, 2, 3, 4, 5].map((star) => (
-                      <Text key={star} className="text-lg" onPress={() => setRating(star)}>
-                        {star <= rating ? '★' : '☆'}
-                      </Text>
+                      <Pressable key={star} onPress={() => setRating(star)}>
+                        <Icon
+                          name={star <= rating ? 'star-filled' : 'star'}
+                          size={22}
+                          color={star <= rating ? COLORS.accent : COLORS.textLight}
+                        />
+                      </Pressable>
                     ))}
                   </View>
                   <TextInput

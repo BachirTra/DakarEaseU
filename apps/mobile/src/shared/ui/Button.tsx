@@ -1,4 +1,5 @@
-﻿import { ActivityIndicator, Pressable, Text } from 'react-native';
+﻿import type { ReactNode } from 'react';
+import { ActivityIndicator, Pressable, Text, View } from 'react-native';
 import { COLORS } from '@/constants/colors';
 
 export type ButtonVariant = 'primary' | 'secondary' | 'outline' | 'ghost';
@@ -10,6 +11,7 @@ interface ButtonProps {
   disabled?: boolean;
   loading?: boolean;
   fullWidth?: boolean;
+  leftIcon?: ReactNode;
 }
 
 const VARIANT_CLASSES: Record<ButtonVariant, string> = {
@@ -33,6 +35,7 @@ export function Button({
   disabled = false,
   loading = false,
   fullWidth = true,
+  leftIcon,
 }: ButtonProps) {
   const isDisabled = disabled || loading;
   return (
@@ -48,6 +51,13 @@ export function Button({
         <ActivityIndicator
           color={variant === 'outline' || variant === 'ghost' ? COLORS.primary : '#FFFFFF'}
         />
+      ) : leftIcon ? (
+        <View className="flex-row items-center gap-2">
+          {leftIcon}
+          <Text className={`text-base font-semibold ${VARIANT_TEXT_CLASSES[variant]}`}>
+            {label}
+          </Text>
+        </View>
       ) : (
         <Text className={`text-base font-semibold ${VARIANT_TEXT_CLASSES[variant]}`}>{label}</Text>
       )}

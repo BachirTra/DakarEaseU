@@ -24,7 +24,11 @@ export function FavoritesScreen() {
     return (
       <Screen>
         <Text className="mb-3 mt-2 text-xl font-bold text-text">{t('favorites.title')}</Text>
-        <EmptyState icon="🤍" title={t('favorites.empty')} description={t('favorites.emptyBody')} />
+        <EmptyState
+          icon="heart"
+          title={t('favorites.empty')}
+          description={t('favorites.emptyBody')}
+        />
       </Screen>
     );
   }

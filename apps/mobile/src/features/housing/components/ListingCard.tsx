@@ -1,7 +1,9 @@
 import { Pressable, Text, View } from 'react-native';
 import { Image } from 'expo-image';
 import { Badge } from '@/shared/ui/Badge';
+import { Icon } from '@/shared/ui/Icon';
 import { useTranslation } from '@/hooks/useTranslation';
+import { COLORS } from '@/constants/colors';
 import type { ListingSummary } from '@/features/housing/types/housing.types';
 
 interface ListingCardProps {
@@ -41,9 +43,11 @@ export function ListingCard({
           accessibilityLabel="favorite-toggle"
           className="absolute right-2 top-2 h-8 w-8 items-center justify-center rounded-full bg-white/90"
         >
-          <Text className={isFavorite ? 'text-danger' : 'text-textLight'}>
-            {isFavorite ? '♥' : '♡'}
-          </Text>
+          <Icon
+            name={isFavorite ? 'heart-filled' : 'heart'}
+            size={16}
+            color={isFavorite ? COLORS.danger : COLORS.textLight}
+          />
         </Pressable>
         {isVerified ? (
           <View className="absolute left-2 top-2">
@@ -66,7 +70,10 @@ export function ListingCard({
             {listing.price.toLocaleString('fr-FR')} {listing.currency}
             <Text className="text-xs font-normal text-textLight"> {t('common.perMonth')}</Text>
           </Text>
-          <Text className="text-xs text-textLight">★ {(listing.rating ?? 0).toFixed(1)}</Text>
+          <View className="flex-row items-center gap-1">
+            <Icon name="star-filled" size={12} color={COLORS.accent} />
+            <Text className="text-xs text-textLight">{(listing.rating ?? 0).toFixed(1)}</Text>
+          </View>
         </View>
         {listing.colocation_available ? (
           <View className="mt-2">
