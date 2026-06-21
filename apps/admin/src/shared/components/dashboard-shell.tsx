@@ -12,6 +12,7 @@ const NAV_ITEMS = [
   { href: '/schools', label: 'Écoles' },
   { href: '/restaurants', label: 'Restaurants' },
   { href: '/transport', label: 'Transport' },
+  { href: '/packs', label: 'Packs Étudiants' },
   { href: '/events', label: 'Événements' },
   { href: '/verifications', label: 'Vérification étudiante' },
   { href: '/bookings', label: 'Réservations' },

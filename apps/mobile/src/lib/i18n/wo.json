@@ -1,1 +1,15 @@
-{}
+{
+  "packs": {
+    "title": "Pack yu ndongo yi",
+    "sectionTitle": "Pack yu ndongo yi",
+    "searchBannerTitle": "Pack yu ndongo yi",
+    "searchBannerBody": "Komande sa pack lekk, ñu yóbbu ko fa nga dëkk",
+    "contents": "Li nekk ci pack bi",
+    "orderCta": "Komande pack bii",
+    "orderSuccess": "Komaand bi jot na!",
+    "orderSuccessBody": "Sa komaand bi noté nañu ko. Dinañu ko yóbbu ci jamono ju gën a gaaw.",
+    "itemCount": "{{count}} njumtukaay",
+    "price": "{{amount}} FCFA",
+    "empty": "Amul pack ci jamono jii"
+  }
+}

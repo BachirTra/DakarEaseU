@@ -202,5 +202,18 @@
     "resultsTitle": "Logements qui te correspondent",
     "matchScore": "{{pct}}% de compatibilité",
     "noMatches": "Aucune correspondance pour le moment — élargis tes critères."
+  },
+  "packs": {
+    "title": "Packs Étudiants",
+    "sectionTitle": "Packs Étudiants",
+    "searchBannerTitle": "Packs Étudiants",
+    "searchBannerBody": "Commande ton pack alimentaire livré chez toi",
+    "contents": "Contenu du pack",
+    "orderCta": "Commander ce pack",
+    "orderSuccess": "Commande retenue !",
+    "orderSuccessBody": "Votre commande est bien notée. La livraison sera effectuée dans les meilleurs délais.",
+    "itemCount": "{{count}} articles",
+    "price": "{{amount}} FCFA",
+    "empty": "Aucun pack disponible pour l'instant"
   }
 }

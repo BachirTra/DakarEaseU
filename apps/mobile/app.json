@@ -4,8 +4,17 @@
     "slug": "dakareaseu",
     "scheme": "dakareaseu",
     "version": "1.0.0",
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/4aa5ed87-02b1-40f0-a2f4-4286440cdf53"
+    },
     "orientation": "portrait",
-    "platforms": ["ios", "android"],
+    "platforms": [
+      "ios",
+      "android"
+    ],
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "splash": {
@@ -13,10 +22,15 @@
       "resizeMode": "contain",
       "backgroundColor": "#1E3A8A"
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": false,
-      "bundleIdentifier": "com.dakareaseu.mobile"
+      "bundleIdentifier": "com.dakareaseu.mobile",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
     },
     "android": {
       "adaptiveIcon": {
@@ -25,7 +39,10 @@
       },
       "package": "com.dakareaseu.mobile"
     },
-    "plugins": ["expo-router", "expo-video"],
+    "plugins": [
+      "expo-router",
+      "expo-video"
+    ],
     "experiments": {
       "typedRoutes": true
     },

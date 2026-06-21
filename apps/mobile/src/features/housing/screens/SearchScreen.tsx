@@ -8,6 +8,7 @@ import { useListings } from '@/features/housing/hooks/useListings';
 import { useFavorites, useToggleFavorite } from '@/features/favorites/hooks/useFavorites';
 import { ListingCard } from '@/features/housing/components/ListingCard';
 import { FilterBar } from '@/features/housing/components/FilterBar';
+import { PackSvgIcon } from '@/features/packs/components/PackSvgIcon';
 import type { Favorite } from '@dakareaseu/types';
 import type { ListingFilters, ListingSummary } from '@/features/housing/types/housing.types';
 
@@ -55,6 +56,18 @@ export function SearchScreen() {
         <Text className="mt-3 text-sm font-semibold text-white">
           {t('search.guidedBannerCta')} →
         </Text>
+      </Pressable>
+
+      <Pressable
+        onPress={() => router.push('/(tabs)/search/packs' as any)}
+        className="mb-3 flex-row items-center overflow-hidden rounded-2xl border border-accent/30 bg-accent/10 p-4"
+      >
+        <PackSvgIcon color="#F59E0B" size={28} />
+        <View className="ml-3 flex-1">
+          <Text className="text-sm font-bold text-text">{t('packs.searchBannerTitle')}</Text>
+          <Text className="text-xs text-textLight">{t('packs.searchBannerBody')}</Text>
+        </View>
+        <Text className="font-semibold text-accent">→</Text>
       </Pressable>
 
       <FilterBar filters={filters} onChange={setFilters} />

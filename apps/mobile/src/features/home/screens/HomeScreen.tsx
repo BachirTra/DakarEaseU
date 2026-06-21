@@ -14,6 +14,8 @@ import {
   useNearbyRestaurants,
 } from '@/features/home/hooks/useHomeData';
 import { ListingCard } from '@/features/housing/components/ListingCard';
+import { usePacks } from '@/features/packs/hooks/usePacks';
+import { PackCard } from '@/features/packs/components/PackCard';
 import { useFavorites, useToggleFavorite } from '@/features/favorites/hooks/useFavorites';
 import type { Favorite } from '@dakareaseu/types';
 import type { ListingSummary } from '@/features/housing/types/housing.types';
@@ -43,6 +45,7 @@ export function HomeScreen() {
   const { data: schools } = usePartnerSchools();
   const { data: events } = useUpcomingEvents();
   const { data: restaurants } = useNearbyRestaurants();
+  const { data: packs } = usePacks();
   const { data: favorites } = useFavorites();
   const toggleFavorite = useToggleFavorite();
 
@@ -198,6 +201,30 @@ export function HomeScreen() {
             {t('home.demandeBannerCta')} →
           </Text>
         </Pressable>
+
+        {(packs ?? []).length > 0 ? (
+          <View key="packs">
+            <SectionHeader
+              title={t('packs.sectionTitle')}
+              actionLabel={t('common.seeAll')}
+              onAction={() => router.push('/(tabs)/search/packs' as any)}
+            />
+            <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+              {(packs ?? []).map((pack) => (
+                <PackCard
+                  key={pack.id}
+                  pack={pack}
+                  onPress={() =>
+                    router.push({
+                      pathname: '/(tabs)/search/packs/[id]',
+                      params: { id: pack.id },
+                    } as any)
+                  }
+                />
+              ))}
+            </ScrollView>
+          </View>
+        ) : null}
 
         {order.map((id) => sectionsById[id]).filter(Boolean)}
 

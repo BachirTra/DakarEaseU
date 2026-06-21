@@ -1,1 +1,15 @@
-{}
+{
+  "packs": {
+    "title": "Student Packs",
+    "sectionTitle": "Student Packs",
+    "searchBannerTitle": "Student Packs",
+    "searchBannerBody": "Order your food pack delivered to your door",
+    "contents": "Pack contents",
+    "orderCta": "Order this pack",
+    "orderSuccess": "Order received!",
+    "orderSuccessBody": "Your order has been noted. Delivery will be made as soon as possible.",
+    "itemCount": "{{count}} items",
+    "price": "{{amount}} FCFA",
+    "empty": "No packs available right now"
+  }
+}
