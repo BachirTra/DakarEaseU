@@ -22,7 +22,6 @@ export function ListingCard({
   fullWidth = false,
 }: ListingCardProps) {
   const { t } = useTranslation();
-  const isVerified = listing.verification_status === 'published';
 
   return (
     <Pressable
@@ -49,11 +48,6 @@ export function ListingCard({
             color={isFavorite ? COLORS.danger : COLORS.textLight}
           />
         </Pressable>
-        {isVerified ? (
-          <View className="absolute left-2 top-2">
-            <Badge label={t('listing.verified')} tone="success" />
-          </View>
-        ) : null}
       </View>
 
       <View className="p-3">

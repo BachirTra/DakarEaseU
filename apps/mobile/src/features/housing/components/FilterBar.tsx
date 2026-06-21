@@ -1,4 +1,5 @@
-import { Pressable, ScrollView, Text, View } from 'react-native';
+import { Pressable, ScrollView, Text } from 'react-native';
+import { COLORS } from '@/constants/colors';
 import type { ListingFilters } from '@/features/housing/types/housing.types';
 import type { ListingType } from '@dakareaseu/types';
 
@@ -15,48 +16,67 @@ interface FilterBarProps {
   onChange: (filters: ListingFilters) => void;
 }
 
+function Chip({
+  label,
+  active,
+  onPress,
+}: {
+  label: string;
+  active: boolean;
+  onPress: () => void;
+}) {
+  return (
+    <Pressable
+      onPress={onPress}
+      style={{
+        marginRight: 8,
+        borderRadius: 999,
+        borderWidth: 1,
+        borderColor: active ? COLORS.primary : COLORS.border,
+        backgroundColor: active ? COLORS.primary : COLORS.card,
+        paddingHorizontal: 14,
+        paddingVertical: 8,
+      }}
+    >
+      <Text
+        style={{
+          fontSize: 12,
+          fontWeight: '600',
+          color: active ? '#FFFFFF' : COLORS.text,
+        }}
+      >
+        {label}
+      </Text>
+    </Pressable>
+  );
+}
+
 export function FilterBar({ filters, onChange }: FilterBarProps) {
   return (
     <ScrollView
       horizontal
       showsHorizontalScrollIndicator={false}
-      contentContainerStyle={{ paddingVertical: 4, paddingHorizontal: 0, alignItems: 'center' }}
+      contentContainerStyle={{ paddingVertical: 4, alignItems: 'center' }}
       style={{ flexGrow: 0, marginBottom: 8 }}
     >
-      {TYPES.map((opt) => {
-        const active = (filters.type ?? 'any') === opt.id;
-        return (
-          <Pressable
-            key={opt.id}
-            onPress={() => onChange({ ...filters, type: opt.id === 'any' ? undefined : opt.id })}
-            style={{ marginRight: 8 }}
-            className={`rounded-full border px-3.5 py-2 ${active ? 'border-primary bg-primary' : 'border-border bg-card'}`}
-          >
-            <Text className={`text-xs font-semibold ${active ? 'text-white' : 'text-text'}`}>
-              {opt.label}
-            </Text>
-          </Pressable>
-        );
-      })}
-      <Pressable
+      {TYPES.map((opt) => (
+        <Chip
+          key={opt.id}
+          label={opt.label}
+          active={(filters.type ?? 'any') === opt.id}
+          onPress={() => onChange({ ...filters, type: opt.id === 'any' ? undefined : opt.id })}
+        />
+      ))}
+      <Chip
+        label="Colocation"
+        active={Boolean(filters.colocationOnly)}
         onPress={() => onChange({ ...filters, colocationOnly: !filters.colocationOnly })}
-        style={{ marginRight: 8 }}
-        className={`rounded-full border px-3.5 py-2 ${filters.colocationOnly ? 'border-primary bg-primary' : 'border-border bg-card'}`}
-      >
-        <Text
-          className={`text-xs font-semibold ${filters.colocationOnly ? 'text-white' : 'text-text'}`}
-        >
-          Colocation
-        </Text>
-      </Pressable>
-      <Pressable
+      />
+      <Chip
+        label="Meublé"
+        active={Boolean(filters.furnished)}
         onPress={() => onChange({ ...filters, furnished: filters.furnished ? undefined : true })}
-        className={`rounded-full border px-3.5 py-2 ${filters.furnished ? 'border-primary bg-primary' : 'border-border bg-card'}`}
-      >
-        <Text className={`text-xs font-semibold ${filters.furnished ? 'text-white' : 'text-text'}`}>
-          Meublé
-        </Text>
-      </Pressable>
+      />
     </ScrollView>
   );
 }

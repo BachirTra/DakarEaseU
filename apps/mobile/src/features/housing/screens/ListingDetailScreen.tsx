@@ -36,7 +36,6 @@ export function ListingDetailScreen() {
     );
   }
 
-  const isVerified = listing.verification_status === 'published';
   const media = listing.listing_media ?? [];
   const panoramas = media
     .filter((m) => m.media_type === 'pano_360')
@@ -51,14 +50,11 @@ export function ListingDetailScreen() {
       >
         <MediaGallery media={media} />
 
-        <View className="mt-4 flex-row items-start justify-between">
-          <View className="flex-1 pr-3">
-            <Text className="text-xl font-bold text-text">{listing.title}</Text>
-            <Text className="mt-1 text-sm text-textLight">
-              {listing.district} · {listing.distance_label}
-            </Text>
-          </View>
-          {isVerified ? <Badge label={t('listing.verified')} tone="success" /> : null}
+        <View className="mt-4">
+          <Text className="text-xl font-bold text-text">{listing.title}</Text>
+          <Text className="mt-1 text-sm text-textLight">
+            {listing.district} · {listing.distance_label}
+          </Text>
         </View>
 
         <View className="mt-3 flex-row flex-wrap gap-2">
