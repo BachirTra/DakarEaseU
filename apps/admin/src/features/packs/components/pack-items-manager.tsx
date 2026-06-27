@@ -102,9 +102,7 @@ export function PackItemsManager({
   }
 
   function handleUpdate(id: string, patch: Partial<DraftItem>) {
-    setItems((current) =>
-      current.map((item) => (item.id === id ? { ...item, ...patch } : item)),
-    );
+    setItems((current) => current.map((item) => (item.id === id ? { ...item, ...patch } : item)));
   }
 
   function handleBlurPersist() {
@@ -159,7 +157,11 @@ export function PackItemsManager({
                     />
                   </TableCell>
                   <TableCell>
-                    <RowImage itemId={item.id} url={item.image_url} onSelected={handleRowImageSelected} />
+                    <RowImage
+                      itemId={item.id}
+                      url={item.image_url}
+                      onSelected={handleRowImageSelected}
+                    />
                   </TableCell>
                   <TableCell>{index}</TableCell>
                   <TableCell className="text-right">

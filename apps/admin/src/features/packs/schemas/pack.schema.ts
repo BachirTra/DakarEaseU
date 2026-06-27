@@ -11,7 +11,7 @@ export const packSchema = z.object({
 export type PackFormValues = z.infer<typeof packSchema>;
 
 export const packItemSchema = z.object({
-  label: z.string().min(1, "Le libellé est requis"),
+  label: z.string().min(1, 'Le libellé est requis'),
   quantity: z.string().min(1, 'La quantité est requise'),
   image_url: z.string().optional().nullable(),
   position: z.number().int(),

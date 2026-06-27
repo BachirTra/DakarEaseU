@@ -1,4 +1,4 @@
-import { Linking, Platform } from 'react-native';
+import { Alert, Linking, Platform } from 'react-native';
 
 export type TransportAppCategory = 'taxi' | 'moto' | 'livraison';
 
@@ -75,7 +75,16 @@ export async function openTransportApp(app: TransportApp): Promise<void> {
   const store = Platform.OS === 'ios' ? app.iosStoreUrl : app.androidStoreUrl;
   try {
     await Linking.openURL(app.scheme);
+    return;
   } catch {
+    // App not installed — fall through to store
+  }
+  try {
     await Linking.openURL(store);
+  } catch {
+    // Simulator or restricted environment (App Store unavailable)
+    Alert.alert(app.name, `Télécharge ${app.name} sur le store de ton appareil pour continuer.`, [
+      { text: 'OK' },
+    ]);
   }
 }

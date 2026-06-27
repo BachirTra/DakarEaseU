@@ -48,7 +48,10 @@ export function PackDetailScreen({ id }: PackDetailScreenProps) {
 
   return (
     <Screen>
-      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 24 }}>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{ paddingBottom: 24 }}
+      >
         <View className="h-52 w-full overflow-hidden rounded-2xl bg-primary/10">
           {pack.cover_image_url ? (
             <Image
