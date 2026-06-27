@@ -27,7 +27,7 @@ export async function fetchListingDetail(listingId: string) {
   const { data, error } = await supabase
     .from('listings')
     .select(
-      `${LISTING_PUBLIC_COLUMNS}, listing_media(id, url, media_type, position, room_label), listing_coliving_rooms(id, label, price, surface_m2, is_available)` as const,
+      `${LISTING_PUBLIC_COLUMNS}, listing_media(id, url, media_type, position, room_label, is_hdr), listing_coliving_rooms(id, label, price, surface_m2, is_available)` as const,
     )
     .eq('id', listingId)
     .eq('verification_status', 'published')

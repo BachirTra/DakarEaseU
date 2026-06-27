@@ -53,7 +53,9 @@ export function MediaViewerOverlay() {
           />
         ) : null}
 
-        {active?.kind === 'pano_360' ? <PanoramaViewer url={active.uri} /> : null}
+        {active?.kind === 'pano_360' ? (
+          <PanoramaViewer url={active.uri} isHdr={active.isHdr} />
+        ) : null}
 
         {active?.kind === 'tour_3d' ? (
           <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', padding: 24 }}>

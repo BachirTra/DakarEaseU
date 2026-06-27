@@ -52,8 +52,8 @@ export function ListingMediaManager({
     event.target.value = '';
   }
 
-  // Accept : images pour photo/pano_360, vidéos, modèles 3D.
-  const accept = isPano ? 'image/*' : 'image/*,video/*,.glb,.gltf';
+  // Accept : images + .hdr pour photo/pano_360, vidéos, modèles 3D.
+  const accept = isPano ? 'image/*,.hdr' : 'image/*,video/*,.glb,.gltf';
 
   return (
     <div className="space-y-4">
@@ -102,9 +102,9 @@ export function ListingMediaManager({
 
       {isPano ? (
         <p className="text-xs text-muted-foreground">
-          Capturez chaque pièce en photo-sphère 360° avec une app gratuite (ex. Google Street View),
-          exportez le JPG, puis téléversez-le ici avec le nom de la pièce. Le client pourra balayer
-          la pièce à 360° dans l&apos;app mobile.
+          Formats acceptés : JPG/PNG (photo-sphère standard) ou{' '}
+          <strong className="font-semibold">.hdr</strong> (Radiance RGBE — qualité optimale, rendu
+          HDR dans l&apos;app). Capturez avec Google Street View (JPG) ou une caméra 360° HDR.
         </p>
       ) : (
         <p className="text-xs text-muted-foreground">
@@ -133,7 +133,7 @@ export function ListingMediaManager({
             <div className="flex items-center justify-between text-xs text-muted-foreground">
               <span>
                 {item.media_type === 'pano_360' && item.room_label
-                  ? `360° · ${item.room_label}`
+                  ? `${item.is_hdr ? 'HDR ' : ''}360° · ${item.room_label}`
                   : `${MEDIA_TYPE_LABELS[item.media_type]} · #${item.position}`}
               </span>
               <Button

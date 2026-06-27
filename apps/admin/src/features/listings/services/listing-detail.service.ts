@@ -72,6 +72,7 @@ export async function addListingMedia(
   url: string,
   position: number,
   roomLabel?: string | null,
+  isHdr?: boolean,
 ) {
   const supabase = createSupabaseBrowserClient();
   const { error } = await supabase.from('listing_media').insert({
@@ -80,6 +81,7 @@ export async function addListingMedia(
     url,
     position,
     room_label: roomLabel ?? null,
+    is_hdr: isHdr ?? false,
   });
   if (error) throw error;
 }

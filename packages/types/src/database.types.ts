@@ -360,6 +360,7 @@ export type Database = {
         Row: {
           created_at: string;
           id: string;
+          is_hdr: boolean;
           listing_id: string;
           media_type: Database['public']['Enums']['media_type'];
           position: number;
@@ -369,6 +370,7 @@ export type Database = {
         Insert: {
           created_at?: string;
           id?: string;
+          is_hdr?: boolean;
           listing_id: string;
           media_type: Database['public']['Enums']['media_type'];
           position?: number;
@@ -378,6 +380,7 @@ export type Database = {
         Update: {
           created_at?: string;
           id?: string;
+          is_hdr?: boolean;
           listing_id?: string;
           media_type?: Database['public']['Enums']['media_type'];
           position?: number;

@@ -2,7 +2,7 @@ import { ReactNode, useEffect } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/lib/supabase';
 import { useSessionStore } from '@/features/auth/store/sessionStore';
-import type { Booking, EventRsvp, Notification } from '@dakareaseu/types';
+import type { Booking, Notification } from '@dakareaseu/types';
 
 export function RealtimeProvider({ children }: { children: ReactNode }) {
   const userId = useSessionStore((s) => s.user?.id);
@@ -20,16 +20,6 @@ export function RealtimeProvider({ children }: { children: ReactNode }) {
           const updated = payload.new as Booking;
           queryClient.invalidateQueries({ queryKey: ['bookings', 'list', userId] });
           queryClient.setQueryData(['bookings', 'detail', updated.id], updated);
-        },
-      )
-      .on(
-        'postgres_changes',
-        { event: 'UPDATE', schema: 'public', table: 'event_rsvps', filter: `user_id=eq.${userId}` },
-        (payload) => {
-          const updated = payload.new as EventRsvp;
-          if (updated.status === 'confirmed') {
-            queryClient.invalidateQueries({ queryKey: ['events', 'rsvps', userId] });
-          }
         },
       )
       .on(

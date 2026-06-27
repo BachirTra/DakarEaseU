@@ -12,7 +12,7 @@ import { SectionHeader } from '@/features/home/components/SectionHeader';
 import {
   useTopListings,
   usePartnerSchools,
-  useUpcomingEvents,
+  useFeaturedBonPlans,
   useNearbyRestaurants,
 } from '@/features/home/hooks/useHomeData';
 import { ListingCard } from '@/features/housing/components/ListingCard';
@@ -45,7 +45,7 @@ export function HomeScreen() {
 
   const { data: listings } = useTopListings();
   const { data: schools } = usePartnerSchools();
-  const { data: events } = useUpcomingEvents();
+  const { data: bonPlans } = useFeaturedBonPlans();
   const { data: restaurants } = useNearbyRestaurants();
   const { data: packs } = usePacks();
   const { data: favorites } = useFavorites();
@@ -232,25 +232,25 @@ export function HomeScreen() {
 
         {order.map((id) => sectionsById[id]).filter(Boolean)}
 
-        <View key="news">
+        <View key="bon-plans">
           <SectionHeader
-            title={t('home.upcomingEvents')}
+            title={t('bonPlans.title')}
             actionLabel={t('common.seeAll')}
-            onAction={() => router.push('/(tabs)/news')}
+            onAction={() => router.push('/(tabs)/bon-plans')}
           />
           <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-            {(events ?? []).map((event: NonNullable<typeof events>[number]) => (
+            {(bonPlans ?? []).map((bp: NonNullable<typeof bonPlans>[number]) => (
               <Pressable
-                key={event.id}
+                key={bp.id}
                 onPress={() =>
-                  router.push({ pathname: '/(tabs)/news/event/[id]', params: { id: event.id } })
+                  router.push({ pathname: '/(tabs)/bon-plans/[id]', params: { id: bp.id } })
                 }
                 className="mr-3 w-48 overflow-hidden rounded-2xl border border-border bg-card"
               >
                 <View className="h-28 w-full bg-border">
-                  {event.cover_image_url ? (
+                  {bp.cover_image_url ? (
                     <Image
-                      source={{ uri: event.cover_image_url }}
+                      source={{ uri: bp.cover_image_url }}
                       style={{ width: '100%', height: '100%' }}
                       contentFit="cover"
                     />
@@ -258,10 +258,10 @@ export function HomeScreen() {
                 </View>
                 <View className="p-2.5">
                   <Text numberOfLines={1} className="text-sm font-semibold text-text">
-                    {event.title}
+                    {bp.title}
                   </Text>
                   <Text className="text-xs text-textLight">
-                    {new Date(event.event_date).toLocaleDateString('fr-FR')}
+                    {bp.price_min > 0 ? `Dès ${bp.price_min.toLocaleString('fr-FR')} FCFA` : 'Gratuit'}
                   </Text>
                 </View>
               </Pressable>

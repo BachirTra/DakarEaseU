@@ -3,7 +3,7 @@ import { Image } from 'expo-image';
 import { useUiStore } from '@/shared/store/uiStore';
 import type { ListingMedia } from '@dakareaseu/types';
 
-type Panorama = Pick<ListingMedia, 'id' | 'url' | 'room_label'>;
+type Panorama = Pick<ListingMedia, 'id' | 'url' | 'room_label' | 'is_hdr'>;
 
 interface PanoramaTourSectionProps {
   panoramas: Panorama[];
@@ -35,7 +35,7 @@ export function PanoramaTourSection({ panoramas, title }: PanoramaTourSectionPro
           return (
             <Pressable
               key={pano.id}
-              onPress={() => openMediaViewer(pano.url, 'pano_360', label)}
+              onPress={() => openMediaViewer(pano.url, 'pano_360', label, pano.is_hdr)}
               className="relative mr-3 h-40 w-60 overflow-hidden rounded-2xl bg-border"
             >
               <Image
@@ -46,7 +46,9 @@ export function PanoramaTourSection({ panoramas, title }: PanoramaTourSectionPro
               {/* Voile sombre pour la lisibilité du label */}
               <View className="absolute inset-0 bg-black/15" />
               <View className="absolute right-2 top-2 rounded-full bg-black/60 px-2.5 py-1">
-                <Text className="text-xs font-bold text-white">↻ 360°</Text>
+                <Text className="text-xs font-bold text-white">
+                  {pano.is_hdr ? '✦ HDR 360°' : '↻ 360°'}
+                </Text>
               </View>
               <View className="absolute bottom-0 left-0 right-0 bg-black/55 px-3 py-2">
                 <Text numberOfLines={1} className="text-sm font-semibold text-white">

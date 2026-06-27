@@ -32,15 +32,14 @@ export function usePartnerSchools() {
   });
 }
 
-export function useUpcomingEvents() {
+export function useFeaturedBonPlans() {
   return useQuery({
-    queryKey: ['home', 'upcomingEvents'],
+    queryKey: ['home', 'featuredBonPlans'],
     queryFn: async () => {
       const { data, error } = await supabase
-        .from('events')
-        .select('id, title, category, event_date, cover_image_url')
-        .gte('event_date', new Date().toISOString().slice(0, 10))
-        .order('event_date', { ascending: true })
+        .from('bon_plans')
+        .select('id, title, cover_image_url, price_min, is_featured')
+        .order('is_featured', { ascending: false })
         .limit(6);
       if (error) throw error;
       return data;

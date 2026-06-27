@@ -75,8 +75,9 @@ export function useUploadAndAttachMedia(listingId: string) {
       position: number;
       roomLabel?: string | null;
     }) => {
+      const isHdr = file.name.toLowerCase().endsWith('.hdr');
       const url = await uploadListingMediaFile(listingId, file);
-      await addListingMedia(listingId, mediaType, url, position, roomLabel);
+      await addListingMedia(listingId, mediaType, url, position, roomLabel, isHdr);
     },
     onSuccess: () => {
       toast.success('Média ajouté.');
