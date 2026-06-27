@@ -11,5 +11,16 @@
     "itemCount": "{{count}} njumtukaay",
     "price": "{{amount}} FCFA",
     "empty": "Amul pack ci jamono jii"
+  },
+  "bonPlans": {
+    "title": "Bons Plans yi",
+    "tabAll": "Yépp",
+    "astuce": "Mbëgël",
+    "goThere": "Dem ci",
+    "contact": "Jokkoo ak nun",
+    "website": "Site web",
+    "watchVideo": "Xool vidéo bi",
+    "addFavorite": "Yokk ci favorites",
+    "removeFavorite": "Sédd ci favorites"
   }
 }

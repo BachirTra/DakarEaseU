@@ -155,22 +155,21 @@
       "livraison": "Livraison"
     }
   },
-  "news": {
-    "title": "Actualités",
+  "bonPlans": {
+    "title": "Bons Plans",
     "tabAll": "Tout",
-    "tabConcert": "Concerts",
-    "tabFestival": "Festivals",
-    "tabConference": "Conférences",
-    "tabSport": "Sport",
-    "rsvpInterested": "Intéressé(e)",
-    "rsvpConfirmed": "Je participe",
-    "rsvpConfirmedBadge": "Inscrit ✓",
-    "shareEvent": "Partager l'événement"
+    "astuce": "Astuce",
+    "goThere": "Y aller",
+    "contact": "Nous contacter",
+    "website": "Site web",
+    "watchVideo": "Voir la vidéo",
+    "addFavorite": "Ajouter aux favoris",
+    "removeFavorite": "Retirer des favoris"
   },
   "favorites": {
     "title": "Favoris",
     "empty": "Aucun favori pour l'instant",
-    "emptyBody": "Touche le cœur sur un logement ou un restaurant pour le retrouver ici."
+    "emptyBody": "Touche le cœur sur un bon plan pour le retrouver ici."
   },
   "profile": {
     "title": "Profil",

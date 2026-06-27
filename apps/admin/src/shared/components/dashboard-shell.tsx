@@ -13,7 +13,7 @@ const NAV_ITEMS = [
   { href: '/restaurants', label: 'Restaurants' },
   { href: '/transport', label: 'Transport' },
   { href: '/packs', label: 'Packs Étudiants' },
-  { href: '/events', label: 'Événements' },
+  { href: '/bon-plans', label: 'Bons Plans' },
   { href: '/verifications', label: 'Vérification étudiante' },
   { href: '/bookings', label: 'Réservations' },
   { href: '/guided-search', label: 'Demandes' },

@@ -17,7 +17,11 @@ export type IconName =
   | 'check'
   | 'check-circle'
   | 'close'
-  | 'package';
+  | 'package'
+  | 'message-circle'
+  | 'globe'
+  | 'phone'
+  | 'play-circle';
 
 interface IconProps {
   name: IconName;
@@ -185,6 +189,34 @@ export function Icon({ name, size = 24, color = '#1E3A8A' }: IconProps) {
             />
             <Path d="m3.3 7 8.7 5 8.7-5" {...s} />
             <Path d="M12 22V12" {...s} />
+          </>
+        );
+      case 'message-circle':
+        return (
+          <>
+            <Path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z" {...s} />
+          </>
+        );
+      case 'globe':
+        return (
+          <>
+            <Circle cx={12} cy={12} r={10} {...s} />
+            <Path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20" {...s} />
+            <Path d="M2 12h20" {...s} />
+          </>
+        );
+      case 'phone':
+        return (
+          <Path
+            d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.36 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.29 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 9.91a16 16 0 0 0 6.18 6.18l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"
+            {...s}
+          />
+        );
+      case 'play-circle':
+        return (
+          <>
+            <Circle cx={12} cy={12} r={10} {...s} />
+            <Path d="m10 8 6 4-6 4V8z" {...s} />
           </>
         );
       default:

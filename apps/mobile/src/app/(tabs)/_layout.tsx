@@ -38,10 +38,10 @@ export default function TabsLayout() {
           }}
         />
         <Tabs.Screen
-          name="news"
+          name="bon-plans"
           options={{
-            title: 'News',
-            tabBarIcon: ({ color }) => <BottomTabIcon name="news" color={color} />,
+            title: 'Bons Plans',
+            tabBarIcon: ({ color }) => <BottomTabIcon name="bon-plans" color={color} />,
           }}
         />
         <Tabs.Screen

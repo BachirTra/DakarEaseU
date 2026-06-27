@@ -8,6 +8,160 @@ export type Database = {
   };
   public: {
     Tables: {
+      bon_plan_categories: {
+        Row: {
+          created_at: string;
+          id: string;
+          name: string;
+          slug: string;
+        };
+        Insert: {
+          created_at?: string;
+          id?: string;
+          name: string;
+          slug: string;
+        };
+        Update: {
+          created_at?: string;
+          id?: string;
+          name?: string;
+          slug?: string;
+        };
+        Relationships: [];
+      };
+      bon_plan_favorites: {
+        Row: {
+          bon_plan_id: string;
+          created_at: string;
+          id: string;
+          user_id: string;
+        };
+        Insert: {
+          bon_plan_id: string;
+          created_at?: string;
+          id?: string;
+          user_id: string;
+        };
+        Update: {
+          bon_plan_id?: string;
+          created_at?: string;
+          id?: string;
+          user_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'bon_plan_favorites_bon_plan_id_fkey';
+            columns: ['bon_plan_id'];
+            isOneToOne: false;
+            referencedRelation: 'bon_plans';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'bon_plan_favorites_user_id_fkey';
+            columns: ['user_id'];
+            isOneToOne: false;
+            referencedRelation: 'profiles';
+            referencedColumns: ['id'];
+          },
+        ];
+      };
+      bon_plan_media: {
+        Row: {
+          bon_plan_id: string;
+          created_at: string;
+          id: string;
+          order: number;
+          type: string;
+          url: string;
+        };
+        Insert: {
+          bon_plan_id: string;
+          created_at?: string;
+          id?: string;
+          order?: number;
+          type: string;
+          url: string;
+        };
+        Update: {
+          bon_plan_id?: string;
+          created_at?: string;
+          id?: string;
+          order?: number;
+          type?: string;
+          url?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'bon_plan_media_bon_plan_id_fkey';
+            columns: ['bon_plan_id'];
+            isOneToOne: false;
+            referencedRelation: 'bon_plans';
+            referencedColumns: ['id'];
+          },
+        ];
+      };
+      bon_plans: {
+        Row: {
+          address: string | null;
+          astuce: string | null;
+          category_id: string | null;
+          cover_image_url: string | null;
+          created_at: string;
+          description: string | null;
+          id: string;
+          is_featured: boolean;
+          latitude: number | null;
+          longitude: number | null;
+          phone: string | null;
+          price_min: number;
+          title: string;
+          updated_at: string;
+          website_url: string | null;
+        };
+        Insert: {
+          address?: string | null;
+          astuce?: string | null;
+          category_id?: string | null;
+          cover_image_url?: string | null;
+          created_at?: string;
+          description?: string | null;
+          id?: string;
+          is_featured?: boolean;
+          latitude?: number | null;
+          longitude?: number | null;
+          phone?: string | null;
+          price_min?: number;
+          title: string;
+          updated_at?: string;
+          website_url?: string | null;
+        };
+        Update: {
+          address?: string | null;
+          astuce?: string | null;
+          category_id?: string | null;
+          cover_image_url?: string | null;
+          created_at?: string;
+          description?: string | null;
+          id?: string;
+          is_featured?: boolean;
+          latitude?: number | null;
+          longitude?: number | null;
+          phone?: string | null;
+          price_min?: number;
+          title?: string;
+          updated_at?: string;
+          website_url?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'bon_plans_category_id_fkey';
+            columns: ['category_id'];
+            isOneToOne: false;
+            referencedRelation: 'bon_plan_categories';
+            referencedColumns: ['id'];
+          },
+        ];
+      };
       bookings: {
         Row: {
           coliving_room_id: string | null;
@@ -74,108 +228,6 @@ export type Database = {
             referencedColumns: ['id'];
           },
         ];
-      };
-      event_rsvps: {
-        Row: {
-          checked_in_at: string | null;
-          created_at: string;
-          event_id: string;
-          id: string;
-          qr_code: string | null;
-          status: Database['public']['Enums']['rsvp_status'];
-          user_id: string;
-        };
-        Insert: {
-          checked_in_at?: string | null;
-          created_at?: string;
-          event_id: string;
-          id?: string;
-          qr_code?: string | null;
-          status?: Database['public']['Enums']['rsvp_status'];
-          user_id: string;
-        };
-        Update: {
-          checked_in_at?: string | null;
-          created_at?: string;
-          event_id?: string;
-          id?: string;
-          qr_code?: string | null;
-          status?: Database['public']['Enums']['rsvp_status'];
-          user_id?: string;
-        };
-        Relationships: [
-          {
-            foreignKeyName: 'event_rsvps_event_id_fkey';
-            columns: ['event_id'];
-            isOneToOne: false;
-            referencedRelation: 'events';
-            referencedColumns: ['id'];
-          },
-          {
-            foreignKeyName: 'event_rsvps_user_id_fkey';
-            columns: ['user_id'];
-            isOneToOne: false;
-            referencedRelation: 'profiles';
-            referencedColumns: ['id'];
-          },
-        ];
-      };
-      events: {
-        Row: {
-          category: Database['public']['Enums']['event_category'];
-          cover_image_url: string | null;
-          created_at: string;
-          description: string | null;
-          event_date: string;
-          event_time: string | null;
-          id: string;
-          is_featured: boolean;
-          latitude: number | null;
-          longitude: number | null;
-          partner: string | null;
-          price_label: string | null;
-          price_value: number;
-          title: string;
-          updated_at: string;
-          venue: string | null;
-        };
-        Insert: {
-          category: Database['public']['Enums']['event_category'];
-          cover_image_url?: string | null;
-          created_at?: string;
-          description?: string | null;
-          event_date: string;
-          event_time?: string | null;
-          id?: string;
-          is_featured?: boolean;
-          latitude?: number | null;
-          longitude?: number | null;
-          partner?: string | null;
-          price_label?: string | null;
-          price_value?: number;
-          title: string;
-          updated_at?: string;
-          venue?: string | null;
-        };
-        Update: {
-          category?: Database['public']['Enums']['event_category'];
-          cover_image_url?: string | null;
-          created_at?: string;
-          description?: string | null;
-          event_date?: string;
-          event_time?: string | null;
-          id?: string;
-          latitude?: number | null;
-          longitude?: number | null;
-          is_featured?: boolean;
-          partner?: string | null;
-          price_label?: string | null;
-          price_value?: number;
-          title?: string;
-          updated_at?: string;
-          venue?: string | null;
-        };
-        Relationships: [];
       };
       favorites: {
         Row: {
@@ -835,7 +887,6 @@ export type Database = {
     };
     Enums: {
       booking_status: 'pending' | 'confirmed' | 'cancelled' | 'completed';
-      event_category: 'concert' | 'festival' | 'conference' | 'sport';
       favorite_entity_type: 'listing' | 'restaurant';
       guided_search_status: 'open' | 'matched' | 'closed';
       listing_type: 'studio' | 'chambre' | 'appartement' | 'maison';
@@ -850,7 +901,6 @@ export type Database = {
       payment_status: 'pending' | 'success' | 'failed';
       persona_type: 'nouveau' | 'local' | 'parent';
       review_target_type: 'listing' | 'restaurant' | 'stay';
-      rsvp_status: 'interested' | 'confirmed';
       transport_category: 'taxi' | 'moto' | 'repas' | 'colis' | 'demenagement' | 'location';
       user_role: 'student' | 'admin';
       verification_status: 'pending' | 'approved' | 'rejected';
@@ -984,7 +1034,6 @@ export const Constants = {
   public: {
     Enums: {
       booking_status: ['pending', 'confirmed', 'cancelled', 'completed'],
-      event_category: ['concert', 'festival', 'conference', 'sport'],
       favorite_entity_type: ['listing', 'restaurant'],
       guided_search_status: ['open', 'matched', 'closed'],
       listing_type: ['studio', 'chambre', 'appartement', 'maison'],
@@ -1000,7 +1049,6 @@ export const Constants = {
       payment_status: ['pending', 'success', 'failed'],
       persona_type: ['nouveau', 'local', 'parent'],
       review_target_type: ['listing', 'restaurant', 'stay'],
-      rsvp_status: ['interested', 'confirmed'],
       transport_category: ['taxi', 'moto', 'repas', 'colis', 'demenagement', 'location'],
       user_role: ['student', 'admin'],
       verification_status: ['pending', 'approved', 'rejected'],

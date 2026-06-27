@@ -11,5 +11,16 @@
     "itemCount": "{{count}} items",
     "price": "{{amount}} FCFA",
     "empty": "No packs available right now"
+  },
+  "bonPlans": {
+    "title": "Good Deals",
+    "tabAll": "All",
+    "astuce": "Tip",
+    "goThere": "Get directions",
+    "contact": "Contact us",
+    "website": "Website",
+    "watchVideo": "Watch video",
+    "addFavorite": "Add to favorites",
+    "removeFavorite": "Remove from favorites"
   }
 }
