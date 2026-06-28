@@ -1,18 +1,14 @@
-import { useEffect } from 'react';
-import { View } from 'react-native';
-import Animated, {
-  useAnimatedStyle,
-  useSharedValue,
-  withRepeat,
-  withTiming,
-  Easing,
-} from 'react-native-reanimated';
+import { useEffect, useRef } from 'react';
+import { Animated, View } from 'react-native';
 import { COLORS } from '@/constants/colors';
 
 /**
  * Shimmering placeholder block. Use to build loading skeletons that mirror the
  * shape of the content being fetched, instead of a blank screen or a bare
  * "Chargement…" line.
+ *
+ * Uses React Native's built-in Animated API (not reanimated) so it has no
+ * native worklets dependency and runs in any client.
  */
 export function Skeleton({
   width,
@@ -27,24 +23,24 @@ export function Skeleton({
   className?: string;
   style?: object;
 }) {
-  const opacity = useSharedValue(0.4);
+  const opacity = useRef(new Animated.Value(0.4)).current;
 
   useEffect(() => {
-    opacity.value = withRepeat(
-      withTiming(0.85, { duration: 750, easing: Easing.inOut(Easing.ease) }),
-      -1,
-      true,
+    const loop = Animated.loop(
+      Animated.sequence([
+        Animated.timing(opacity, { toValue: 0.85, duration: 750, useNativeDriver: true }),
+        Animated.timing(opacity, { toValue: 0.4, duration: 750, useNativeDriver: true }),
+      ]),
     );
+    loop.start();
+    return () => loop.stop();
   }, [opacity]);
-
-  const animatedStyle = useAnimatedStyle(() => ({ opacity: opacity.value }));
 
   return (
     <Animated.View
       className={className}
       style={[
-        { width, height, borderRadius: radius, backgroundColor: COLORS.border },
-        animatedStyle,
+        { width, height, borderRadius: radius, backgroundColor: COLORS.border, opacity },
         style,
       ]}
     />
