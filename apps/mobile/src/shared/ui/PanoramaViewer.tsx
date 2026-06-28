@@ -1,11 +1,12 @@
 import * as FileSystem from 'expo-file-system/legacy';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { ActivityIndicator, Text, View } from 'react-native';
 import { WebView } from 'react-native-webview';
 
 // ─── Viewer standard (JPG/PNG/WEBP) ─────────────────────────────────────────
-// PSV v4 + Three.js r146. L'image est pré-téléchargée en natif et injectée en
-// data URL pour éviter les restrictions CORS WebGL (texImage2D cross-origin).
+// PSV v4 + Three.js r146. Image pré-téléchargée → data URL → pas de CORS WebGL.
+// Le listener panorama-error est supprimé : il déclenchait de faux échecs sur
+// data: URLs alors que Three.js rendait le panorama correctement.
 function buildHtmlPsv(b64: string, mime: string): string {
   const dataUrl = `data:${mime};base64,${b64}`.replace(/\\/g, '\\\\').replace(/'/g, "\\'");
   return `<!DOCTYPE html>
@@ -36,7 +37,6 @@ function buildHtmlPsv(b64: string, mime: string): string {
         loadingTxt: '',
       });
       viewer.addEventListener('ready', function() { post('ready'); }, { once: true });
-      viewer.addEventListener('panorama-error', function(e) { post('error:psv-' + ((e && e.message) || '')); });
     } catch(e) { post('error:init-' + ((e && e.message) || '')); }
   });
 </script>
@@ -45,11 +45,15 @@ function buildHtmlPsv(b64: string, mime: string): string {
 }
 
 // ─── Viewer HDR (RGBE / .hdr) ────────────────────────────────────────────────
-// Three.js r132 (dernier avec examples/js UMD → RGBELoader disponible en global).
-// Le base64 brut est embarqué dans le JS et décodé via atob() → ArrayBuffer →
-// RGBELoader.parse() sans aucune requête réseau depuis la WebView.
-// Touch drag personnalisé : pas besoin d'OrbitControls.
-function buildHtmlHdr(b64: string): string {
+// Three.js r132.0 — dernière version avec examples/js UMD (RGBELoader en global).
+//
+// Chargement en deux phases pour éviter les limites de taille HTML :
+//   1. WebView charge Three.js depuis CDN, puis envoie 'ready-for-b64'
+//   2. React Native injecte le base64 via injectJavaScript → window.startHDR()
+//
+// Fix critique : loader.parse() retourne un objet brut { data, width, height, … }
+// pas un DataTexture. On construit new THREE.DataTexture() manuellement.
+function buildHtmlHdr(): string {
   return `<!DOCTYPE html>
 <html>
 <head>
@@ -62,10 +66,12 @@ function buildHtmlHdr(b64: string): string {
 </style>
 </head>
 <body>
-<script src="https://cdn.jsdelivr.net/npm/three@0.132.2/build/three.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/three@0.132.2/examples/js/loaders/RGBELoader.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.132.0/build/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.132.0/examples/js/loaders/RGBELoader.js"></script>
 <script>
   function post(msg) { if (window.ReactNativeWebView) window.ReactNativeWebView.postMessage(msg); }
+
+  var scene, camera, renderer;
 
   window.addEventListener('load', function() {
     try {
@@ -74,7 +80,7 @@ function buildHtmlHdr(b64: string): string {
 
       var W = window.innerWidth, H = window.innerHeight;
 
-      var renderer = new THREE.WebGLRenderer({ antialias: true });
+      renderer = new THREE.WebGLRenderer({ antialias: true });
       renderer.setPixelRatio(window.devicePixelRatio);
       renderer.setSize(W, H);
       renderer.toneMapping = THREE.ACESFilmicToneMapping;
@@ -82,10 +88,9 @@ function buildHtmlHdr(b64: string): string {
       renderer.outputEncoding = THREE.sRGBEncoding;
       document.body.appendChild(renderer.domElement);
 
-      var scene = new THREE.Scene();
-      var camera = new THREE.PerspectiveCamera(75, W / H, 0.1, 2000);
+      scene = new THREE.Scene();
+      camera = new THREE.PerspectiveCamera(75, W / H, 0.1, 2000);
 
-      // Drag 360° tactile simple (pas besoin d'OrbitControls)
       var lon = 0, lat = 0, startX = 0, startY = 0, dragging = false;
       var el = renderer.domElement;
       el.addEventListener('touchstart', function(e) {
@@ -100,25 +105,6 @@ function buildHtmlHdr(b64: string): string {
       }, { passive: true });
       el.addEventListener('touchend', function() { dragging = false; });
 
-      // Décode le HDR embarqué sans requête réseau
-      var b64 = '${b64}';
-      var binary = atob(b64);
-      var bytes = new Uint8Array(binary.length);
-      for (var i = 0; i < binary.length; i++) { bytes[i] = binary.charCodeAt(i); }
-
-      var loader = new THREE.RGBELoader();
-      loader.setDataType(THREE.HalfFloatType);
-      var texture = loader.parse(bytes.buffer);
-      texture.mapping = THREE.UVMapping;
-      texture.needsUpdate = true;
-
-      var geo = new THREE.SphereGeometry(1000, 60, 40);
-      geo.scale(-1, 1, 1); // normales vers l'intérieur
-      var mat = new THREE.MeshBasicMaterial({ map: texture });
-      scene.add(new THREE.Mesh(geo, mat));
-
-      post('ready');
-
       function animate() {
         requestAnimationFrame(animate);
         var phi = THREE.MathUtils.degToRad(90 - lat);
@@ -132,8 +118,44 @@ function buildHtmlHdr(b64: string): string {
       }
       animate();
 
-    } catch(e) { post('error:hdr-' + ((e && e.message) || 'init')); }
+      // Signale à React Native que Three.js est prêt à recevoir les données HDR
+      post('ready-for-b64');
+
+    } catch(e) { post('error:init-' + ((e && e.message) || 'init')); }
   });
+
+  // Appelée par React Native via injectJavaScript une fois le fichier téléchargé
+  window.startHDR = function(b64) {
+    try {
+      var binary = atob(b64);
+      var bytes = new Uint8Array(binary.length);
+      for (var i = 0; i < binary.length; i++) { bytes[i] = binary.charCodeAt(i); }
+
+      var loader = new THREE.RGBELoader();
+      loader.setDataType(THREE.HalfFloatType);
+
+      // parse() retourne { data, width, height, format, type } — pas un DataTexture
+      var texData = loader.parse(bytes.buffer);
+      if (!texData || !texData.data) { post('error:hdr-parse-empty'); return; }
+
+      var texture = new THREE.DataTexture(
+        texData.data,
+        texData.width,
+        texData.height,
+        texData.format || THREE.RGBAFormat,
+        texData.type || THREE.HalfFloatType
+      );
+      texture.mapping = THREE.UVMapping;
+      texture.needsUpdate = true;
+
+      var geo = new THREE.SphereGeometry(1000, 60, 40);
+      geo.scale(-1, 1, 1);
+      var mat = new THREE.MeshBasicMaterial({ map: texture });
+      scene.add(new THREE.Mesh(geo, mat));
+
+      post('ready');
+    } catch(e) { post('error:hdr-' + ((e && e.message) || 'proc')); }
+  };
 </script>
 </body>
 </html>`;
@@ -175,6 +197,7 @@ interface PanoramaViewerProps {
 }
 
 export function PanoramaViewer({ url, isHdr = false }: PanoramaViewerProps) {
+  const webViewRef = useRef<WebView>(null);
   const [b64Data, setB64Data] = useState<{ b64: string; mime: string } | null>(null);
   const [state, setState] = useState<ViewerState>('fetching');
 
@@ -186,18 +209,21 @@ export function PanoramaViewer({ url, isHdr = false }: PanoramaViewerProps) {
         setB64Data(data);
         setState('loading');
       })
-      .catch(() => setState('error'));
+      .catch(() => setState((s) => (s === 'ready' ? 'ready' : 'error')));
   }, [url]);
 
+  // HDR : la WebView se crée dès que b64Data arrive (CDN charge en parallèle
+  // avec le téléchargement de l'image). Pour JPG, b64Data est embarqué dans le HTML.
   const html = useMemo(() => {
     if (!b64Data) return '';
-    return isHdr ? buildHtmlHdr(b64Data.b64) : buildHtmlPsv(b64Data.b64, b64Data.mime);
+    return isHdr ? buildHtmlHdr() : buildHtmlPsv(b64Data.b64, b64Data.mime);
   }, [b64Data, isHdr]);
 
   return (
     <View style={{ flex: 1, backgroundColor: '#000' }}>
       {b64Data ? (
         <WebView
+          ref={webViewRef}
           originWhitelist={['*']}
           source={{ html, baseUrl: 'https://cdn.jsdelivr.net' }}
           style={{ flex: 1, backgroundColor: '#000' }}
@@ -211,12 +237,27 @@ export function PanoramaViewer({ url, isHdr = false }: PanoramaViewerProps) {
           allowUniversalAccessFromFileURLs
           onMessage={(event) => {
             const data = event.nativeEvent.data;
-            if (data === 'ready') setState('ready');
-            else if (data.startsWith('error')) setState('error');
+            if (data === 'ready') {
+              setState('ready');
+            } else if (data === 'ready-for-b64') {
+              // Phase 2 HDR : injecter le base64 maintenant que Three.js est prêt
+              // b64Data est toujours disponible ici (WebView ne s'affiche qu'après)
+              if (b64Data) {
+                webViewRef.current?.injectJavaScript(
+                  `window.startHDR(${JSON.stringify(b64Data.b64)}); true;`,
+                );
+              }
+            } else if (data.startsWith('error')) {
+              // State ratchet : une fois 'ready', on n'en sort plus.
+              // Évite que panorama-error (PSV) ou toute autre erreur tardive
+              // n'écrase un état 'ready' déjà établi.
+              setState((s) => (s === 'ready' ? 'ready' : 'error'));
+            }
           }}
-          onError={() => setState('error')}
+          onError={() => setState((s) => (s === 'ready' ? 'ready' : 'error'))}
           onLoadEnd={() => {
-            setTimeout(() => setState((s) => (s === 'loading' ? 'error' : s)), 12000);
+            // Fallback : si le viewer n'envoie jamais 'ready' dans les 20s
+            setTimeout(() => setState((s) => (s === 'loading' ? 'error' : s)), 20000);
           }}
         />
       ) : null}
@@ -225,7 +266,10 @@ export function PanoramaViewer({ url, isHdr = false }: PanoramaViewerProps) {
         <View
           style={{
             position: 'absolute',
-            top: 0, left: 0, right: 0, bottom: 0,
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
             alignItems: 'center',
             justifyContent: 'center',
           }}
@@ -245,7 +289,10 @@ export function PanoramaViewer({ url, isHdr = false }: PanoramaViewerProps) {
         <View
           style={{
             position: 'absolute',
-            top: 0, left: 0, right: 0, bottom: 0,
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
             alignItems: 'center',
             justifyContent: 'center',
             padding: 24,
