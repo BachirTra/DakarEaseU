@@ -1,7 +1,9 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Pressable, ScrollView, Text, View } from 'react-native';
 import { Image } from 'expo-image';
 import { Screen } from '@/shared/ui/Screen';
+import { ScreenHeader } from '@/shared/ui/ScreenHeader';
+import { SingleSelectChips } from '@/shared/ui/FilterChips';
 import { useTranslation } from '@/hooks/useTranslation';
 import { COLORS } from '@/constants/colors';
 import {
@@ -11,44 +13,17 @@ import {
   type TransportAppCategory,
 } from '@/constants/transportApps';
 
-function Chip({
-  label,
-  active,
-  onPress,
-}: {
-  label: string;
-  active: boolean;
-  onPress: () => void;
-}) {
-  return (
-    <Pressable
-      onPress={onPress}
-      style={{
-        borderRadius: 999,
-        borderWidth: 1,
-        borderColor: active ? COLORS.primary : COLORS.border,
-        backgroundColor: active ? COLORS.primary : COLORS.card,
-        paddingHorizontal: 14,
-        paddingVertical: 8,
-        marginRight: 8,
-      }}
-    >
-      <Text
-        style={{
-          fontSize: 12,
-          fontWeight: '600',
-          color: active ? '#FFFFFF' : COLORS.text,
-        }}
-      >
-        {label}
-      </Text>
-    </Pressable>
-  );
-}
-
 export function TransportScreen() {
   const { t } = useTranslation();
   const [category, setCategory] = useState<TransportAppCategory | 'all'>('all');
+
+  const categoryOptions = useMemo(
+    () => [
+      { id: 'all', label: t('common.all') },
+      ...TRANSPORT_CATEGORIES.map((cat) => ({ id: cat, label: t(`transport.cat.${cat}`) })),
+    ],
+    [t],
+  );
 
   const apps =
     category === 'all'
@@ -57,26 +32,17 @@ export function TransportScreen() {
 
   return (
     <Screen>
-      <Text className="mb-1 mt-2 text-xl font-bold text-text">{t('transport.title')}</Text>
+      <ScreenHeader title={t('transport.title')} />
       <Text className="mb-3 text-sm text-textLight">{t('transport.subtitle')}</Text>
 
-      {/* Catégorie filter chips */}
-      <ScrollView
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        contentContainerStyle={{ paddingVertical: 4, alignItems: 'center' }}
-        style={{ flexGrow: 0, marginBottom: 12 }}
-      >
-        <Chip label="Tous" active={category === 'all'} onPress={() => setCategory('all')} />
-        {TRANSPORT_CATEGORIES.map((cat) => (
-          <Chip
-            key={cat}
-            label={t(`transport.cat.${cat}`)}
-            active={category === cat}
-            onPress={() => setCategory(cat)}
-          />
-        ))}
-      </ScrollView>
+      {/* Category filter chips */}
+      <View className="mb-3">
+        <SingleSelectChips
+          options={categoryOptions}
+          selectedId={category}
+          onSelect={(id) => setCategory(id as TransportAppCategory | 'all')}
+        />
+      </View>
 
       {/* App cards */}
       <ScrollView
@@ -139,9 +105,7 @@ export function TransportScreen() {
                       paddingVertical: 2,
                     }}
                   >
-                    <Text
-                      style={{ fontSize: 10, fontWeight: '600', color: COLORS.primary }}
-                    >
+                    <Text style={{ fontSize: 10, fontWeight: '600', color: COLORS.primary }}>
                       {t(`transport.cat.${c}`)}
                     </Text>
                   </View>
@@ -152,6 +116,8 @@ export function TransportScreen() {
             {/* CTA compact */}
             <Pressable
               onPress={() => openTransportApp(app)}
+              accessibilityRole="button"
+              accessibilityLabel={`${t('transport.openApp')} ${app.name}`}
               style={{
                 borderRadius: 10,
                 backgroundColor: COLORS.primary,

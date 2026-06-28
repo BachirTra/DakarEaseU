@@ -3,11 +3,11 @@ import { Linking, ScrollView, Text, View } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { Image } from 'expo-image';
 import { Screen } from '@/shared/ui/Screen';
+import { ScreenHeader } from '@/shared/ui/ScreenHeader';
 import { Button } from '@/shared/ui/Button';
 import { EmptyState } from '@/shared/ui/EmptyState';
 import { Icon } from '@/shared/ui/Icon';
 import { useTranslation } from '@/hooks/useTranslation';
-import { COLORS } from '@/constants/colors';
 import { useSchoolDetail } from '@/features/schools/hooks/useSchools';
 import { openMapsDirections } from '@/lib/geo';
 
@@ -20,7 +20,15 @@ export function SchoolDetailScreen() {
   const { data: school, isLoading } = useSchoolDetail(id);
   const [tab, setTab] = useState<Tab>('info');
 
-  if (isLoading || !school) return null;
+  // Keep the back affordance available even while loading so the user is never
+  // trapped on a blank screen.
+  if (isLoading || !school) {
+    return (
+      <Screen>
+        <ScreenHeader title={t('schools.title')} />
+      </Screen>
+    );
+  }
 
   type NearbyRow = NonNullable<typeof school>['school_nearby_listings'][number];
   type NearbyListing = NearbyRow['listings'];
@@ -30,6 +38,7 @@ export function SchoolDetailScreen() {
 
   return (
     <Screen>
+      <ScreenHeader title={school.name} />
       <ScrollView
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ paddingBottom: 32 }}

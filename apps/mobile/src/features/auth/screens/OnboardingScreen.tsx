@@ -10,6 +10,7 @@ import { useSessionStore } from '@/features/auth/store/sessionStore';
 import { useCompleteOnboarding } from '@/features/auth/hooks/useAuth';
 import type { OnboardingAnswers } from '@/features/auth/lib/derivePersona';
 
+// eslint-disable-next-line @typescript-eslint/no-var-requires -- static asset require (no png module typings)
 const LOGO = require('../../../../assets/icon.png');
 
 const SLIDES = ['onboarding.slide1', 'onboarding.slide2', 'onboarding.slide3'] as const;

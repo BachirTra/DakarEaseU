@@ -1,23 +1,21 @@
 import { useMemo, useState } from 'react';
 import { ScrollView, Text, View } from 'react-native';
-import { useRouter } from 'expo-router';
 import { Screen } from '@/shared/ui/Screen';
 import { Button } from '@/shared/ui/Button';
-import { Badge } from '@/shared/ui/Badge';
 import { EmptyState } from '@/shared/ui/EmptyState';
-import { Icon } from '@/shared/ui/Icon';
+import { ScreenHeader } from '@/shared/ui/ScreenHeader';
+import { FilterChip, FilterChipsRow } from '@/shared/ui/FilterChips';
 import { useTranslation } from '@/hooks/useTranslation';
-import { COLORS } from '@/constants/colors';
 import { useSessionStore } from '@/features/auth/store/sessionStore';
 import {
   useSubmitGuidedSearch,
   useGuidedSearchMatches,
 } from '@/features/housing/hooks/useGuidedSearch';
 import { toMatchListingsArgs } from '@/features/housing/services/guidedSearch.service';
+import { MatchCard } from '@/features/housing/components/MatchCard';
 import { DISTRICTS } from '@/constants/categories';
 import type { ListingType, MatchResult } from '@dakareaseu/types';
 import type { GuidedSearchInput } from '@/features/housing/schemas/guidedSearchSchemas';
-import type { BadgeTone } from '@/shared/ui/Badge';
 
 const TYPES: { id: ListingType; label: string }[] = [
   { id: 'studio', label: 'Studio' },
@@ -26,17 +24,14 @@ const TYPES: { id: ListingType; label: string }[] = [
   { id: 'maison', label: 'Maison' },
 ];
 
-type Step = 1 | 2 | 3 | 4 | 'results';
+const PREF_OPTIONS = ['any', 'yes', 'no'] as const;
+const BUDGET_PRESETS = [50000, 80000, 120000, 150000];
+const TOTAL_STEPS = 4;
 
-function matchTone(pct: number): BadgeTone {
-  if (pct >= 75) return 'success';
-  if (pct >= 50) return 'warning';
-  return 'neutral';
-}
+type Step = 1 | 2 | 3 | 4 | 'results';
 
 export function DemandeScreen() {
   const { t } = useTranslation();
-  const router = useRouter();
   const userId = useSessionStore((s) => s.user?.id);
   const submitRequest = useSubmitGuidedSearch();
 
@@ -73,13 +68,27 @@ export function DemandeScreen() {
     setStep('results');
   };
 
+  // Map raw option values to translated labels
+  const prefLabel = (opt: 'any' | 'yes' | 'no') => {
+    if (opt === 'yes') return t('demande.optYes');
+    if (opt === 'no') return t('demande.optNo');
+    return t('demande.optAny');
+  };
+
   return (
     <Screen>
+      {/* Pushed screen — back affordance via ScreenHeader */}
+      <ScreenHeader title={t('demande.title')} />
       <ScrollView
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ paddingVertical: 16 }}
+        contentContainerStyle={{ paddingBottom: 32 }}
       >
-        <Text className="mb-4 text-xl font-bold text-text">{t('demande.title')}</Text>
+        {/* Progress indicator for wizard steps */}
+        {step !== 'results' ? (
+          <Text className="mb-4 text-xs font-semibold text-textLight">
+            {t('common.stepOf', { current: step as number, total: TOTAL_STEPS })}
+          </Text>
+        ) : null}
 
         {step === 1 ? (
           <View>
@@ -130,9 +139,11 @@ export function DemandeScreen() {
               {t('demande.stepBudget')}
             </Text>
             <View className="rounded-xl border border-border bg-card p-4">
-              <Text className="text-sm text-text">
-                Budget : {budget.toLocaleString('fr-FR')} XOF
+              {/* Budget section */}
+              <Text className="mb-1 text-xs font-semibold uppercase text-textLight">
+                {t('demande.budgetLabel')}
               </Text>
+              <Text className="text-sm text-text">{budget.toLocaleString('fr-FR')} XOF</Text>
               <View className="mt-2 flex-row gap-2">
                 <Button
                   label="−10 000"
@@ -147,6 +158,21 @@ export function DemandeScreen() {
                   onPress={() => setBudget((b) => b + 10000)}
                 />
               </View>
+              {/* Quick preset chips */}
+              <View className="mt-3">
+                <FilterChipsRow>
+                  {BUDGET_PRESETS.map((preset) => (
+                    <FilterChip
+                      key={preset}
+                      label={`${(preset / 1000).toLocaleString('fr-FR')}k`}
+                      active={budget === preset}
+                      onPress={() => setBudget(preset)}
+                    />
+                  ))}
+                </FilterChipsRow>
+              </View>
+
+              {/* Duration section */}
               <Text className="mt-4 text-sm text-text">
                 {t('listing.minDuration')} : {months} {t('listing.months')}
               </Text>
@@ -174,12 +200,12 @@ export function DemandeScreen() {
             <Text className="mb-3 text-base font-semibold text-text">
               {t('demande.stepPreferences')}
             </Text>
-            <Text className="mb-2 text-sm font-medium text-text">{t('listing.furnished')}</Text>
+            <Text className="mb-2 text-sm font-medium text-text">{t('demande.furnishedLabel')}</Text>
             <View className="flex-row gap-2">
-              {(['any', 'yes', 'no'] as const).map((opt) => (
+              {PREF_OPTIONS.map((opt) => (
                 <Button
                   key={opt}
-                  label={opt}
+                  label={prefLabel(opt)}
                   fullWidth={false}
                   variant={furnished === opt ? 'primary' : 'outline'}
                   onPress={() => setFurnished(opt)}
@@ -187,13 +213,13 @@ export function DemandeScreen() {
               ))}
             </View>
             <Text className="mb-2 mt-4 text-sm font-medium text-text">
-              {t('listing.colocation')}
+              {t('demande.colocationLabel')}
             </Text>
             <View className="flex-row gap-2">
-              {(['any', 'yes', 'no'] as const).map((opt) => (
+              {PREF_OPTIONS.map((opt) => (
                 <Button
-                  key={opt}
-                  label={opt}
+                  key={`coloc-${opt}`}
+                  label={prefLabel(opt)}
                   fullWidth={false}
                   variant={coloc === opt ? 'primary' : 'outline'}
                   onPress={() => setColoc(opt)}
@@ -222,39 +248,12 @@ export function DemandeScreen() {
               <EmptyState icon="search" title={t('demande.noMatches')} />
             ) : (
               matches.map((match: MatchResult) => (
-                <View
+                <MatchCard
                   key={match.listing_id}
-                  className="mb-3 rounded-xl border border-border bg-card p-4"
-                >
-                  <View className="flex-row items-center justify-between">
-                    <Badge
-                      label={t('demande.matchScore', { pct: match.match_pct ?? 0 })}
-                      tone={matchTone(match.match_pct ?? 0)}
-                    />
-                  </View>
-                  <View className="mt-2 flex-row flex-wrap gap-2">
-                    {(match.reasons ?? []).map((reason: string) => (
-                      <View key={reason} className="rounded-full bg-bg px-2.5 py-1">
-                        <View className="flex-row items-center gap-1">
-                          <Icon name="check" size={10} color={COLORS.secondary} />
-                          <Text className="text-xs text-text">{reason}</Text>
-                        </View>
-                      </View>
-                    ))}
-                  </View>
-                  <View className="mt-3">
-                    <Button
-                      label={t('listing.reserve')}
-                      variant="outline"
-                      onPress={() =>
-                        router.push({
-                          pathname: '/(tabs)/home/listing/[id]',
-                          params: { id: match.listing_id ?? '' },
-                        })
-                      }
-                    />
-                  </View>
-                </View>
+                  listingId={match.listing_id ?? ''}
+                  matchPct={match.match_pct ?? 0}
+                  reasons={match.reasons ?? []}
+                />
               ))
             )}
           </View>

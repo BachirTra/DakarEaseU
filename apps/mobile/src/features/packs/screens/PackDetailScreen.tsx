@@ -1,8 +1,10 @@
 import { ScrollView, Text, View } from 'react-native';
 import { Image } from 'expo-image';
 import { Screen } from '@/shared/ui/Screen';
+import { ScreenHeader } from '@/shared/ui/ScreenHeader';
 import { Button } from '@/shared/ui/Button';
 import { EmptyState } from '@/shared/ui/EmptyState';
+import { SkeletonList } from '@/shared/ui/Skeleton';
 import { useTranslation } from '@/hooks/useTranslation';
 import { useSessionStore } from '@/features/auth/store/sessionStore';
 import { usePackDetail, useOrderPack } from '@/features/packs/hooks/usePacks';
@@ -22,7 +24,8 @@ export function PackDetailScreen({ id }: PackDetailScreenProps) {
   if (isLoading) {
     return (
       <Screen>
-        <Text className="mt-6 text-center text-sm text-textLight">{t('common.loading')}</Text>
+        <ScreenHeader title={t('packs.title')} />
+        <SkeletonList count={3} />
       </Screen>
     );
   }
@@ -30,6 +33,7 @@ export function PackDetailScreen({ id }: PackDetailScreenProps) {
   if (isError || !pack) {
     return (
       <Screen>
+        <ScreenHeader title={t('packs.title')} />
         <EmptyState title={t('common.error')} />
       </Screen>
     );
@@ -48,6 +52,7 @@ export function PackDetailScreen({ id }: PackDetailScreenProps) {
 
   return (
     <Screen>
+      <ScreenHeader title={pack.name} />
       <ScrollView
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ paddingBottom: 24 }}

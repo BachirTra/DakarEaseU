@@ -31,6 +31,15 @@ export function ProfileScreen() {
     ]);
   };
 
+  const initials = profile.full_name
+    ? profile.full_name
+        .split(' ')
+        .filter(Boolean)
+        .slice(0, 2)
+        .map((w) => w.charAt(0).toUpperCase())
+        .join('')
+    : '?';
+
   return (
     <Screen>
       <ScrollView
@@ -38,14 +47,16 @@ export function ProfileScreen() {
         contentContainerStyle={{ paddingVertical: 16 }}
       >
         <View className="items-center">
-          <View className="h-20 w-20 overflow-hidden rounded-full bg-border">
+          <View className="h-20 w-20 items-center justify-center overflow-hidden rounded-full bg-border">
             {profile.avatar_url ? (
               <Image
                 source={{ uri: profile.avatar_url }}
                 style={{ width: '100%', height: '100%' }}
                 contentFit="cover"
               />
-            ) : null}
+            ) : (
+              <Text className="text-2xl font-bold text-textLight">{initials}</Text>
+            )}
           </View>
           <Text className="mt-3 text-lg font-bold text-text">{profile.full_name}</Text>
           <Text className="text-sm text-textLight">{profile.phone ?? ''}</Text>

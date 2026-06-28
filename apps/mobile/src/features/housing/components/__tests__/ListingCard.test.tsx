@@ -49,27 +49,27 @@ describe('ListingCard', () => {
     expect(screen.getByText('Fann')).toBeTruthy();
   });
 
-  it("shows the 'Vérifié' badge for published listings (verification_status === 'published')", () => {
+  it('shows the colocation badge when colocation is available', () => {
     render(
       <ListingCard
-        listing={baseSummary}
+        listing={{ ...baseSummary, colocation_available: true }}
         isFavorite={false}
         onToggleFavorite={() => {}}
         onPress={() => {}}
       />,
     );
-    expect(screen.getByText('Vérifié')).toBeTruthy();
+    expect(screen.getByText('Colocation disponible')).toBeTruthy();
   });
 
-  it("does not show the 'Vérifié' badge for non-published listings", () => {
+  it('does not show the colocation badge when colocation is unavailable', () => {
     render(
       <ListingCard
-        listing={{ ...baseSummary, verification_status: 'pending' }}
+        listing={{ ...baseSummary, colocation_available: false }}
         isFavorite={false}
         onToggleFavorite={() => {}}
         onPress={() => {}}
       />,
     );
-    expect(screen.queryByText('Vérifié')).toBeNull();
+    expect(screen.queryByText('Colocation disponible')).toBeNull();
   });
 });

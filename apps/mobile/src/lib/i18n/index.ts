@@ -33,5 +33,12 @@ export function t(
   const direct = resolve(DICTIONARIES[locale], path);
   if (direct !== undefined) return interpolate(direct, vars);
 
+  // Fallback to the default locale (fr) so partially-translated locales
+  // (en / wo) degrade to readable French instead of showing the raw key.
+  if (locale !== DEFAULT_LOCALE) {
+    const fallback = resolve(DICTIONARIES[DEFAULT_LOCALE], path);
+    if (fallback !== undefined) return interpolate(fallback, vars);
+  }
+
   return path;
 }

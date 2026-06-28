@@ -1,7 +1,9 @@
-import { FlatList, Text, View } from 'react-native';
+import { FlatList, View } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Screen } from '@/shared/ui/Screen';
+import { ScreenHeader } from '@/shared/ui/ScreenHeader';
 import { EmptyState } from '@/shared/ui/EmptyState';
+import { SkeletonList } from '@/shared/ui/Skeleton';
 import { useTranslation } from '@/hooks/useTranslation';
 import { usePacks } from '@/features/packs/hooks/usePacks';
 import { PackCard } from '@/features/packs/components/PackCard';
@@ -13,10 +15,10 @@ export function PacksScreen() {
 
   return (
     <Screen>
-      <Text className="mb-3 mt-2 text-xl font-bold text-text">{t('packs.title')}</Text>
+      <ScreenHeader title={t('packs.title')} />
 
       {isLoading ? (
-        <Text className="mt-6 text-center text-sm text-textLight">{t('common.loading')}</Text>
+        <SkeletonList count={4} />
       ) : isError ? (
         <EmptyState title={t('common.error')} />
       ) : (packs ?? []).length === 0 ? (

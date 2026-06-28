@@ -32,10 +32,34 @@ export function SearchScreen() {
       const sortedMedia = [...(row.listing_media ?? [])].sort((a, b) => a.position - b.position);
       return { ...row, cover_media: sortedMedia[0] ?? null } as ListingSummary;
     })
-    .filter((l: ListingSummary) => l.title.toLowerCase().includes(query.trim().toLowerCase()));
+    .filter((l: ListingSummary) => {
+      const q = query.trim().toLowerCase();
+      if (!q) return true;
+      return (
+        l.title.toLowerCase().includes(q) ||
+        (l.district ?? '').toLowerCase().includes(q) ||
+        (l.distance_label ?? '').toLowerCase().includes(q)
+      );
+    });
+
+  const hasActiveFilters = Boolean(
+    query.trim() || filters.type || filters.furnished || filters.colocationOnly,
+  );
+
+  const resetFilters = () => {
+    setQuery('');
+    setFilters({});
+  };
+
+  const count = filtered.length;
+  const resultsLabel =
+    count === 1
+      ? t('search.resultsCountOne', { count: 1 })
+      : t('search.resultsCount', { count });
 
   return (
     <Screen>
+      {/* Tab root — plain title, no ScreenHeader back button */}
       <Text className="mb-3 mt-2 text-xl font-bold text-text">{t('search.title')}</Text>
 
       <View className="mb-3 flex-row items-center rounded-xl border border-border bg-card px-4 py-3">
@@ -75,6 +99,22 @@ export function SearchScreen() {
       </Pressable>
 
       <FilterBar filters={filters} onChange={setFilters} />
+
+      {/* Results count + reset affordance — only once loading is done */}
+      {!isLoading ? (
+        <View className="mb-2 flex-row items-center justify-between">
+          <Text className="text-xs text-textLight">{resultsLabel}</Text>
+          {hasActiveFilters ? (
+            <Pressable
+              onPress={resetFilters}
+              accessibilityRole="button"
+              accessibilityLabel={t('search.clearFilters')}
+            >
+              <Text className="text-xs font-semibold text-primary">{t('search.clearFilters')}</Text>
+            </Pressable>
+          ) : null}
+        </View>
+      ) : null}
 
       {isLoading ? (
         <Text className="mt-6 text-center text-sm text-textLight">{t('common.loading')}</Text>

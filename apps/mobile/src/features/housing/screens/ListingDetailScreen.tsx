@@ -145,7 +145,7 @@ export function ListingDetailScreen() {
         </View>
         {listing.latitude != null && listing.longitude != null ? (
           <Button
-            label="Y aller"
+            label={t('common.goThere')}
             variant="outline"
             leftIcon={<Icon name="map-pin" size={16} color={COLORS.primary} />}
             onPress={() => openMapsDirections(listing.latitude!, listing.longitude!, listing.title)}

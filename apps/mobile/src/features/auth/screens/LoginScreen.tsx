@@ -1,4 +1,4 @@
-import { Text, TextInput, View } from 'react-native';
+import { Alert, Pressable, Text, TextInput, View } from 'react-native';
 import { Image } from 'expo-image';
 import { useRouter } from 'expo-router';
 import { useForm, Controller } from 'react-hook-form';
@@ -9,6 +9,7 @@ import { useTranslation } from '@/hooks/useTranslation';
 import { useLogin } from '@/features/auth/hooks/useAuth';
 import { loginSchema, type LoginInput } from '@/features/auth/schemas/authSchemas';
 
+// eslint-disable-next-line @typescript-eslint/no-var-requires -- static asset require (no png module typings)
 const LOGO = require('../../../../assets/icon.png');
 
 export function LoginScreen() {
@@ -79,6 +80,14 @@ export function LoginScreen() {
         <View className="mb-2" />
       )}
 
+      <Pressable
+        accessibilityRole="button"
+        onPress={() => Alert.alert(t('auth.forgotPassword'), t('auth.forgotPasswordSoon'))}
+        className="mb-4 self-start"
+      >
+        <Text className="text-sm text-primary">{t('auth.forgotPassword')}</Text>
+      </Pressable>
+
       <View className="mt-2">
         <Button
           label={t('auth.login')}
@@ -89,11 +98,10 @@ export function LoginScreen() {
 
       <View className="my-6 h-px bg-border" />
 
-      <Button label={t('auth.continueWithGoogle')} variant="outline" onPress={() => {}} />
-
-      <View className="mt-3 items-center">
+      <View className="gap-3">
+        <Button label={t('auth.continueWithGoogle')} variant="outline" disabled onPress={() => {}} />
         <Button label={t('auth.continueWithApple')} variant="outline" disabled onPress={() => {}} />
-        <Text className="mt-1 text-xs text-textLight">{t('common.comingSoon')}</Text>
+        <Text className="mt-1 self-center text-xs text-textLight">{t('common.comingSoon')}</Text>
       </View>
 
       <View className="mt-6 flex-row justify-center">

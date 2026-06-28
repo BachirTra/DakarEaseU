@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { ScrollView, Text, View } from 'react-native';
 import { Screen } from '@/shared/ui/Screen';
 import { EmptyState } from '@/shared/ui/EmptyState';
+import { FilterChip, FilterChipsRow } from '@/shared/ui/FilterChips';
 import { useTranslation } from '@/hooks/useTranslation';
 import { useBonPlanCategories, useBonPlans } from '@/features/bon-plans/hooks/useBonPlans';
 import { BonPlanCard } from '@/features/bon-plans/components/BonPlanCard';
@@ -19,32 +20,23 @@ export function BonPlansScreen() {
     <Screen>
       <Text className="mb-3 mt-2 text-xl font-bold text-text">{t('bonPlans.title')}</Text>
 
-      <ScrollView horizontal showsHorizontalScrollIndicator={false} className="mb-3">
-        <View className="flex-row gap-2">
-          <View
-            className={`rounded-full border px-3.5 py-2 ${!selectedCategoryId ? 'border-primary bg-primary' : 'border-border bg-card'}`}
-            onTouchEnd={() => setSelectedCategoryId(null)}
-          >
-            <Text className={`text-xs font-semibold ${!selectedCategoryId ? 'text-white' : 'text-text'}`}>
-              {t('bonPlans.tabAll')}
-            </Text>
-          </View>
-          {categories.map((cat) => {
-            const active = selectedCategoryId === cat.id;
-            return (
-              <View
-                key={cat.id}
-                className={`rounded-full border px-3.5 py-2 ${active ? 'border-primary bg-primary' : 'border-border bg-card'}`}
-                onTouchEnd={() => setSelectedCategoryId(cat.id)}
-              >
-                <Text className={`text-xs font-semibold ${active ? 'text-white' : 'text-text'}`}>
-                  {cat.name}
-                </Text>
-              </View>
-            );
-          })}
-        </View>
-      </ScrollView>
+      <View className="mb-3">
+        <FilterChipsRow>
+          <FilterChip
+            label={t('bonPlans.tabAll')}
+            active={selectedCategoryId === null}
+            onPress={() => setSelectedCategoryId(null)}
+          />
+          {categories.map((cat) => (
+            <FilterChip
+              key={cat.id}
+              label={cat.name}
+              active={selectedCategoryId === cat.id}
+              onPress={() => setSelectedCategoryId(cat.id)}
+            />
+          ))}
+        </FilterChipsRow>
+      </View>
 
       {isLoading ? null : !bonPlans || bonPlans.length === 0 ? (
         <EmptyState icon="search" title={t('search.noResults')} />

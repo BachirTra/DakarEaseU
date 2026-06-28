@@ -3,6 +3,7 @@ import { Linking, ScrollView, Text, View } from 'react-native';
 import { useLocalSearchParams } from 'expo-router';
 import { Image } from 'expo-image';
 import { Screen } from '@/shared/ui/Screen';
+import { ScreenHeader } from '@/shared/ui/ScreenHeader';
 import { Button } from '@/shared/ui/Button';
 import { Icon } from '@/shared/ui/Icon';
 import { useTranslation } from '@/hooks/useTranslation';
@@ -17,12 +18,21 @@ export function RestaurantDetailScreen() {
   const { data: restaurant, isLoading } = useRestaurantDetail(id);
   const [menuVisible, setMenuVisible] = useState(false);
 
-  if (isLoading || !restaurant) return null;
+  // Keep the back affordance available even while loading so the user is never
+  // trapped on a blank screen.
+  if (isLoading || !restaurant) {
+    return (
+      <Screen>
+        <ScreenHeader title={t('restaurants.title')} />
+      </Screen>
+    );
+  }
 
   const media = [...(restaurant.restaurant_media ?? [])].sort((a, b) => a.position - b.position);
 
   return (
     <Screen>
+      <ScreenHeader title={restaurant.name} />
       <ScrollView
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ paddingBottom: 32 }}

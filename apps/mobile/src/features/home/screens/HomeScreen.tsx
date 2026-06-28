@@ -7,6 +7,7 @@ import { useTranslation } from '@/hooks/useTranslation';
 import { useSessionStore } from '@/features/auth/store/sessionStore';
 import { CATEGORIES } from '@/constants/categories';
 import { COLORS } from '@/constants/colors';
+import { TRANSPORT_APPS, openTransportApp } from '@/constants/transportApps';
 import { PersonaGreeting, PERSONA_COPY } from '@/features/home/components/PersonaGreeting';
 import { SectionHeader } from '@/features/home/components/SectionHeader';
 import {
@@ -132,14 +133,20 @@ export function HomeScreen() {
               onPress={() =>
                 router.push({ pathname: '/(tabs)/search/restaurants/[id]', params: { id: r.id } })
               }
-              className="mr-3 w-44 overflow-hidden rounded-2xl border border-border bg-card p-3"
+              className="mr-3 w-40 overflow-hidden rounded-2xl border border-border bg-card"
             >
-              <Text numberOfLines={1} className="text-sm font-semibold text-text">
-                {r.name}
-              </Text>
-              <Text className="mt-0.5 text-xs text-textLight">
-                {r.cuisine_type} · {r.price_range}
-              </Text>
+              {/* No cover_image_url in the restaurants query — render a branded placeholder */}
+              <View className="h-24 w-full items-center justify-center bg-primary/10">
+                <Icon name="utensils" size={28} color={COLORS.primary} />
+              </View>
+              <View className="p-2.5">
+                <Text numberOfLines={1} className="text-sm font-semibold text-text">
+                  {r.name}
+                </Text>
+                <Text className="mt-0.5 text-xs text-textLight">
+                  {r.cuisine_type} · {r.price_range}
+                </Text>
+              </View>
             </Pressable>
           ))}
         </ScrollView>
@@ -152,7 +159,32 @@ export function HomeScreen() {
           actionLabel={t('common.seeAll')}
           onAction={() => router.push('/(tabs)/search/transport')}
         />
-        <Text className="text-xs text-textLight">{t('transport.subtitle')}</Text>
+        {/* Compact transport app tiles — press to open the app or its store page */}
+        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+          {TRANSPORT_APPS.map((app) => (
+            <Pressable
+              key={app.id}
+              onPress={() => openTransportApp(app)}
+              accessibilityRole="button"
+              accessibilityLabel={app.name}
+              className="mr-3 w-28 items-center overflow-hidden rounded-2xl border border-border bg-card p-3"
+            >
+              <View className="h-12 w-12 items-center justify-center overflow-hidden rounded-xl bg-border">
+                <Image
+                  source={{ uri: app.logoUrl }}
+                  style={{ width: 48, height: 48 }}
+                  contentFit="contain"
+                />
+              </View>
+              <Text numberOfLines={1} className="mt-2 text-xs font-semibold text-text">
+                {app.name}
+              </Text>
+              <Text numberOfLines={1} className="mt-0.5 text-xs text-textLight">
+                {app.categories[0]}
+              </Text>
+            </Pressable>
+          ))}
+        </ScrollView>
       </View>
     ),
   };

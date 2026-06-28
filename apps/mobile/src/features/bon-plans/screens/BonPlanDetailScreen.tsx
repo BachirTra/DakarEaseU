@@ -2,6 +2,7 @@ import { Linking, ScrollView, Text, View } from 'react-native';
 import { useLocalSearchParams } from 'expo-router';
 import { Image } from 'expo-image';
 import { Screen } from '@/shared/ui/Screen';
+import { ScreenHeader } from '@/shared/ui/ScreenHeader';
 import { Button } from '@/shared/ui/Button';
 import { Icon } from '@/shared/ui/Icon';
 import { useTranslation } from '@/hooks/useTranslation';
@@ -36,6 +37,7 @@ export function BonPlanDetailScreen() {
 
   return (
     <Screen>
+      <ScreenHeader title={bonPlan.title ?? t('bonPlans.title')} />
       <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 32 }}>
         {/* Image principale */}
         <View className="relative">

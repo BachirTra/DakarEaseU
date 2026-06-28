@@ -1,10 +1,12 @@
 import { useMemo, useState } from 'react';
-import { ScrollView, Text, View } from 'react-native';
+import { Pressable, ScrollView, Text, View } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { Screen } from '@/shared/ui/Screen';
 import { Button } from '@/shared/ui/Button';
 import { Badge } from '@/shared/ui/Badge';
+import { ScreenHeader } from '@/shared/ui/ScreenHeader';
 import { useTranslation } from '@/hooks/useTranslation';
+import { COLORS } from '@/constants/colors';
 import { useListingDetail } from '@/features/housing/hooks/useListingDetail';
 import { useCreateBooking } from '@/features/housing/hooks/useCreateBooking';
 import type { ListingColivingRoom, PaymentMethod } from '@dakareaseu/types';
@@ -16,6 +18,13 @@ const PAYMENT_METHODS: { id: PaymentMethod; labelKey: string }[] = [
 ];
 
 type Step = 'dates' | 'payment' | 'summary' | 'success';
+
+const STEP_NUMBERS: Partial<Record<Step, number>> = {
+  dates: 1,
+  payment: 2,
+  summary: 3,
+};
+const TOTAL_STEPS = 3;
 
 export function BookingScreen() {
   const { t } = useTranslation();
@@ -57,13 +66,22 @@ export function BookingScreen() {
     setStep('success');
   };
 
+  const stepNumber = STEP_NUMBERS[step] ?? null;
+
   return (
     <Screen>
+      {/* Pushed screen — back affordance via ScreenHeader */}
+      <ScreenHeader title={t('booking.title')} />
       <ScrollView
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ paddingVertical: 16 }}
+        contentContainerStyle={{ paddingBottom: 32 }}
       >
-        <Text className="mb-4 text-xl font-bold text-text">{t('booking.title')}</Text>
+        {/* Step indicator for dates/payment/summary */}
+        {stepNumber != null ? (
+          <Text className="mb-4 text-xs font-semibold text-textLight">
+            {t('common.stepOf', { current: stepNumber, total: TOTAL_STEPS })}
+          </Text>
+        ) : null}
 
         {step === 'dates' ? (
           <View>
@@ -74,19 +92,48 @@ export function BookingScreen() {
             <View className="flex-row items-center justify-between rounded-xl border border-border bg-card p-4">
               <Text className="text-sm text-text">{t('booking.duration')}</Text>
               <View className="flex-row items-center gap-4">
-                <Text
-                  className="text-lg font-bold text-primary"
+                {/* Proper tap-target stepper buttons (min 44×44) */}
+                <Pressable
+                  accessibilityRole="button"
+                  accessibilityLabel={t('common.back')}
                   onPress={() => setDurationMonths((d: number) => Math.max(minDuration, d - 1))}
+                  style={{
+                    width: 44,
+                    height: 44,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    borderRadius: 22,
+                    borderWidth: 1,
+                    borderColor: COLORS.border,
+                    backgroundColor: COLORS.card,
+                  }}
                 >
-                  −
+                  <Text style={{ fontSize: 20, color: COLORS.primary, fontWeight: '700', lineHeight: 22 }}>
+                    −
+                  </Text>
+                </Pressable>
+                <Text className="min-w-[28px] text-center text-base font-semibold text-text">
+                  {durationMonths}
                 </Text>
-                <Text className="text-base font-semibold text-text">{durationMonths}</Text>
-                <Text
-                  className="text-lg font-bold text-primary"
+                <Pressable
+                  accessibilityRole="button"
+                  accessibilityLabel={t('common.next')}
                   onPress={() => setDurationMonths((d: number) => d + 1)}
+                  style={{
+                    width: 44,
+                    height: 44,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    borderRadius: 22,
+                    borderWidth: 1,
+                    borderColor: COLORS.border,
+                    backgroundColor: COLORS.card,
+                  }}
                 >
-                  +
-                </Text>
+                  <Text style={{ fontSize: 20, color: COLORS.primary, fontWeight: '700', lineHeight: 22 }}>
+                    +
+                  </Text>
+                </Pressable>
               </View>
             </View>
             <View className="mt-6">

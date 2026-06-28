@@ -21,7 +21,9 @@ export type IconName =
   | 'message-circle'
   | 'globe'
   | 'phone'
-  | 'play-circle';
+  | 'play-circle'
+  | 'chevron-left'
+  | 'sliders';
 
 interface IconProps {
   name: IconName;
@@ -217,6 +219,22 @@ export function Icon({ name, size = 24, color = '#1E3A8A' }: IconProps) {
           <>
             <Circle cx={12} cy={12} r={10} {...s} />
             <Path d="m10 8 6 4-6 4V8z" {...s} />
+          </>
+        );
+      case 'chevron-left':
+        return <Path d="m15 18-6-6 6-6" {...s} />;
+      case 'sliders':
+        return (
+          <>
+            <Path d="M4 21v-7" {...s} />
+            <Path d="M4 10V3" {...s} />
+            <Path d="M12 21v-9" {...s} />
+            <Path d="M12 8V3" {...s} />
+            <Path d="M20 21v-5" {...s} />
+            <Path d="M20 12V3" {...s} />
+            <Path d="M1 14h6" {...s} />
+            <Path d="M9 8h6" {...s} />
+            <Path d="M17 16h6" {...s} />
           </>
         );
       default:

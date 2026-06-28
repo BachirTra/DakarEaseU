@@ -17,7 +17,11 @@
     "share": "Partager",
     "call": "Appeler",
     "whatsapp": "WhatsApp",
-    "perMonth": "/ mois"
+    "perMonth": "/ mois",
+    "all": "Tous",
+    "reset": "Réinitialiser",
+    "goThere": "Y aller",
+    "stepOf": "Étape {{current}} sur {{total}}"
   },
   "categories": {
     "logements": "Logements",
@@ -57,7 +61,9 @@
     "uploadIdLater": "Plus tard",
     "verificationPending": "En attente de vérification",
     "verificationApproved": "Identité vérifiée ✓",
-    "verificationRejected": "Vérification refusée — réessaie"
+    "verificationRejected": "Vérification refusée — réessaie",
+    "forgotPassword": "Mot de passe oublié ?",
+    "forgotPasswordSoon": "Réinitialisation par email bientôt disponible."
   },
   "home": {
     "greetingMorning": "Bonjour",
@@ -78,7 +84,11 @@
     "guidedBannerBody": "Réponds à 4 questions, reçois des logements classés par compatibilité.",
     "guidedBannerCta": "Démarrer",
     "noResults": "Aucun résultat pour ces critères",
-    "resultsCount": "{{count}} résultats"
+    "resultsCount": "{{count}} résultats",
+    "resultsCountOne": "{{count}} résultat",
+    "filterTypeLabel": "Type de bien",
+    "filterOptionsLabel": "Options",
+    "clearFilters": "Réinitialiser les filtres"
   },
   "listing": {
     "verified": "Vérifié",
@@ -139,6 +149,7 @@
   "restaurants": {
     "title": "Restaurants",
     "searchPlaceholder": "Chercher un restaurant…",
+    "allCuisines": "Toutes les cuisines",
     "menu": "Menu",
     "viewMenu": "Voir le menu",
     "orderCta": "Commander",
@@ -200,7 +211,14 @@
     "submit": "Voir mes correspondances",
     "resultsTitle": "Logements qui te correspondent",
     "matchScore": "{{pct}}% de compatibilité",
-    "noMatches": "Aucune correspondance pour le moment — élargis tes critères."
+    "noMatches": "Aucune correspondance pour le moment — élargis tes critères.",
+    "optAny": "Indifférent",
+    "optYes": "Oui",
+    "optNo": "Non",
+    "furnishedLabel": "Meublé",
+    "colocationLabel": "Colocation",
+    "budgetLabel": "Budget mensuel",
+    "viewListing": "Voir le logement"
   },
   "packs": {
     "title": "Packs Étudiants",

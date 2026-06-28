@@ -26,6 +26,21 @@ jest.mock('@/features/auth/store/sessionStore', () => ({
     selector({ user: { id: 'u1' } }),
 }));
 
+// Results now render MatchCard, which fetches each listing's details.
+jest.mock('@/features/housing/hooks/useListingDetail', () => ({
+  useListingDetail: () => ({
+    data: {
+      id: 'b0000000-0000-0000-0000-000000000001',
+      title: 'Studio meublé proche UCAD',
+      district: 'Fann',
+      distance_label: "10 min de l'UCAD",
+      price: 85000,
+      currency: 'XOF',
+      listing_media: [],
+    },
+  }),
+}));
+
 describe('DemandeScreen', () => {
   beforeEach(() => {
     mockMatchedListings.mockReset();
