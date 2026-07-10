@@ -10,7 +10,7 @@ import { useLogin, useGoogleLogin } from '@/features/auth/hooks/useAuth';
 import { loginSchema, type LoginInput } from '@/features/auth/schemas/authSchemas';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires -- static asset require (no png module typings)
-const LOGO = require('../../../../assets/icon.png');
+const LOGO = require('../../../../assets/icon.jpeg');
 
 export function LoginScreen() {
   const { t } = useTranslation();
