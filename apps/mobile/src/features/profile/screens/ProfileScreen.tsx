@@ -82,6 +82,12 @@ export function ProfileScreen() {
             <Text className="text-sm text-text">{t('profile.myBookings')}</Text>
           </Pressable>
           <Pressable
+            onPress={() => router.push('/(tabs)/profile/requests')}
+            className="rounded-xl border border-border bg-card px-4 py-3"
+          >
+            <Text className="text-sm text-text">{t('profile.myRequests')}</Text>
+          </Pressable>
+          <Pressable
             onPress={() => router.push('/(tabs)/profile/notifications')}
             className="rounded-xl border border-border bg-card px-4 py-3"
           >

@@ -6,7 +6,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Screen } from '@/shared/ui/Screen';
 import { Button } from '@/shared/ui/Button';
 import { useTranslation } from '@/hooks/useTranslation';
-import { useLogin } from '@/features/auth/hooks/useAuth';
+import { useLogin, useGoogleLogin } from '@/features/auth/hooks/useAuth';
 import { loginSchema, type LoginInput } from '@/features/auth/schemas/authSchemas';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires -- static asset require (no png module typings)
@@ -16,6 +16,7 @@ export function LoginScreen() {
   const { t } = useTranslation();
   const router = useRouter();
   const login = useLogin();
+  const googleLogin = useGoogleLogin();
   const {
     control,
     handleSubmit,
@@ -28,6 +29,16 @@ export function LoginScreen() {
   const onSubmit = async (values: LoginInput) => {
     await login.mutateAsync(values);
     router.replace('/(tabs)/home');
+  };
+
+  const onGoogle = async () => {
+    try {
+      await googleLogin.mutateAsync();
+      router.replace('/(tabs)/home');
+    } catch (err) {
+      if (err instanceof Error && err.message === 'cancelled') return;
+      Alert.alert(t('common.appName'), t('auth.googleError'));
+    }
   };
 
   return (
@@ -99,7 +110,12 @@ export function LoginScreen() {
       <View className="my-6 h-px bg-border" />
 
       <View className="gap-3">
-        <Button label={t('auth.continueWithGoogle')} variant="outline" disabled onPress={() => {}} />
+        <Button
+          label={t('auth.continueWithGoogle')}
+          variant="outline"
+          onPress={onGoogle}
+          loading={googleLogin.isPending}
+        />
         <Button label={t('auth.continueWithApple')} variant="outline" disabled onPress={() => {}} />
         <Text className="mt-1 self-center text-xs text-textLight">{t('common.comingSoon')}</Text>
       </View>

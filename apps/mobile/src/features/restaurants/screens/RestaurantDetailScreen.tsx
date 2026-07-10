@@ -8,7 +8,7 @@ import { Button } from '@/shared/ui/Button';
 import { Icon } from '@/shared/ui/Icon';
 import { useTranslation } from '@/hooks/useTranslation';
 import { COLORS } from '@/constants/colors';
-import { useRestaurantDetail } from '@/features/restaurants/hooks/useRestaurants';
+import { useRestaurantDetail, useRestaurantMenu } from '@/features/restaurants/hooks/useRestaurants';
 import { MenuSheet } from '@/features/restaurants/components/MenuSheet';
 import { openMapsDirections } from '@/lib/geo';
 
@@ -16,6 +16,7 @@ export function RestaurantDetailScreen() {
   const { t } = useTranslation();
   const { id } = useLocalSearchParams<{ id: string }>();
   const { data: restaurant, isLoading } = useRestaurantDetail(id);
+  const { data: menu } = useRestaurantMenu(id);
   const [menuVisible, setMenuVisible] = useState(false);
 
   // Keep the back affordance available even while loading so the user is never
@@ -101,7 +102,13 @@ export function RestaurantDetailScreen() {
       <MenuSheet
         visible={menuVisible}
         onClose={() => setMenuVisible(false)}
-        items={[]}
+        items={(menu ?? []).map((item) => ({
+          id: item.id,
+          name: item.name,
+          price: item.price,
+          currency: 'FCFA',
+          image_url: item.image_url,
+        }))}
         whatsapp={restaurant.whatsapp}
         phone={restaurant.phone}
       />

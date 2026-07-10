@@ -1,3 +1,6 @@
+import * as AuthSession from 'expo-auth-session';
+import * as QueryParams from 'expo-auth-session/build/QueryParams';
+import * as WebBrowser from 'expo-web-browser';
 import { supabase } from '@/lib/supabase';
 import type { LoginInput, SignupInput } from '@/features/auth/schemas/authSchemas';
 import type { OnboardingAnswers } from '@/features/auth/lib/derivePersona';
@@ -23,6 +26,45 @@ export async function signUpWithPassword({ fullName, email, password }: SignupIn
 export async function signOut() {
   const { error } = await supabase.auth.signOut();
   if (error) throw error;
+}
+
+async function createSessionFromUrl(url: string) {
+  const { params, errorCode } = QueryParams.getQueryParams(url);
+  if (errorCode) throw new Error(errorCode);
+
+  // PKCE flow returns a `code`; implicit flow returns the tokens directly.
+  if (params.code) {
+    const { data, error } = await supabase.auth.exchangeCodeForSession(params.code);
+    if (error) throw error;
+    return data.session;
+  }
+
+  const { access_token, refresh_token } = params;
+  if (!access_token || !refresh_token) {
+    throw new Error('No tokens found in OAuth redirect');
+  }
+
+  const { data, error } = await supabase.auth.setSession({ access_token, refresh_token });
+  if (error) throw error;
+  return data.session;
+}
+
+export async function signInWithGoogle() {
+  const redirectTo = AuthSession.makeRedirectUri();
+
+  const { data, error } = await supabase.auth.signInWithOAuth({
+    provider: 'google',
+    options: { redirectTo, skipBrowserRedirect: true },
+  });
+  if (error) throw error;
+  if (!data.url) throw new Error('No OAuth URL returned by Supabase');
+
+  const result = await WebBrowser.openAuthSessionAsync(data.url, redirectTo);
+  if (result.type !== 'success') {
+    throw new Error('cancelled');
+  }
+
+  return createSessionFromUrl(result.url);
 }
 
 export async function fetchProfile(userId: string): Promise<Profile | null> {

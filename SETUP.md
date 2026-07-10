@@ -135,6 +135,12 @@ GOOGLE_OAUTH_CLIENT_ID=xxxxxxxxxx.apps.googleusercontent.com
 GOOGLE_OAUTH_CLIENT_SECRET=xxxxxxxxxxxx
 ```
 
+### Note — Google Sign-In sur mobile
+
+Ce **même client OAuth Web** alimente aussi la connexion Google de l'application mobile (`apps/mobile`), via le flux OAuth hébergé par Supabase (`supabase.auth.signInWithOAuth`). Il n'y a **pas besoin de créer un client Google Cloud iOS/Android séparé** ni d'ID client natif.
+
+Une étape supplémentaire côté Supabase est requise pour le mobile : ajouter les **Redirect URLs** de l'app (`dakareaseu://` et l'URL proxy `exp://` d'Expo Go) dans **Authentication → URL Configuration**. Voir `apps/mobile/SETUP.md` section 5 pour le détail.
+
 ## 5. Expo / EAS — mobile
 
 ### Créer le compte et installer EAS CLI

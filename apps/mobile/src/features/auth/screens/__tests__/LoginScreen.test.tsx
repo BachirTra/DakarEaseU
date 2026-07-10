@@ -3,8 +3,11 @@ import { LoginScreen } from '../LoginScreen';
 
 const mockLoginMutate = jest.fn();
 
+const mockGoogleLoginMutate = jest.fn();
+
 jest.mock('@/features/auth/hooks/useAuth', () => ({
   useLogin: () => ({ mutateAsync: mockLoginMutate, isPending: false }),
+  useGoogleLogin: () => ({ mutateAsync: mockGoogleLoginMutate, isPending: false }),
 }));
 
 jest.mock('expo-router', () => ({

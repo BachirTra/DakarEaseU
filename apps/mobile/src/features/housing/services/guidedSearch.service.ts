@@ -37,3 +37,13 @@ export async function createGuidedSearchRequest(params: {
   if (error) throw error;
   return data;
 }
+
+export async function fetchMyGuidedSearchRequests(userId: string) {
+  const { data, error } = await supabase
+    .from('guided_search_requests')
+    .select('*, schools(name)')
+    .eq('user_id', userId)
+    .order('created_at', { ascending: false });
+  if (error) throw error;
+  return data;
+}

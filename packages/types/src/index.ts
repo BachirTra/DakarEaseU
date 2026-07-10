@@ -16,6 +16,7 @@ export type ListingMedia = Tables<'listing_media'>;
 export type ListingColivingRoom = Tables<'listing_coliving_rooms'>;
 export type Restaurant = Tables<'restaurants'>;
 export type RestaurantMedia = Tables<'restaurant_media'>;
+export type MenuItem = Tables<'menu_items'>;
 export type TransportProvider = Tables<'transport_providers'>;
 export type BonPlanRow = Tables<'bon_plans'>;
 export type BonPlanCategory = Tables<'bon_plan_categories'>;

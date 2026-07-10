@@ -15,3 +15,11 @@ export function useRestaurantDetail(restaurantId: string | undefined) {
     enabled: Boolean(restaurantId),
   });
 }
+
+export function useRestaurantMenu(restaurantId: string | undefined) {
+  return useQuery({
+    queryKey: ['restaurants', 'menu', restaurantId],
+    queryFn: () => restaurantsService.fetchRestaurantMenu(restaurantId as string),
+    enabled: Boolean(restaurantId),
+  });
+}

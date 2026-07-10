@@ -21,6 +21,10 @@ jest.mock('@/features/housing/hooks/useGuidedSearch', () => ({
   },
 }));
 
+jest.mock('@/features/schools/hooks/useSchools', () => ({
+  useSchools: () => ({ data: [] }),
+}));
+
 jest.mock('@/features/auth/store/sessionStore', () => ({
   useSessionStore: (selector: (s: { user: { id: string } }) => unknown) =>
     selector({ user: { id: 'u1' } }),

@@ -17,14 +17,13 @@ const PAYMENT_METHODS: { id: PaymentMethod; labelKey: string }[] = [
   { id: 'card', labelKey: 'booking.payWithCard' },
 ];
 
-type Step = 'dates' | 'payment' | 'summary' | 'success';
+type Step = 'dates' | 'payment' | 'success';
 
 const STEP_NUMBERS: Partial<Record<Step, number>> = {
   dates: 1,
   payment: 2,
-  summary: 3,
 };
-const TOTAL_STEPS = 3;
+const TOTAL_STEPS = 2;
 
 export function BookingScreen() {
   const { t } = useTranslation();
@@ -76,7 +75,7 @@ export function BookingScreen() {
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ paddingBottom: 32 }}
       >
-        {/* Step indicator for dates/payment/summary */}
+        {/* Step indicator for dates/payment */}
         {stepNumber != null ? (
           <Text className="mb-4 text-xs font-semibold text-textLight">
             {t('common.stepOf', { current: stepNumber, total: TOTAL_STEPS })}
@@ -157,21 +156,7 @@ export function BookingScreen() {
                 />
               ))}
             </View>
-            <View className="mt-6 flex-row gap-3">
-              <Button label={t('common.back')} variant="ghost" onPress={() => setStep('dates')} />
-              <Button
-                label={t('common.next')}
-                disabled={!paymentMethod}
-                onPress={() => setStep('summary')}
-              />
-            </View>
-          </View>
-        ) : null}
-
-        {step === 'summary' ? (
-          <View>
-            <Text className="mb-3 text-sm font-semibold text-text">{t('booking.stepSummary')}</Text>
-            <View className="rounded-xl border border-border bg-card p-4">
+            <View className="mt-6 rounded-xl border border-border bg-card p-4">
               <Text className="text-sm text-text">{listing.title}</Text>
               {room ? <Text className="mt-1 text-xs text-textLight">{room.label}</Text> : null}
               <View className="mt-3 flex-row justify-between">
@@ -196,9 +181,10 @@ export function BookingScreen() {
               </View>
             </View>
             <View className="mt-6 flex-row gap-3">
-              <Button label={t('common.back')} variant="ghost" onPress={() => setStep('payment')} />
+              <Button label={t('common.back')} variant="ghost" onPress={() => setStep('dates')} />
               <Button
-                label={t('booking.confirmAndPay')}
+                label={t('listing.reserve')}
+                disabled={!paymentMethod}
                 loading={createBooking.isPending}
                 onPress={submit}
               />

@@ -7,6 +7,12 @@ import { WebView } from 'react-native-webview';
 // PSV v4 + Three.js r146. Image pré-téléchargée → data URL → pas de CORS WebGL.
 // Le listener panorama-error est supprimé : il déclenchait de faux échecs sur
 // data: URLs alors que Three.js rendait le panorama correctement.
+//
+// L'abonnement au 'ready' est fait via l'API d'événements uEvent de PSV v4
+// (`viewer.once(...)`). `addEventListener` n'existe QUE sur PSV v5 : l'appeler
+// sur un Viewer v4 lançait un TypeError capturé → post('error') immédiat, d'où
+// le « Impossible de charger » alors même que l'image était bien téléchargée.
+// On détecte l'API disponible pour rester compatible v4 comme v5.
 function buildHtmlPsv(b64: string, mime: string): string {
   const dataUrl = `data:${mime};base64,${b64}`.replace(/\\/g, '\\\\').replace(/'/g, "\\'");
   return `<!DOCTYPE html>
@@ -36,7 +42,13 @@ function buildHtmlPsv(b64: string, mime: string): string {
         navbar: false, defaultZoomLvl: 0, mousewheel: false, touchmoveTwoFingers: false,
         loadingTxt: '',
       });
-      viewer.addEventListener('ready', function() { post('ready'); }, { once: true });
+      if (typeof viewer.once === 'function') {
+        viewer.once('ready', function() { post('ready'); });
+      } else if (typeof viewer.addEventListener === 'function') {
+        viewer.addEventListener('ready', function() { post('ready'); }, { once: true });
+      } else {
+        post('ready');
+      }
     } catch(e) { post('error:init-' + ((e && e.message) || '')); }
   });
 </script>

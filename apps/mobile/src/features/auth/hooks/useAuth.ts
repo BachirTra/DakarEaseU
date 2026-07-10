@@ -16,6 +16,12 @@ export function useSignup() {
   });
 }
 
+export function useGoogleLogin() {
+  return useMutation({
+    mutationFn: () => authService.signInWithGoogle(),
+  });
+}
+
 export function useLogout() {
   const clear = useSessionStore((s) => s.clear);
   const queryClient = useQueryClient();

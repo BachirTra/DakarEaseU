@@ -6,6 +6,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { useRestaurantDetail } from '@/features/restaurants/hooks/use-restaurants';
 import { RestaurantForm } from '@/features/restaurants/components/restaurant-form';
 import { RestaurantMediaManager } from '@/features/restaurants/components/restaurant-media-manager';
+import { MenuItemsManager } from '@/features/menu-items/components/menu-items-manager';
 
 export default function RestaurantDetailPage() {
   const params = useParams<{ id: string }>();
@@ -31,6 +32,14 @@ export default function RestaurantDetailPage() {
         </CardHeader>
         <CardContent>
           <RestaurantMediaManager restaurantId={restaurant.id} media={media} />
+        </CardContent>
+      </Card>
+      <Card>
+        <CardHeader>
+          <CardTitle>Menu</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <MenuItemsManager restaurantId={restaurant.id} />
         </CardContent>
       </Card>
     </div>

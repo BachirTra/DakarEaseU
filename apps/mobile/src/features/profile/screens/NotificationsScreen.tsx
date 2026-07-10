@@ -13,6 +13,7 @@ const TYPE_ICON: Record<string, IconName> = {
   booking_status_update: 'home',
   event_rsvp_confirmed: 'party',
   new_guided_search_request: 'search',
+  guided_search_status_update: 'search',
   verification_status_update: 'check-circle',
 };
 

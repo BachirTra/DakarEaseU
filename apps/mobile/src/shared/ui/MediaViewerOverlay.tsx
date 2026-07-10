@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { Modal, Pressable, Text, View } from 'react-native';
 import { Image } from 'expo-image';
 import { useVideoPlayer, VideoView } from 'expo-video';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useUiStore } from '@/shared/store/uiStore';
 import { PanoramaViewer } from '@/shared/ui/PanoramaViewer';
 import { Icon } from '@/shared/ui/Icon';
@@ -16,6 +17,7 @@ export type MediaKind = 'photo' | 'video' | 'tour_3d' | 'pano_360';
 export function MediaViewerOverlay() {
   const active = useUiStore((s) => s.activeMediaViewer);
   const close = useUiStore((s) => s.closeMediaViewer);
+  const insets = useSafeAreaInsets();
 
   const visible = active != null;
   const isVideo = active?.kind === 'video';
@@ -69,7 +71,7 @@ export function MediaViewerOverlay() {
         <View
           style={{
             position: 'absolute',
-            top: 48,
+            top: insets.top + 8,
             left: 16,
             right: 16,
             flexDirection: 'row',

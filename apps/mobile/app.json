@@ -34,7 +34,11 @@
       },
       "package": "com.dakareaseu.mobile"
     },
-    "plugins": ["expo-router", "expo-video"],
+    "plugins": [
+      "expo-router",
+      "expo-video",
+      "expo-web-browser"
+    ],
     "experiments": {
       "typedRoutes": true
     },

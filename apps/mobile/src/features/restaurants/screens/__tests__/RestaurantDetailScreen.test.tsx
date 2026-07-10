@@ -22,6 +22,7 @@ jest.mock('@/features/restaurants/hooks/useRestaurants', () => ({
     },
     isLoading: false,
   }),
+  useRestaurantMenu: () => ({ data: [], isLoading: false }),
 }));
 
 describe('RestaurantDetailScreen', () => {

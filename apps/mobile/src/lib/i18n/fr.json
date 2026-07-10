@@ -63,7 +63,8 @@
     "verificationApproved": "Identité vérifiée ✓",
     "verificationRejected": "Vérification refusée — réessaie",
     "forgotPassword": "Mot de passe oublié ?",
-    "forgotPasswordSoon": "Réinitialisation par email bientôt disponible."
+    "forgotPasswordSoon": "Réinitialisation par email bientôt disponible.",
+    "googleError": "Connexion Google impossible, réessaie."
   },
   "home": {
     "greetingMorning": "Bonjour",
@@ -152,6 +153,7 @@
     "allCuisines": "Toutes les cuisines",
     "menu": "Menu",
     "viewMenu": "Voir le menu",
+    "noMenu": "Menu indisponible pour le moment",
     "orderCta": "Commander",
     "priceRange": "Gamme de prix",
     "specialties": "Spécialités"
@@ -218,7 +220,14 @@
     "furnishedLabel": "Meublé",
     "colocationLabel": "Colocation",
     "budgetLabel": "Budget mensuel",
-    "viewListing": "Voir le logement"
+    "viewListing": "Voir le logement",
+    "schoolLabel": "École",
+    "schoolAny": "Toutes les écoles",
+    "historyTitle": "Mes demandes de logement",
+    "historyEmpty": "Aucune demande pour le moment",
+    "statusOpen": "En attente",
+    "statusMatched": "Propositions envoyées",
+    "statusClosed": "Clôturée"
   },
   "packs": {
     "title": "Packs Étudiants",

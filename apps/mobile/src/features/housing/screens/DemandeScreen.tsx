@@ -13,15 +13,19 @@ import {
 } from '@/features/housing/hooks/useGuidedSearch';
 import { toMatchListingsArgs } from '@/features/housing/services/guidedSearch.service';
 import { MatchCard } from '@/features/housing/components/MatchCard';
+import { useSchools } from '@/features/schools/hooks/useSchools';
 import { DISTRICTS } from '@/constants/categories';
-import type { ListingType, MatchResult } from '@dakareaseu/types';
+import type { MatchResult } from '@dakareaseu/types';
 import type { GuidedSearchInput } from '@/features/housing/schemas/guidedSearchSchemas';
 
-const TYPES: { id: ListingType; label: string }[] = [
+type HousingOption = Exclude<GuidedSearchInput['type'], 'any'>;
+
+const TYPES: { id: HousingOption; label: string }[] = [
   { id: 'studio', label: 'Studio' },
   { id: 'chambre', label: 'Chambre' },
   { id: 'appartement', label: 'Appartement' },
   { id: 'maison', label: 'Maison' },
+  { id: 'coloc', label: 'Colocation' },
 ];
 
 const PREF_OPTIONS = ['any', 'yes', 'no'] as const;
@@ -35,8 +39,11 @@ export function DemandeScreen() {
   const userId = useSessionStore((s) => s.user?.id);
   const submitRequest = useSubmitGuidedSearch();
 
+  const { data: schools } = useSchools();
+
   const [step, setStep] = useState<Step>(1);
-  const [type, setType] = useState<ListingType | null>(null);
+  const [type, setType] = useState<HousingOption | null>(null);
+  const [schoolId, setSchoolId] = useState<string | null>(null);
   const [district, setDistrict] = useState<string | null>(null);
   const [budget, setBudget] = useState(80000);
   const [months, setMonths] = useState(3);
@@ -47,7 +54,7 @@ export function DemandeScreen() {
     if (step !== 'results' || !type) return null;
     const input: GuidedSearchInput = {
       type,
-      schoolId: null,
+      schoolId,
       district,
       budget,
       months,
@@ -55,7 +62,7 @@ export function DemandeScreen() {
       coloc,
     };
     return toMatchListingsArgs(input);
-  }, [step, type, district, budget, months, furnished, coloc]);
+  }, [step, type, schoolId, district, budget, months, furnished, coloc]);
 
   const { data: matches, isLoading: isMatching } = useGuidedSearchMatches(matchArgs);
 
@@ -63,7 +70,7 @@ export function DemandeScreen() {
     if (!userId || !type) return;
     await submitRequest.mutateAsync({
       userId,
-      input: { type, schoolId: null, district, budget, months, furnished, coloc },
+      input: { type, schoolId, district, budget, months, furnished, coloc },
     });
     setStep('results');
   };
@@ -115,6 +122,24 @@ export function DemandeScreen() {
             <Text className="mb-3 text-base font-semibold text-text">
               {t('demande.stepLocation')}
             </Text>
+            <Text className="mb-2 text-sm font-medium text-text">{t('demande.schoolLabel')}</Text>
+            <View className="mb-4 flex-row flex-wrap gap-2">
+              <Button
+                label={t('demande.schoolAny')}
+                fullWidth={false}
+                variant={schoolId === null ? 'primary' : 'outline'}
+                onPress={() => setSchoolId(null)}
+              />
+              {schools?.map((s) => (
+                <Button
+                  key={s.id}
+                  label={s.name}
+                  fullWidth={false}
+                  variant={schoolId === s.id ? 'primary' : 'outline'}
+                  onPress={() => setSchoolId(schoolId === s.id ? null : s.id)}
+                />
+              ))}
+            </View>
             <View className="flex-row flex-wrap gap-2">
               {DISTRICTS.map((d) => (
                 <Button

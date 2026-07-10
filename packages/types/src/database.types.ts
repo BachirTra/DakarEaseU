@@ -492,6 +492,53 @@ export type Database = {
           },
         ];
       };
+      menu_items: {
+        Row: {
+          created_at: string;
+          description: string | null;
+          id: string;
+          image_url: string | null;
+          is_available: boolean;
+          name: string;
+          position: number;
+          price: number;
+          restaurant_id: string;
+          updated_at: string;
+        };
+        Insert: {
+          created_at?: string;
+          description?: string | null;
+          id?: string;
+          image_url?: string | null;
+          is_available?: boolean;
+          name: string;
+          position?: number;
+          price: number;
+          restaurant_id: string;
+          updated_at?: string;
+        };
+        Update: {
+          created_at?: string;
+          description?: string | null;
+          id?: string;
+          image_url?: string | null;
+          is_available?: boolean;
+          name?: string;
+          position?: number;
+          price?: number;
+          restaurant_id?: string;
+          updated_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'menu_items_restaurant_id_fkey';
+            columns: ['restaurant_id'];
+            isOneToOne: false;
+            referencedRelation: 'restaurants';
+            referencedColumns: ['id'];
+          },
+        ];
+      };
       notifications: {
         Row: {
           body: string | null;

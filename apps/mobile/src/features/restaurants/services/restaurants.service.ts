@@ -9,6 +9,17 @@ export async function fetchRestaurants() {
   return data;
 }
 
+export async function fetchRestaurantMenu(restaurantId: string) {
+  const { data, error } = await supabase
+    .from('menu_items')
+    .select('id, name, price, image_url')
+    .eq('restaurant_id', restaurantId)
+    .eq('is_available', true)
+    .order('position');
+  if (error) throw error;
+  return data;
+}
+
 export async function fetchRestaurantDetail(restaurantId: string) {
   const { data, error } = await supabase
     .from('restaurants')
